@@ -1,0 +1,140 @@
+.TH raw2ppm 6 "12 January 2000"
+.ds . \fBraw2ppm\fP
+
+.SH NAME
+raw2ppm \- convert Doom wad 8-bit raw graphic data to PPM
+
+.SH SYNOPSIS
+.B raw2ppm
+[\fB\-Iv\fP]
+[\fB\-c\fP \fIgame\fP]
+[\fB\-h\fP \fIheight\fP]
+[\fB\-n\fP \fIcount\fP]
+[\fB\-o\fP \fIfile\fP]
+[\fB\-s\fP \fIoffset\fP]
+[\fB\-w\fP \fIwidth\fP]
+.IR file " ..."
+
+.SH DISCLAIMER
+This program is furnished on an AS IS basis for the fun of it.
+id Software does not support this program.
+
+.SH DESCRIPTION
+\*. has two primary uses. The first one is converting flat lumps extracted from
+a wad by \fBwadext\fP into graphic files. For this purpose, it has been
+obsoleted by \fBwadflat\fP. The second one is extracting certain graphics from
+the Doom alpha 0.4 and Doom alpha 0.5 iwads. For \fIthat\fP purpose, \*. is
+expected to become obsolete when DeuTex is taught about the Doom alpha graphics
+format.
+.PP
+Even though \*. was originally written for a precise task, it was designed to
+be reasonably general, in the hope that it may be useful for other things.
+.PP
+\*. converts a stream of bytes into an image, on the basis of one byte to one
+pixel. The byte values are mapped to RGB colours using the palette specified by
+the \fB\-c\fP option (by default, the Doom/Doom II palette).
+.PP
+The pixels are read from the input file in normal English reading order, i.e.
+from left to right and from top to bottom. If the \fB\-I\fP option is
+specified, some interleaving is used.
+.PP
+To choose the geometry of the output image, \*. first determines \fIN\fP,
+the number of bytes to read. By default, \fIN\fP is equal to the size of the
+input file (this can be changed through \fB\-n\fP and \fB\-s\fP). If you
+specify the width (with \fB\-w\fP), \*. automatically sets the height to
+\fIN\fP\(di\fIw\fP. Conversely, if you specify the height (with \fB\-h\fP), \*.
+sets the width to \fIN\fP\(di\fIh\fP. If you specify neither width nor height,
+\*. assumes the width is 64 pixels and sets the height to \fIN\fP\(di\64. If
+you specify both, \*. just says amen.
+.PP
+If \fIw\fP\(mu\fIh\fP is lesser than \fIN\fP, \*. prints a warning and
+drops the \fIN\fP\(mi\fIw\fP\(mu\fIh\fP last bytes so that the output image
+has no incomplete row. If \fIw\fP\(mu\fIh\fP is greater than \fIN\fP, \*.
+prints an error message and skips the file.
+.PP
+For each input file, the name of the output file is chosen by removing any
+"\fB.lmp\fP" extension at the end of the input file name and appending the
+"\fB.ppm\fP" extension. For example, for an input file named "foo/bar.lmp", the
+output file would be "foo/bar.ppm". If there is only one input file, you can
+override the default output file name by using the \fB\-o\fP option.
+
+.SH OPTIONS
+All options are global. It is \fInot\fP possible to specify different values
+of, for example, the width by interleaving \fB\-w\fP options and \fIfile\fP
+arguments. If an option is repeated, the last occurrence wins. \*. parses its
+command line with \fBgetopt()\fP and therefore supports all the usual features
+(see \fBgetopt\fR(3)). All file names are limited to 256 characters.
+.TP
+.BI "\-c " game
+Translate pixel values to RGB colours using the palette from game \fIgame\fP.
+The possible values of \fIgame\fP are \fBdoom\fP, \fBdoom04\fP, \fBdoom04t\fP,
+\fBdoom05\fP, \fBdoom05t\fP, \fBheretic\fP, \fBhexen\fP and \fBstrife\fP.
+\fBdoom\fP is for Doom and Doom II. \fBdoom04\fP and \fBdoom05\fP are for Doom
+alpha 0.4 and Doom alpha 0.5 respectively. \fBdoom04t\fP and \fBdoom05t\fP are
+the \fBTITLEPIC\fP palettes (\fBTITLEPAL\fP) of Doom alpha 0.4 and Doom alpha
+0.5 respectively. The default is \fBdoom\fP.
+.TP
+.BI "\-h " height
+Height of the output image. \fIheight\fP is a decimal integer unless prefixed
+by \fB0x\fP (hexadecimal) or \fB0\fP (octal). \fIheight\fP must be greater
+than 0.
+.TP
+.B \-I
+Interleave. Treat the input file as 4 frames of (\fIw\fP\(di4\(mu\fIh\fP)
+pixels where the first frames provides the pixels for columns 0, 4, and so on,
+the second frame columns 1, 5 and so on, the third frame columns 2, 6 and so
+on and the fourth frame columns 3, 7 and so on. Useful to extract certain
+graphics from the Doom alpha iwad.
+.TP
+.BI "\-n " count
+Number of bytes to read from each input file. \fIcount\fP is a decimal integer
+unless prefixed by \fB0x\fP (hexadecimal) or \fB0\fP (octal). \fIcount\fP must
+be positive.
+.TP
+.BI "\-o " file
+Override the default output file name. If you attempt to use this option when
+there is more than one input file, \*. refuses to run.
+.TP
+.BI "\-s " offset
+Skip \fIoffset\fP bytes at the beginning of the input file. \fIoffset\fP is a
+decimal integer unless prefixed by \fB0x\fP (hexadecimal) or \fB0\fP (octal).
+\fIoffset\fP must be positive.
+.TP
+.B \-v
+Verbose mode. Causes \*. to print for each file it processes the string
+"%s \-> %s", where the first "%s" is replaced by the name of the input file and
+the second one by the name of the output file.
+.TP
+.BI "\-w " width
+Width of the output image. \fIwidth\fP is a decimal integer unless prefixed
+by \fB0x\fP (hexadecimal) or \fB0\fP (octal). \fIwidth\fP must be greater
+than 0.
+
+.SH SUPPORTED GAMES
+Doom, Doom alpha, Doom PR, Ultimate Doom, Doom][, Final Doom, Heretic, Hexen,
+Strife.
+
+.SH EXIT VALUE
+\fB0\fP	OK.
+.br
+\fB1\fP	Syntax error.
+.br
+\fB2\fP	An error occurred on one or more of the files.
+
+.SH SEE ALSO
+The Unofficial Doom Specs by Matthew S Fell.
+.br
+.BR wadext "(6), "
+.BR wadflat "(6), "
+.BR deutex "(6), "
+.BR wadgc "(6), "
+.BR tkwadcad "(6), "
+.BR ppm "(5), "
+.BR xwadtools (6)
+
+.SH BUGS
+None known.
+
+.SH AUTHOR
+\*. was written by Udo Munk (um@compuserve.com) and hacked by Andre Majorel
+(amajorel@teaser.fr).

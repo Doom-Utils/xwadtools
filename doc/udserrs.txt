@@ -1,0 +1,388 @@
+
+
+Preliminary Draft of UDS 1.666 errors.                    r0.01, 30.03.1995
+
+
+
+===========================================================================
+UDS errors:
+
+
+---------------------------------------------------------------------------
+Robert Fenske, Jr.   rfenske@swri.edu:
+
+- line types 105 and 111 descriptions are switched
+
+- only the cycling crushing line types lock out further sector actions
+        (just mentioned by Steve Benner)
+
+- creatures will not attack through 2-sided lines that do not have
+        the 2S bit set; they did in v1.2 but do not in v1.666 or higher
+
+
+----------------------------------------------------------------------------
+S.Benner@lancaster.ac.uk (Steve Benner):
+
+- Linetype 4 (W1: Door open & close) can be activated by monsters
+  as well as players;
+
+- Linetype 46 (GR: Door open) DOES require tagging: it can be used
+  on any line, as remote from the door sector as you like. Only
+  fist, chainsaw, bullets and shotgun shells activate this trigger;
+  plasma and rockets have no effect. Bullets and shot from monsters
+  will activate it, so this is a kinda monster-activated trigger;
+
+- The CLUNK sound attributed to certain linetypes in the UDS is not
+  a function of the linetype in use. It only occurs if a SW_ texture is
+  in use on an Sx active linetype and sounds in addition to the
+  sound of the linetype action;
+
+- Linetype 141 is termed a silent crusher in the UDS. This crusher travels
+  silently but makes a CLUNK at each end of its travel;
+
+- All self-building stairs have the crush characteristic,
+  not just 8-unit ones;
+
+- Linetypes 56, 94, 55 & 65 (Floor up to LIC-8, CRUSH) do not lock out
+  further actions, unless something gets caught in them *and* does not get
+  killed. Only lesser monsters are killed by this crusher, so if anything
+  above a Demon gets caught in them, it will be held forever. I suspect
+  this is a bug: if you activate a release trigger, you can hear DOOM moving
+  the floor forever!
+
+- Linetypes that move floors up by Short textures seem to move the floors
+  by 96 (or is it 78?) units if there is no short texture in use. Can anyone
+  confirm the way these work?
+
+
+
+
+
+============================================================================
+UDS lacks:
+
+
+
+
+----------------------------------------------------------------------------
+S.Benner@lancaster.ac.uk (Steve Benner):
+
+Different linetype actions behave differently in multi-sector groupings.
+Mostly multi-sector groupings behave independently of any grouping. Grouped
+floor movements, for example, will all calculate their movement end points
+irrespective of any other movements that will occur at the same time. There
+are two exceptions to this rule of independance:-
+
+1. Lighting level changes.
+  The linetypes that switch lights to "brightest adjacent" or "dimmest
+adjacent" are sensitive to sector groupings. If you tag more than one
+sector to such a trigger, DOOM will look to find the *lowest numbered
+sector* of the group. It is this sector's neighbours that will be examined
+to determine the light level to switch *all* of the tagged sectors to. This
+explainns why sometimes this action appears to have no effect.
+
+2. Slow crushers
+  Slow crushers calculate their travel independantly if any other crusher
+in a crusher chain, but their downward speed of movement can be affected by
+anything which gets caught in them. Any slowing of one crusher in a chain
+(where by "chain" I mean any crushers moving together operating from one
+trigger) can be passed to any other crusher engaged in downward travel at
+that time. This effect seems to occur at random (unpredicatably, anyway: I
+suspect that nothing is random in DOOM, otherwise LMPs wouldn't work).
+NOTE: I have not checked to see whether this effect only happens amongst
+crushers which are truly linked through their tag numbers, or whether it
+applies to all crushers in motion at any instance: any takers to check that
+out?
+
+
+-------------------------------------------------------------------------
+a13231@mindlink.bc.ca (drake o'brien):
+
+Well, I don't know anything that doesn't come straight out of the UDS by
+Matt Fell.  The procedure in the UDS is a bit hard to follow if you go at
+it linedef by linedef, sector by sector, finding the lowest-numbered
+2-sided linedef whose right side faces each succeeding sector.
+AAAUUUGGGHH.  But you should be able to make rising steps of any shape if
+you follow these rules:
+
+1.  Make sure all stair sectors have same floor texture.
+2.  Flip all perimeter linedefs so the 1st sidedef (right sidedef) faces
+OUT (except when perimeter linedef is 1-sided, of course).
+3.  The remaining linedefs separate the rising stairs.  Flip all these so
+the 2nd sidedefs face in the direction you want the stairs to rise.
+
+Simple as that.
+If you follow these rules then you follow the rules of the UDS.  Well, I
+don't pretend to be exhaustive, I might have missed an item meantioned in
+the UDS.  But rules 2 & 3 cover the UDS on the 'lowest right-sided
+linedef' issue by a simple process of eliminating other possibilities.
+
+
+
+-------------------------------------------------------------------------
+a13231@mindlink.bc.ca (drake o'brien):
+
+My tests have shown that necessary & sufficient conditions for medusa &
+doom-error free textures on a visible normal sidedef of a 2-sided linedef
+are:
+1.  no void columns
+2.  no 2 patches can share a line segment on the x-axis.
+I threw in condition 1 because it has to hold for any texture to be
+doom-error free, because otherwise we get "generate lookup, column
+without a patch" ugliness at startup.  So I would call any texture for
+which these conditions hold 'transparent'.  Condition 2 must necessarily
+hold, even when one of the patches in question is nothing but 100% pure
+cyan.
+
+I have found that in defining a transparent texture, whatever y-offset we
+might set the pointer to a patch at in deutex's texture1.txt file, doom
+will ignore  that value and play the patch as if we had defined the
+y-offset to be 0.  (note:  here I'm talking about the co-ordinates of the
+patch in the texture definition, *not* about the y-offset given the
+texture itself when applied using a level editor)
+
+I have found that when playing a transparent texture on a 2-sided linedef
+doom will tile the texture once and once only.  When no flag is set doom
+will tile each patch in the texture down once from the ceiling.  When the
+below unpegged flag is set doom will tile each *patch* in the texture
+down once from the height given the texture in texture1.txt.  For
+example,
+
+TRANSP    256     128
+*      PATCH1    0      0
+*      PATCH2    64     32
+*      PATCH3    196    64
+
+where patch1.bmp is 64x42, patch2.bmp is 128x32, patch3.bmp is 64x8,
+satisfies the conditions for a transparent texture.  If applied with
+y-offset for the texture set at default 0 and with the lower unpegged
+flag set then all three patches will tile down once and once only from
+128 pixels above the floor.
+
+Now suppose there's no cyan in the bitmaps.  Applied to the normal wall
+of a 1-sided linedef something quite different occurs.  I expected a lot
+of tutti-frutti since there are huge void spaces in the texture
+definition.  But in fact I found that in this case doom tiled each patch
+down from the top of the texture and kept tiling until it hit bottom, and
+of course on a 1-sided linedef doom tiles from ceiling to floor however
+large the space to be filled is.  The tiling over the voids wasn't
+perfect.  There was a 1 pixel line of tutti-frutti between the tiles.
+
+
+-----------------------------------------------------------------------
+B. (Bernd.Kreimeier@nero.uni-bonn.de)
+
+
+I got this info about the Netgame packet structure from Jake Page.
+It has been posted by Antony Suter <antony@werple.apana.org.au>
+on a.g.d. in 1994, who got it from Id.
+
+Remember, Objective C.
+
+
+/*  Note that type unsigned is a 4 byte quantity */
+
+
+typedef struct
+{
+        char            forwardmove;            // *2048 for move
+        char            sidemove;                       // *2048 for move
+        short           angleturn;                      // <<16 for angle delta
+        short           consistancy;            // checks for net game
+        byte            chatchar;
+        byte            buttons;
+} ticcmd_t;
+
+#define BT_ATTACK               1
+#define BT_USE                  2
+#define BT_CHANGE               4                       // if true,
+                                    // the next 3 bits hold weapon num
+#define BT_WEAPONMASK   (8+16+32)
+#define BT_WEAPONSHIFT  3
+
+#define BT_SPECIAL              128                     // game events, not really buttons
+#define BTS_SAVEMASK    (4+8+16)
+#define BTS_SAVESHIFT   2
+#define BT_SPECIALMASK  3
+#define BTS_PAUSE               1                       // pause the game
+#define BTS_SAVEGAME    2                       // save the game at each console
+// savegame slot numbers occupy the second byte of buttons
+
+typedef struct
+{
+        unsigned        checksum;                       // high bit is retransmit request
+        byte            retransmitfrom;         // only valid if NCMD_RETRANSMIT
+        byte            starttic;
+        byte            player, numtics;
+        ticcmd_t        cmds[BACKUPTICS];
+} doomdata_t;
+
+int     NetbufferSize (void)
+{
+        return (int)&( ((doomdata_t *)0)->cmds[netbuffer->numtics] );
+
+}
+
+unsigned NetbufferChecksum (void)
+{
+        unsigned                c;
+        int             i,l;
+
+        c = 0x1234567;
+
+#ifdef NeXT
+        return 0;                       // byte order problems
+#endif
+
+        l = (NetbufferSize () - (int)&(((doomdata_t*)0)->retransmitfrom))/4;
+        for (i=0 ; i<l ; i++)
+                c += ((unsigned *)&netbuffer->retransmitfrom)[i] * (i+1);
+
+        return c & NCMD_CHECKSUM;
+}
+
+
+
+-----------------------------------------------------------------------
+B. (Bernd.Kreimeier@nero.uni-bonn.de)
+
+The following savegame info applies to DOOM 1.2. Perhaps only the
+new shotgun data had been added in the weapons section. Dunno how
+MAPxx vs. ExMx is handled.
+
+
+In 1994, I had a quick check on the offsets in doomsged.pas, which was
+written by Nelson Fernandez Jr. (nelson@netcom.com). I found
+two minor errors, but the offsets he is using are mostly correct:
+
+Each player is described by a record of 276 bytes. Thus DSG
+header size is (4*276) bytes for 4 player netgame. Some header
+information is included only in the first record:
+
+0x00 the savegame name, string (filled with zero if less then 24 byte)
+0x18  version, as "version 102" (missing some upgrades...)
+
+0x28 byte, 0-4, skill
+0x29 byte, 1-3, episode
+0x2a byte, 1-9, level
+
+0x2b    // byte, should be flag for player0, always 1 ?
+0x2c    // byte, player1 flag, 0 or 1
+0x2d    // byte, player2 flag, 0 or 1
+0x2e    // byte, player3 flag, 0 or 1
+
+
+For each player, the following offsets to the base player_num*276
+(player_num = 0,1,2 or 3) I've checked:
+
+0x52  current health, dword, 1-199
+0x56  current armor,  dword,
+
+0x5e  remaining time for PINV, dword
+0x62   dito, PSTR, dword
+0x66  PINS
+0x6a  SUIT
+
+0x6e  PMAP (computer map) dword, 0-1 flag
+
+0x72  PVIS, remaining time again; dword
+0x76  BKEY, dword, 0 or 1
+0x7a  YKEY
+0x7e  RKEY  (haven't checked each key)
+0x82  BSKU
+0x86  YSKU
+0x8a  RSKU
+
+0xae  pistol availability flag, dword, 0 or 1
+0xb2  shotgun
+0xb6  chaingun
+0xba  rocket launcher
+0xbe  plasma rifle
+0xc2  BFG9000
+0xc6  Chainsaw   (all those weren't completely right in doomsged.pas)
+
+??? new shotgun somewhere here ???
+
+0xca current amount of bullets, dword, 0-0xFFFFFFFF
+0xce shells
+0xd2 rockets
+0xd6 cells
+
+0xda current maximum amount of bullets the player may carry
+0xde shells
+0xe2 rockets
+0xe6 cells  (all these are used instead of a backpack flag...)
+
+0xf2 cheat modes, dword, several bits
+                NOCLIP_FLAG                     = 0x01; // idspispopd
+                GOD_FLAG                          = 0x02;       // iddqd
+                SLOW_FLAG                         = 0x04;       // crawl mode, not tested yet
+
+0x10e colorshift, dword, 0-0xFFFFFFFF, known as "Acid" or "Freak" Mode,
+                have seen it (as well as the crawl Mode) with other
+                Savegame edits.  The DOOMSGED author states:
+
+  >>There used to be an AcidWarp function that would let you play while the
+  game cycled colors. I think this may have been a function to be used
+  originally by 24-bit true color cards. I named it AcidWarp because it
+  was phsychedelic!<<
+
+
+Remarks: automap state (map on/off, follow on/off, grid on/off, as
+well as iddt, iddtiddt) aren't in the DSG.
+
+It seems at offset 0x30/0060  there's a timer. Might be
+"Time sucks" counter.  Haven't looked at the time scale,
+which should be identical to power-up expiration.
+DOOMSGED is based on the assumption that  90 minutes
+are equivalent to 0xFFFFFFFF  *or* 0xFFFFFF (dunno which,
+haven't bothered to examine the source that close). I'm not
+convinced.
+
+Offset 0x32 seems to be different for the same map,
+dependend on skill & nomonster == number of things?
+Based on the DSF file size for same map, different skills,
+Matt Fell concluded DOOM uses 151 bytes/thing. Thus there is
+obviously more information here than in the THINGS resource.
+
+Note that angle and position of player aren't within the
+276 bytes record. He's probably treated as any other
+thing in that aspect. Haven't seen current weapon either,
+should be within the first 276 bytes as well.
+
+Offset 0340, perhaps a counter?
+
+
+Not found:
+
+ - doors, switches, elevators, stairs, crushers, light levels
+ - item picked/available
+ - projectiles/teleport fog/respawn fog
+ - current state of thing (animation/damage)
+ - lindefs seen on automap
+ - items/kills gained counter (if any)
+
+
+Failsafe procedure to get rid of the "savegame buffer overflow":
+
+a)  S = Savegame buffer size = 64 KB (?).
+b)    minus NH = 4*267 bytes for 4 player netgame header.
+c)    minus ES = DSG size using an emtpy THING resource
+       (includes required player starts only)
+      plus 276 (single player header)
+d)  (S - NH - ES + 276)/ 151 == NoOf_Things still available.
+e)  Now add at max NoOf_Things things to your map.
+
+Remember the number of things might increase (projectiles, MAP30).
+
+Beware: haven't checked this since 1.2, no warranty :-).
+
+
+
+
+
+
+===========================================================================
+If you've additional remarks, please contact me at
+Bernd.Kreimeier@nero.uni-bonn.de.
+===========================================================================

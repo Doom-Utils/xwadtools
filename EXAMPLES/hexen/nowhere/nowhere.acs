@@ -1,0 +1,57 @@
+#include <hexen/common.acs>
+
+//
+// script 1 initializes the map
+//
+script 1 OPEN
+{
+	// print some greeting
+	print(s:"YOU ARE NOWHERE!");
+
+	// give user a break to look arround
+	delay(const: 35 * 10);
+
+	// another message
+	printbold(s:"AND YOU AIN'T GOING ANYWHERE!");
+}
+
+//
+// script 2, activated by player crossing a trigger line in s0
+//
+script 2 (void)
+{
+	// debugging
+	//print(s:"SCRIPT 2 ACTIVATED");
+
+	// activate the bat spawner with tid 1
+	Thing_Activate(const: 1);
+
+	// wait a bit until the bats fly out and annoy the player
+	delay(const: 35 * 6);
+
+	// now spawn some creatures behind the player, tee hee
+	Thing_Spawn(2, T_ETTIN, 90);
+	// we need to wait a bit, can't spawn another thing as long as
+	// the ettin is blocking the spawn spot
+	delay(const: 35 * 4);
+	Thing_Spawn(2, T_CENTAUR, 90);
+	// again, wait for the centaur to move away from the spawn spot
+	delay(const: 35 * 4);
+	Thing_Spawn(2, T_FIREGARGOYLE, 90);
+}
+
+//
+// script 3, activated by player using the switch in s14
+//
+script 3 (void)
+{
+	// debugging
+	//print(s:"SCRIPT 3 ACTIVATED");
+
+	// activate the fire bull with tid 5
+	Thing_Activate(const: 5);
+
+	// set linespecial of line 1 on the polyobj 1 door, so that it
+	// can be opened
+	setlinespecial(1, 7, 1, 5, 64, 140, 0);
+}

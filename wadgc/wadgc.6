@@ -1,0 +1,244 @@
+.TH wadgc 6 "12 January 2000"
+
+.SH NAME
+wadgc \- a PWAD graphics compiler
+
+.SH SYNOPSIS
+.BR wadgc " [" "\-c \fIpalette\fR" ]
+.I infile outfile
+
+.SH DISCLAIMER
+This program is furnished on an AS IS basis for the fun of it.
+id Software, Raven Software and Activision do not support this program.
+
+.SH DESCRIPTION
+The program takes a text input file and creates a PWAD file
+with any or all of the following entries:
+.LP
+.nf
+Sprites between S_START and S_END entries.
+Floor and ceiling textures between F_START and F_END entries.
+Wall patches between PP_START and PP_END entries, PNAMES, TEXTURE1
+and TEXTURE2 entries.
+Other images in the global namespace.
+.fi
+.LP
+The TEXTURE1/2 and PNAME resources can only fully replace those
+already in an IWAD. Therefore, the original resource data are kept
+and any new patch names and textures are appended to them. Since the
+original data is copyrighted, you'll have to extract it from your
+IWAD file for yourself. Use the utility \fBwadext\fR(6)
+and extract the entries PNAMES, TEXTURE1 and TEXTURE2 as raw data into files
+named "pnames.raw", "texture1.raw" and "texture2.raw", respectively, and
+you're ready to go.
+.LP
+The input file is a plain ASCII text file. The spelling is crucial,
+and everything is case-sensitive. Extra blank lines, spaces and tabs
+are allowed anywhere, though, to increase the readability. Comments
+are allowed and should be preceded with a hash (#). Comments can
+be placed on a line of their own or after a command on the same line.
+Everything from the # to the next end of line is considered a comment
+and ignored.
+.LP
+Input PPM files must be in raw format (P6), not text format (P3). The
+image is color quantized to the used palette when it is read in. If
+you want to be certain about the results, use only appropriate colors when
+you create the image in the first place. The quantization algorithm
+is a raw extensive search for the best fit on a pixel by pixel basis,
+which is quite crude and very slow. If only correct palette colors are used,
+images will be read in about 30 times faster.
+.LP
+Existing textures may be replaced and new ones added. Changing existing
+textures is needed to change the frame animated walls. All replacement
+textures must be listed before any new textures, and they must be in the
+same order as in the original IWAD file.
+.LP
+The input file syntax is as follows:
+.LP
+.I The sprites section:
+.nf
+S_START
+  <spritename> <ppmfilename> @ <x-origin> <y-origin> \\
+	W <width> H <height> X <x-insertion> Y <y-insertion>
+  ...
+S_END
+.fi
+.LP
+x-origin and y-origin define the upper left corner for the sprite image
+within the ppm image. Having several sprites in one input image gives
+a better overview when editing them.
+.LP
+.I The wall patches section:
+.nf
+P_START
+  <patchname> <filename> @ <x-origin> <y-origin> W <width> H <height>
+  ...
+P_END
+.fi
+.LP
+Apart from the lack of an insertion point, this is exactly the same
+format as the sprites section. The insertion point for wall patches
+is always at the middle of the bottom row of pixels.
+The patches will be written between PP_START and PP_END markers.
+New wall patches are just placed on the top level in the PWAD directory.
+Therefore, make sure they do not have the same name as any of the
+existing entries: wall patches, sprites or non-graphic resources.
+Unless you want to replace an existing wall patch, in which case
+you should of course specify the same name as the existing one.
+.LP
+.I The textures section:
+.LP
+.nf
+TEXTURE1_START
+  <texturename> <width> <height> <numpatches>
+    <patchname> <x-offset> <y-offset>
+    <patchname> <x-offset> <y-offset>
+    ...
+  <texturename> <numpatches>
+    <patchname> <x-offset> <y-offset>
+  ...
+TEXTURE1_END
+
+TEXTURE2_START
+  exactly like TEXTURE1 above
+TEXTURE2_END
+.fi
+.LP
+Note that the patches are referred to by name. All the names used must
+be present either in the original PNAMES entry or in the P_START..P_END
+section.
+.LP
+.I The floor/ceiling section:
+.LP
+.nf
+F_START
+F1_START
+  <texturename> <filename> @ <x-origin> <y-origin>
+  ...
+F1_END
+F2_START
+  <texturename> <filename> @ <x-origin> <y-origin>
+  ...
+F2_END
+F_END
+.fi
+.LP
+Apart from the absence of a size specification, this is the same format
+as the wall patch section. The width and height of these textures are
+always 64. Either F1_START..F1_END or F2_START...F2_END may be omitted.
+.LP
+.I The images section:
+.LP
+.nf
+I_START
+  <texturename> <filename>
+  ...
+I_END
+.fi
+.LP
+Insert images which are not part of the patches, flats and sprites namespaces.
+Images will be inserted at origin 0. Great care must be taken with the resource
+name, because this images will go into the global namespace and so could
+replace any resource, even if the type is not an image at all!
+.LP
+Any of the sections S_START...S_END, P_START...P_END,
+TEXTURE1_START...TEXTURE1_END, TEXTURE2_START...TEXTURE2_END,
+F_START...F_END or I_START...I_END may be omitted. The presence of the section
+P_START...P_END automatically generates a PNAMES entry. The
+presence of any of the sections TEXTUREn_START...TEXTUREn_END
+yields a corresponding TEXTUREn entry. The sections must be in the following
+order:
+.nf
+
+	Sprites
+	Patches
+	Textures
+	Flats
+	Images
+.fi
+.LP
+.I Example input file:
+.nf
+# A very simple example input file for WADGC
+S_START # Some dummy sprites
+ TESTSPR1 test.ppm @ 0 0 W 8 H 8 X 4 Y 8 # The first test sprite
+ TESTSPR2 test.ppm @ 8 0 W 8 H 8 X 4 Y 8 # A second test sprite
+S_END
+
+P_START # A few new wall patches
+ TESTPTC1 test.ppm @ 0 8 W 8 H 8
+ TESTPTC2 test.ppm @ 8 8 W 8 H 8
+P_END
+
+TEXTURE1_START # One replacement texture for AASTINKY and one all new
+ AASTINKY 8 16 2
+  TESTPTC1 0 0
+  TESTPTC2 0 8
+ TESTWALL 16 16 4
+  TESTPTC1 0 0
+  TESTPTC2 0 8
+  TESTPTC1 8 0
+  TESTPTC2 8 8
+TEXTURE1_END
+
+F_START # A floor tile
+ F1_START
+  TESTFLR1 test.ppm @ 0 0
+ F1_END
+F_END
+
+I_START # A new title picture
+  TITLEPIC newtitle.ppm
+I_END
+.fi
+
+.SH OPTIONS
+.TP
+\fB\-c\fR \fIpalette\fR
+By default the program uses the Doom palette for the color table lookup.
+With this option another palette can be used, \fIpalette\fR can be \fIdoom\fR,
+\fIheretic\fR, \fIhexen\fR or \fIstrife\fR.
+
+.SH SUPPORTED GAMES
+Doom, Ultimate Doom, Doom][, Final Doom, Heretic, Hexen, Strife.
+.LP
+\fBNote\fR: all original game engines distributed by id Software and Raven
+Software have a bug which prevents them from merging flats and sprites in
+PWAD's with the ones in the IWAD. For producing a PWAD for this original
+engines all flats and sprites contained in the IWAD must be substituted
+in the PWAD. This PWAD cannot be distributed then to others, because it is
+illegal to redistribute the art work included in commercial IWAD's.
+After the sources of the game engines were released by the vendors,
+this problem was fixed in most engines and \fBwadgc\fR produces PWAD's
+containing flats and sprites which work with this bug fixed engines.
+For the original engines other programs are needed, which are able to merge
+the flats and sprites from an IWAD into a PWAD on the end users system.
+
+.SH SEE ALSO
+The Unofficial Doom Specs by Matthew S Fell.
+.br
+.BR mkqmap "(6), "
+.BR ppmquant "(1), "
+.BR swantbls "(6), "
+.BR deutex "(6), "
+.BR xwadtools (6)
+
+.SH BUGS/ERRORS
+If sprites and flats are inserted into a PWAD with this program, the PWAD
+will play with bug fixed game engines only. Merging of data in the flats
+and sprites namespaces is not implemented in original Doom][ and Doom95.
+.LP
+If one wants to replace animated textures all single textures which
+make up the animation must be replaced, and it's not possible to
+change the numbers of frames for the animation. For customizing
+texture animations see \fBswantbls\fR(6).
+.LP
+The used color quantization algorithm is not very good, use \fBmkqmap\fR(6)
+and \fBppmquant\fR(1) to quantize colors, before processing graphic files
+which don't use colors from the game palettes only.
+
+.SH AUTHOR
+Stefan Gustavson (stefang@isy.liu.se)
+.LP
+Endian support modified, support for Heretic, Hexen and Strife added and
+various other improvements by Udo Munk (um@compuserve.com).

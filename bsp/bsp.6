@@ -1,0 +1,131 @@
+.TH bsp 6 "23 January 2000"
+
+.SH NAME
+bsp \- node builder for WAD files
+
+.SH SYNOPSIS
+.BR bsp " [" options "]"
+.I input.wad
+.RB [ "-o \fIoutput.wad\fR" ]
+
+.SH DISCLAIMER
+This program is furnished on an AS IS basis for the fun of it.
+id Software does not support this program.
+
+.SH DESCRIPTION
+.B Bsp
+builds the node and blockmap resources for a level map in
+a WAD file. Level maps created with level editors and level
+compilers won't run without this resources build by a node builder.
+The program supports multilevel building, means it automatically
+builds the resources for all levels found in the input WAD file.
+.LP
+If the program is used without the \fB\-o\fR option it will create an output
+WAD file with the name tmp.wad.
+.TP
+.B Doom BSP generation informations
+If a linedef has a sector tag >= 900, then it is treated as precious
+and will not be split unless absolutely necessary. This is good to use
+around borders of deep water, invisible stairs, etc.
+.br
+Furthermore, just for a grin, if the linedef's tag is 999, then the
+sidedef's x-offset set an angle adjustment in degrees to be
+applied \-\- you can look straight at a wall, but it might come
+right at you on both sides and "stretch".
+.br
+.B Bsp
+supports HOM-free transparent doors. Simply make the sector
+referenced by the doortracks have a sector tag of >= 900. No need
+to remember sector numbers and type them in on a command line \-\-
+just use any sector tag >= 900 to permanently mark the sector
+special.
+.br
+This node builder has some options which try to avoid visplane overflows
+in WAD's. This problem with the original Doom engine can't really be fixed
+with a node builder, the engine used static arrays for many internal data
+structures. If it ran out of free memory for this structures, it continued
+to draw the level, but it looked odd. This problem is solved in most
+engines nowadays, by using dynamic allocated data structures and so
+this engine bug will never happen. If \fBbsp\fR is used to build a WAD
+for bug fixed engines, one can ignore all this options and use the defaults.
+.LP
+If the above sounds all greek to you, the Unofficial Doom Spec document
+explains the theory behind \fBB\fRinary \fBS\fRpace \fBP\fRartitions,
+or BSP for short.
+
+.SH OPTIONS
+.TP
+\fB\-factor\fR \fIn\fR
+Changes the cost assigned to seg splits. Factor \fIn\fR can be any positive
+integer, and the larger the factor, the more costly seg splits are.
+A factor of 17 is the default and behaves just like earlier versions
+of
+.B bsp.
+Changing the factor can sometimes prevent visplane overflows in WAD's.
+But then again, some WAD's have just too many visplane overflows,
+experiment with the \-factor option before giving up.
+.TP
+.B \-vp
+Attempts to prevent visplane overflows without loss of detail. Using the
+option causes node line picker to choose node lines in a way that is
+empirically known to reduce or eliminate visplane overflows.
+.TP
+.B \-vpwarn
+Warns about potential visplane overflows.
+.TP
+.B \-vpmark
+Marks visplane overflows with player starts. It's a good idea to write
+to a separate output file when using this option! One can use an editor
+then, play each alternate player start, and see if each one causes
+visplane overflows, and then remove it. Usually no-clipping must be used,
+at least to step out of walls, since it inserts player starts without
+regards to collisions, and it uses walls as a basis for visplane
+calculation.
+.TP
+\fB\-thold\fR \fIn\fR
+Threshold for visplane overflow. May be used to report
+more potential visplane overflows if the \-vpwarn or \-vpmark options
+estimate too few visplanes. Default threshold \fIn\fR is 128.
+.TP
+.B \-noreject
+Does not clobber already existing reject map.
+.TP
+.B \-noprog
+Does not show progress indicator, for usage from GUI's and scripts. The
+progress indicator also isn't shown without this option used, if stderr
+is redirected.
+
+.SH SUPPORTED GAMES
+Doom, Ultimate Doom, Doom][ and Final Doom.
+
+.SH SEE ALSO
+The Unofficial Doom Specs by Matthew S Fell.
+.br
+.BR idbsp "(6), "
+.BR warm "(6), "
+.BR wreject "(6), "
+.BR xwadtools (6)
+
+.SH BUGS/ERRORS
+This program will \fBNOT\fR built a reject map, it will build a zero-ed one,
+where every sector is visible from any other sector, or with the appropriate
+option it won't touch an existing reject map. So if this node builder is used
+the WAD reject resource should be build with other tools.
+
+.SH AUTHOR
+.B Bsp
+was written by Colin Reed and Lee Killough (killough@rsn.hp.com),
+based on the node builder included in DEU5 by Raphael Quinet
+(Raphael.Quinet@eed.ericsson.se).
+.LP
+Linux port was done by Andre Majorel (amajorel@teaser.fr).
+.LP
+Port to other UNIX flavors and some minor modifications by
+Udo Munk (um@compuserve.com).
+.LP
+Big endian support for Solaris SPARC done by Oliver Kraus (olikraus@yahoo.com).
+.LP
+Disabling progress indicator if stderr redirected done by
+Andre Majorel (amajorel@teaser.fr).
+.LP
+Two bug fixes done by Colin Phipps (cph@lxdoom.linuxgames.com).

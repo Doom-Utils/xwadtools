@@ -1,0 +1,123 @@
+                      DMTXLS: DooM TeXtures LiSter v1.1
+                      =================================
+                                July 19, 1995
+
+
+DMTXLS is a command-line utility on Unix and DOS (source code included) to
+generate cross-reference lists of the wall textures and flats used in levels
+in DOOM, DOOM ][, Ultimate DOOM & Heretic, the 3D action games by id Software
+and Raven Software.  The lists include the number of times each texture is
+used, in verbose mode the SideDef/Sector numbers where they are used, and in
+verbose-line mode the LineDefs corresponding to those SideDefs as well.  It's
+a handy little tool for PWAD developers, especially when applying custom
+textures.
+
+It is derived from DMPSMU/DMPSMAP, which is in turn derived from DEU, the
+Doom Editor Utility.
+--
+Frans P. de Vries (FPV) | Snail: de Wilmskamp 83, 7552 GW Hengelo, Netherlands
+Email: fpv@xymph.iaf.nl | Voice: +31 (74) 916 034 | DOOM][+GUS1M == ImMeRsIoN!
+
+
+
+INSTALL
+=======
+
+Installation of the package is straight-forward. Unzip the package (which
+you have probably done already to read this file ;)  preferably recursively
+(default in Info-UNZIP, requires '-d' option to PKUNZIP). Go into the source
+directory and check the Makefile for the C compiler and its flag and include
+definitions. Set CC to your ANSI C compiler, CFLAGS & LDFLAGS as desired and
+if necessary, INCLUDES to your directory with ANSI C header files. If you're
+on a little endian system, leave DEFINES as is, otherwise select the other
+one.  Then type 'make'.
+
+Find a way to copy your DOOM{1,2}.WAD or HERETIC{1}.WAD file to your Unix
+system and copy the shell scripts 'alltxts*.sh' as well as the just 'made'
+executables into the same directory for easy access to the WAD file. And
+presto, you're all set to list those textures galore! :-)
+
+
+NOTES
+=====
+
+All texture names are mapped to uppercase before sorting, because DOOM and
+DOOM ][ occasionally use the names in lower- or mixed case.
+
+Anyone know a more complete list of big/little endian systems?  Please email
+me.  The same goes for ideas for new features and other improvements.
+
+
+CREDITS
+=======
+
+My thanks go to the following people for their work:
+
+- the folks at id and Raven for creating such wonderful games!
+
+- Brendon J. Wyber <b.wyber@csc.canterbury.ac.nz> and Raphaël Quinet
+  <quinet@montefiore.ulg.ac.be> (and everyone working with them) for
+  creating the DEU editor and Per Allansson <c91peral@und.ida.liu.se> and
+  Per Kofod <per@ollie.dnk.hp.com> for porting it to a sane C compiler ;)
+  And: if they hadn't released the source with it, this utility wouldn't
+  exist (or at least not in the same form :-)
+
+- Matt Fell <msfell@aol.com> for the indispensable DOOM Specs, especially
+  for the v1.666 preview!
+
+- Richard Ward <rrward@netcom.com> for beta testing; heck, he practically
+  commissioned me to write this thing! ;-)
+
+- for supplying compilation info for the Makefile:
+  Hans Peter Verne <h.p.verne@kjemi.uio.no> on Ultrix4.3/DECstation
+  Michael J. Salay <salay_mike@ae.ge.com> on HP-UX 9.0/HP710 station
+  Uwe Girlich <girlich@aix520.informatik.uni-leipzig.de> for DJGPP/GO32 help
+
+
+RESTRICTIONS
+============
+
+  The source in the DMTXLS package should not be used to create a utility
+  that can modify the main WAD files; you're better off with DEU v5.21 GCC
+  anyway. It is illegal to use the source in this package to modify the
+  shareware version of DOOM or Heretic.
+
+  If you derive another utility from this package, name it something else
+  and give some credit to the original author(s).
+
+  If you distribute the DMTXLS package, please distribute the original ZIP
+  file unmodified and under the same name.
+
+
+TRADEMARKS
+==========
+
+  DOOM, DOOM ][ and Ultimate DOOM are trademarks of id Software Incorporated.
+  Heretic is a trademark of Raven Software Incorporated.
+
+  DEU is copyrighted by Brendon J. Wyber and Raphaël Quinet.
+
+  DJGPP/GO32 is Copyright (c) DJ Delorie, 24 Kirsten Ave,
+                              Rochester NH 03867-2954
+
+
+COPYLEFT
+========
+
+  DooM TeXtures LiSter utility (DMTXLS)
+  Copyright (C) 1995  Frans P. de Vries, Hengelo, The Netherlands
+
+  This program is free software; you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation; either version 2 of the License, or
+  (at your option) any later version.
+
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+
+  You should have received a copy of the GNU General Public License
+  along with this program; if not, write to the Free Software
+  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+

@@ -1,0 +1,142 @@
+.TH xew 6 "14 January 2000"
+
+.SH NAME
+xew \- examine and extract images and sound from WAD files
+
+.SH SYNOPSIS
+.BR xew " [" \-t "] [" "\-p \fIpcx-file\fR" ]
+.I wad/pwad_file
+
+.SH DISCLAIMER
+This program is furnished on an AS IS basis for the fun of it.
+id Software, Raven Software and Activision do not support this program.
+
+.SH DESCRIPTION
+.B Xew
+is a program to interactively view and export images, and listen and
+export sound effects and music from Doom, Doom][, Heretic, Hexen, Strife or
+any other IWAD/PWAD in the "Doom" format.
+.LP
+The program allows to export WAD entries in this formats:
+.LP
+.nf
+  Sound effects are exported as WAV files.
+  Music entries are exported as MUS files.
+  All images can be exported as PCX and XPM files.
+.fi
+.LP
+.B Xew
+also allows to listen to sound effects and music and it can view
+images with your favorite image viewer. This is accomplished by
+using a configuration file, the syntax is described below.
+For listening to sound effects the program even has a feature for
+reversing the sound sample, to listen to "hidden" messages ;\-)
+
+.SH CONFIGURATION
+.B Xew
+uses a configuration file ~/.ewini with a simple syntax to configure
+external programs to use for viewing images or listen to sound/music.
+This configuration file has the following layout:
+.LP
+.nf
+   ; This is a comment
+   WAV command %s
+   MUS command %s
+   PCX command %s
+.fi
+.LP
+"command" is the program to call for each entry type and "%s" is
+where
+.B Xew
+will insert the filename when invoking "command". The configuration file
+also may include comments, all lines started with a ';' are regarded as
+comments.
+.LP
+The program can't play music files directly, the MUS entries must be
+converted to MIDI format with an external program and played with an
+external MIDI player. So the MUS command should be configure like
+this:
+.LP
+.nf
+  MUS qmus2mid %s tmp.mid -nodisp; xplaymidi tmp.mid; rm tmp.mid
+.fi
+.LP
+After the program was started with a WAD file a listbox will show all
+WAD entry types,
+.B Xew
+is able to handle. The three columns in the listbox are as follows:
+.LP
+.nf
+1: The name of the WAD entry, used as a basis when exporting files.
+2: The type of the entry:
+     flat   : A floor/ceiling texture 64x64 pixels.
+     image  : A raw image (sprites, wall texture patches, etc.)
+     mus    : A music entry.
+     sfx    : A sound effect entry.
+3: The index number of this entry in the WAD file.
+.fi
+.LP
+If you select an entry from the list the image will be shown, or
+the music/sound will be played. A selected entry might be exported
+to a file, the filename will be build from the name of the entry
+and the appropriate extension will be appended. The files are
+created in the current directory.
+.LP
+.B Xew
+does not assume anything at all about the WAD file. It tries to
+determine the type of entry by analysis. Therefore certain WAD
+entries might appear as weird images. As an example in the Doom][ WAD
+one REJECT entry has the same size as a flat. Naturally the image looks
+slightly garbled, because this isn't an image at all.
+
+.SH OPTIONS
+.TP
+\fB-p\fR \fIpcx-file\fR
+If xew is used to examine images and flats a palette file can be used
+in 256 color PCX format. The image size in the file doesn't matter,
+all the programs needs is the palette, to be able to display the
+images with the correct color.
+This option is not needed to view graphics from Doom, Heretic,
+Hexen and Strife PWAD/IWAD files,
+.B xew
+has builtin palettes for those, just select the right one from the
+menu. The default palette used is for Doom.
+.TP
+.B -t
+When xew exports an image resource into a XPM file, it will replace
+color 0 from the palette with the desktop transparent
+color, so that the image can be used for icons. With this option
+pixels with color 0 from the color map will be exported untouched.
+
+.SH SUPPORTED GAMES
+Doom, Ultimate Doom, Doom][, Final Doom, Heretic, Hexen, Strife.
+
+.SH SEE ALSO
+The Unofficial Doom Specs by Matthew S Fell.
+.br
+.BR qmus2mid "(6), "
+.BR playmidi "(1), "
+.BR drvmidi "(1), "
+.BR mplay "(1), "
+.BR vplay "(1), "
+.BR play "(1), "
+.BR wadflat "(6), "
+.BR wadpat "(6), "
+.BR wadsprit "(6), "
+.BR wadtex "(6), "
+.BR xv "(1), "
+.BR xwadtools "(6), "
+.BR yadex (6)
+
+.SH BUGS/ERRORS
+Doesn't work on big endian systems.
+.LP
+The curses/ncurses support is broken, needs to be fixed.
+
+.SH AUTHOR
+Tormod Tjaberg (tormod@sn.no) \- original DOS version.
+.LP
+Hans Peter Verne (hpv@jemi.uio.no) \- UNIX version.
+.LP
+Wrong color palettes fixed and option -t added by
+Udo Munk (um@compuserve.com).

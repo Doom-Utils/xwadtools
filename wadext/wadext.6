@@ -1,0 +1,42 @@
+.TH wadext 6 "13 January 2000"
+
+.SH NAME
+wadext \- extract a directory entry from a WAD file and write it in raw binary format
+
+.SH SYNOPSIS
+.B wadext
+.I wadfile direntry rawfile
+
+.SH DISCLAIMER
+This program is furnished on an AS IS basis for the fun of it.
+id Software, Raven Software and Activision do not support this program.
+
+.SH OPTIONS
+.TP
+.B wadfile
+The name of the input WAD file, can be an IWAD or a PWAD file.
+.TP
+.B direntry
+The name of the directory entry to extract.
+.TP
+.B rawfile
+The name of the output file. The special name "\fB\-\fR" means stdout.
+Writing output on stdout won't give good results on platforms such as
+DOS where stdio treats text files differently from binary files.
+
+.SH SUPPORTED GAMES
+Doom, Ultimate Doom, Doom][, Final Doom, Heretic, Hexen, Strife.
+
+.SH SEE ALSO
+The Unofficial Doom Specs by Matthew S Fell.
+.br
+.BR xwadtools (6)
+
+.SH BUGS/ERRORS
+Writing output to stdout does not work properly on platforms like DOS.
+
+.SH AUTHOR
+Stefan Gustavson (stefang@isy.liu.se)
+.LP
+Endian support modified and output made pipeable by
+Udo Munk (um@compuserve.com).

@@ -1,0 +1,8 @@
+This was the very first Doom PWAD I got done completely under UNIX, after
+I had wadlc and a node builder working and so I wanted to preserve it. At
+the time when I got this working there was no level editor available for
+UNIX, so I wrote the map with the vi text editor. This can be done, but
+it eventually convinced me to get busy writing a level editor for UNIX.
+The level uses stuff only, which is available in Doom and Doom][ and the
+PWAD file plays with both, because it includes E1M1 and MAP01. Have a look
+at the Makefile to see, how building such a PWAD can be automated.

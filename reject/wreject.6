@@ -1,0 +1,69 @@
+.TH wreject 6 "14 September 2000"
+
+.SH NAME
+wreject \- reject resource builder for WAD files
+
+.SH SYNOPSIS
+.B wreject
+.I wadfile mapname threshold
+
+.SH DISCLAIMER
+This program is furnished on an AS IS basis for the fun of it.
+id Software does not support this program.
+
+.SH DESCRIPTION
+.B Wreject
+builds the reject resource in a WAD file post-processed by some WAD
+editor and a node builder. The purpose of the reject resource is to
+speed up PWAD's by reducing the number of line-of-sight calculations
+performed by the game engine. The speed improvement of the game engine
+is significant with a properly build reject resource.
+.P
+The mapname is the name of the map in the WAD file to modify, like
+E1M1 for a Doom map, or MAP01 for a Doom][ map.
+.B Wreject
+will only process one map at a time, for WAD files with multiple
+maps in them, the program must be run multiple times for each map.
+.P
+Threshold is the distance at which sectors are rejected. This value
+varies from WAD to WAD, so start by using 600 and see if the game engine
+speeds up, if not decrease the value and try again. If monsters are
+hanging around and don't seem to see the player, the threshold is
+to small, try a larger value.
+
+.SH "ENVIRONMENT"
+.TP
+.B DEBUG_DEVICE
+If this environment variable is set to a file some debug output
+will be written into this file.
+
+.SH SUPPORTED GAMES
+Doom, Ultimate Doom, Doom][, Final Doom, Heretic.
+
+.SH SEE ALSO
+The Unofficial Doom Specs by Matthew S Fell.
+.br
+.BR bsp "(6), "
+.BR idbsp "(6), "
+.BR warm "(6), "
+.BR xwadtools (6)
+
+.SH BUGS/ERRORS
+The reject map will not be build based on line of sight calculations,
+instead it uses the distance between two sectors to reject them. This
+might be wrong if the used threshold value was to small. Monsters in
+maps with the REJECT resource build with this program might stand in
+front of the player and won't react because of this.
+.LP
+Originally the name of the program was reject, but this name is used
+on various UNIX's already for very different things, so it was renamed
+to wreject.
+
+.SH AUTHOR
+.B Wreject
+was written by L. M. Witek (lee@trousers.demon.co.uk).
+.LP
+The program was modified to ANSI C++/Cfront, ported to various UNIX's, Cygwin
+tools for Win9x/NT and DJGPP for DOS by Udo Munk (um@compuserve.com).
+.LP
+Big endian support added by Oliver Kraus (olikraus@yahoo.com).

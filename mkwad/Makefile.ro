@@ -1,0 +1,46 @@
+# Project:   mkwad
+
+
+# Toolflags:
+CCflags = -c -depend !Depend -I^.include.,C: -throwback -DRISCOS
+C++flags = -c -depend !Depend -IC: -throwback
+Linkflags = -aif -c++ -o $@
+ObjAsmflags = -throwback -NoCache -depend !Depend
+CMHGflags = 
+LibFileflags = -c -o $@
+Squeezeflags = -o $@
+PCflags = -c -depend !Depend -throwback -IP:
+JFPatchflags = -depend !Depend -throwback -out $@
+Bas2Txtflags = -j -b -o $@ -i 
+Basic2Cflags = -t -o $@ -4 -i 
+MakeDllflags = -o $@
+DiffFlags = -NCw
+LinkDllflags = $(linkflags)
+
+
+# Final targets:
+LibDoom:MkWad: @.mkwad
+        squeeze @.mkwad LibDoom:MkWad
+@.mkwad:   @.^.lib.o.libwad @.o.mkwad C:o.stubs 
+        link $(linkflags) @.^.lib.o.libwad @.o.mkwad C:o.stubs 
+
+
+# User-editable dependencies:
+diffs:        @.diffs.mkwad
+clean:
+        X wipe @.o.* ~C~VF
+        X Wipe @.diffs.* ~C~VF
+
+# Static dependencies:
+@.o.mkwad:   @.c.mkwad
+        cc $(ccflags) -o @.o.mkwad @.c.mkwad 
+@.diffs.mkwad: @.c.mkwad
+        -diff $(diffflags) @.c-orig.mkwad @.c.mkwad > @.diffs.mkwad
+
+# Dynamic dependencies:
+o.mkwad:	c.mkwad
+o.mkwad:	^.include.h.unixlike
+o.mkwad:	^.include.h.endian
+o.mkwad:	^.include.h.wad
+o.mkwad:	^.include.h.lump_dir
+o.mkwad:	^.include.h.lump_copy

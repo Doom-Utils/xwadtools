@@ -1,0 +1,62 @@
+The file multigen.txt is the original state table from ID Software for
+Doom and Doom][. The multigen program will use this file as input to
+compile info.c and info.h for Doom engines. Instead of hacking info.c
+and info.h use the multigen compiler to change game behavior!
+
+If you are using multigen for other Doom ports than XDoom:
+==========================================================
+The object flag was enlarged from int to long, so that the translucency flag
+I use in XDoom doesn't interfere with the multiplayer flags anymore, which
+are used to render the player sprites with different colormaps. So
+translucency is conflict free and we have more spare bits in the object flag,
+to be used for new special effects in the future.
+
+If you are using multigen together with another Doom engine than XDoom,
+this modification doesn't require any modification in the game engine,
+as long as the muliplayer bits in the flag are masked out correctly.
+In the original distributed sources this is done correct, if you didn't
+modify this code then you'll be fine.
+-----------------------------------------------------------------------------
+In original Doom sources in file r_things.c the number of sprites is calculated
+with this code:
+
+void R_InitSpriteDefs(char **namelist) 
+{ 
+    char	**check;
+    int		i;
+    int		l;
+    int		frame;
+    int		rotation;
+    int		start;
+    int		end;
+    int		patched;
+
+    // count the number of sprite names
+    check = namelist;
+    while (*check != NULL)
+	check++;
+
+    numsprites = check-namelist;
+....
+
+This code is buggy, because multigen puts the number of sprites into the
+enum spritenum_t as last entry and the namelist DOESN'T has a NULL entry
+as last one. This original code works by random on some systems, not so
+on others, depends on how the compiler arranges the data in memory.
+
+So fix this broken code in r_things.c appropriate:
+
+void R_InitSpriteDefs(char **namelist) 
+{ 
+    int		i;
+    int		l;
+    int		frame;
+    int		rotation;
+    int		start;
+    int		end;
+    int		patched;
+
+    // set the number of sprite names
+    numsprites = NUMSPRITES;
+....
+-----------------------------------------------------------------------------

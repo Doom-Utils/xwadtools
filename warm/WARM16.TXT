@@ -1,0 +1,272 @@
+                       WAD Auxiliary Resource Manipulator
+      Version 1.6 of January 1996 by Robert Fenske, Jr (rfenske@swri.edu)
+        Ported to OS/2 by Mark K. Mathews (mmathews@genesis.nred.ma.us)
+
+			Summary of features
+			-------------------
+
+		o About the fastest NODES/SSECTORS/SEGS builder on the planet
+		o About the fastest packed BLOCKMAP builder on the planet
+		o Fully automatic REJECT resource builder
+		o Manual REJECT special effect manipulation
+		o Works with all levels in DOOM, DOOM II, Ultimate DOOM,
+		  HERETIC, and HEXEN WAD files
+		o Has various utility function options, including
+			merging WADs and levels
+			extracting resources
+			substituting resources
+			randomizing things
+			rename resources
+			packing/unpacking WADs
+			merging raw data into WADs
+		o Full source code
+		o Compiles and runs under these operating systems:
+			MS-DOS, OS/2, SunOS 4.1.x, Solaris 2.x,
+			Linux, FreeBSD, HP-UX, VMS (ooh ahh), Windows/NT
+
+			General description
+			-------------------
+
+	This is release 1.6 of my WAD Auxiliary Resource Manipulator, or
+WARM and is an update of my previous 1.5 release of December 1995.  There are
+quite a number of changes between these releases (see below).
+	This package consists of the following fifteen files:
+		WARM16.TXT		This text file
+		DMGLOBAL.I		The include file
+		WARM.C			\
+		WADIO.C			  \
+		NODES.C			    WARM C sources
+		BLOCKMAP.C		  /
+		REJECT.C		/
+		WARM.EXE		MS-DOS executable
+		WARMOS2.EXE		OS/2 executable
+		MAKEFILE.DOS		MS-DOS GCC makefile
+		MAKEFILE.OS2		OS/2 C/Set++ makefile
+		MAKEFILE.UNX		various Unix flavors makefile
+		MAKEFILE.COM		VMS build script
+		WARMOS2.DEF		OS/2 auxiliary file
+		EMU387			ix86 floating point emulation library
+
+	WARM's main purpose is to build the NODES, SSECTORS, SEGS, BLOCKMAP,
+and REJECT resources from the basic resources that compose a level.
+	Executing the program with no command line arguments will display help
+regarding the command line.  Note that there are several optional functions
+available that are unrelated to the reject, nodes, or blockmap creation.
+Hopefully most have an obvious function, but I'm not going to bother to
+exlain any of them.  These functions are in this program because I did not
+want to mess with more than one program to get all the functionality I wanted.
+Note that some of the functions (dmit and rand) are not fully implemented
+with respect to HERETIC and HEXEN.
+	To use this program under MS-DOS on a computer without a math
+coprocessor requires using the EMU387 floating point math emulation library.
+The environment variable GO32 must be set as "SET GO32=emu <dir>\EMU387"
+where <dir> is the directory in which you have the EMU387 file located.
+Alternatively, the source code can be compiled with a compiler that supports
+software floating point.
+	The CR/LF pairs in the source code should (must) be converted to LF
+before building WARM on a Unix system.	Porting this code to any system I
+haven't already tried should be straightforward.  If the target system is
+big-endian, the BIG_ENDIAN define will have to be modified appropriately
+in WADIO.C.
+	Any comments, etc about WARM can be directed to rfenske@swri.edu.  If
+you do find any WAD file that WARM does not process correctly, please let
+me know about it.
+
+			Acknowledgements
+			----------------
+
+Mark Mathews (mmathews@genesis.nred.ma.us)
+	Ported the code to OS/2 and performed extensive testing for the
+	1.1 release and prodded me enough to make me finish it and provided
+	helpful suggestions for later releases.
+
+Matt Fell (MSFell@aol.com)
+	His DOOM Specs provided the BLOCKMAP generation optimization methods.
+
+Jason Hoffoss (hoffo002@gold.tc.unm.edu)
+	The author of DMAPEDIT came up with the packed BLOCKMAP idea.
+
+Bernd Kreimeier (Bernd.Kreimeier@nero.uni-bonn.de)
+	Came up with the idea of not creating segs (during node generation)
+for those lines that do not affect the display in any way.
+
+Marc Rousseau (mroussea@pictel.com)
+	The author of Zennode by making a good, fast node builder inspired
+me to make WARM v1.6 as fast as it is.
+
+	DOOM is a trademark of id Software, inc.  HERETIC and HEXEN are
+trademarks of Raven Software and id Software, inc.
+
+			HEXEN WAD Identification
+			------------------------
+
+	DOOM and HERETIC WAD files are identical in structure so WARM does
+not need to distinguish between them for reading/writing purposes.  However,
+HEXEN WAD files have a different structure for the THINGS and LINEDEFS and
+have an additional BEHAVIOR resource.  Since a HEXEN level must have a
+BEHAVIOR resource, WARM simply checks to see if a BEHAVIOR resource is in
+the WAD file.  If it is there, then it is marked as a HEXEN WAD.
+
+			BSP Generation Smarts
+			---------------------
+
+	Some lines in a level do not affect the display in any way; these
+lines are those that have no floor nor ceiling texture/height changes on
+either side of them and do not have a textures on them.  So visually, you can
+not tell there is a line present while playing the game.  Thus there is no
+reason for these lines to be considered during node generation.  Doing this
+will create fewer NODES, SSECTORS, and SEGS (thus a smaller and faster WAD).
+There is an option to disable this feature since most special effects require
+that these non-visual lines be present in the SEGS list.
+	There are two options that can be given to the node builder, the
+"a" option and the "m" option.  The "a" option stands for "use all SEGS" and
+the "m" option stands for "multiple sectors/subsector".  The "a" option
+controls the processing described in the preceeding paragraph.  This option
+usually must be present to make special effects like transparent platforms,
+lifts, etc. work.  This is because all the SEGS must be present in the SEGS
+list to properly fool the game's graphics engine into producing the intended
+display.  The "m" option controls whether SSECTORS can be created from more
+than one sector (i.e. from SEGS attached to different SECTORS).  Normally
+SSECTORS are only created from SEGS from the same sector and so this option
+is off by default.  Currently, the only time that I know of that this option
+is needed is for transparent doors.  Note, however that the "m" option will
+destroy some special effects, so the "m" option can be made to apply to
+specified sectors only if both special effects and transparent doors are
+present in the WAD.  To specify sectors use "m(#[,#...])" (i.e., a list of
+sector numbers enclosed in parentheses).  "m()" is equivalent to "m" which
+applies to all sectors.
+
+			HEXEN BSP Requirements
+			----------------------
+
+	HEXEN WAD files can contain extended objects called polyobjects.
+These objects, such as doors that open away from the player require that the
+area containing the polyobjects not be split by any partition line created
+during the BSP generation.  WARM currently has no mechanism to recognize these
+objects and build the BSP tree around them.  If a WAD doesn't work, try
+building the BSP tree with the -n=a option.  If it still doesn't work, then
+you'll have to change the WAD.  Typically, the sector containing a polyobject
+should be a simple convex sector (like a rectangle) so there is a good chance
+the node builder will use just one subsector for the sector.
+
+			Packed Level Data
+			-----------------
+
+	The resource data that forms a typical level can have a significant
+amount of redundant and unused data.  The unused data consist of unused
+SIDEDEFS, VERTEXES, and SECTORS that are not referenced by any of the other
+resources and do not contribute to the level that a player sees.  Unused
+data is more prevalent in older WADs; most WAD editors now automatically
+remove unused data before the level data is saved.  WARM currently does not
+attempt to remove unused level data.  The redundant data consists of redundant
+VERTEXES and SIDEDEFS entries.  Removing redundant SIDEDEFS entries can
+significantly reduce the size of the level data.  The drawback to removing
+duplicate SIDEDEFS is that it can make further editing of the level difficult,
+especially if LINEDEFS and/or SIDEDEFS have to be deleted.  Thus any packed
+level should be unpacked if further major editing is required.  Lastly, the
+level's BLOCKMAP is packed (see below).
+
+			Packed BLOCKMAP
+			---------------
+
+	Each block in the BLOCKMAP represents a 128x128 region of the map
+area.  Many of these regions will be empty, i.e. no LINEDEFS exist in these
+regions.  A normal BLOCKMAP will have a separate entry for each of these empty
+regions.  However, doing so is unnecessary.  A single entry in the BLOCKMAP
+can represent all of the empty blocks.  Having such a single entry can
+typically reduce the size of the BLOCKMAP by 1/4.
+
+			REJECT generation algorithm
+			---------------------------
+
+	Since I have not seen any other program that does fully automatic
+REJECT generation, I give an explanation of what the builder does in the
+following paragraphs.
+	The algorithm for generating the REJECT resource is given in the source
+code.  Basically, it is built from strictly line of sight determinations
+between all sector pairs.  For each sector pair, a check is made as to whether
+any one-sided lines block the view of a chosen two-sided line from each sector.
+I.e., if one-sided lines block the views of all two-sided lines of one sector
+from all the two-sided lines of the other sector, then the sector pair is
+deemed not in sight of each other.  Otherwise, the sector pair can see each
+other (obviously).  However, the method used is not perfect and will not catch
+all instances of line-of-sight.
+	For each pair of test points, all potentially blocking one-sided lines
+must be checked.  To avoid having to check all the one-sided lines of each
+level, the BLOCKMAP is used to greatly limit the search.  Since the BLOCKMAP
+is a record of which lines are in each 128x128 block of the map, and since it
+is fairly easy to compute which blocks are between a pair of test points, the
+BLOCKMAP provides a ready list of only those one-sided lines that are
+potentially in the way of line of sight.  Even with this method, the process
+is still computationally expensive; for large levels the REJECT computation
+takes far longer than the nodes generation.  The program does have an option
+to produce just a zeroed REJECT resource, so the possibly lengthy computation
+time can be avoided.
+
+			Version History
+			---------------
+
+1.6  January 1996	o Fifth released version
+			o Processing of WADs with multiple levels much faster
+			o Faster node generator
+			o Fixed mutually exclusive problem with substitute,
+			  extract, and merge functions
+			o Minor improvements to emstat function
+			o Pack function does not pack sides on lines with tags
+			o New "m" node building option in place of "u" option
+			o Enhanced way of specifying specific levels in a
+			  WAD with -e#m# and -map##
+			o Fixed byte swapping routine for big-endian systems
+			  (broken in v1.5)
+			o Added merge raw function
+
+1.5  December 1995	o Fourth released version
+			o Added support for HEXEN WADs
+			o Significantly faster node generator
+			o Fixed problem with directory function
+			o Fixed problem with rename function (couldn't rename
+			  more than one resource at a time)
+			o Fixed problem with extract function
+			o Fixed -map## option (broken in v1.4)
+			o Fixed problem with merge function
+
+1.4  May      1995	o Third released version
+			o Fixed split SEGS offset problem in node generator
+			o Removed redundant vertex creation in node generator
+			o Optimized node partition line computation so node
+			  generator is now faster
+			o Node generator now ignores certain lines when
+			  creating node tree; added option list to -n to
+			  enable/disable this action
+			o Improvements to the emstat() routine
+			o Added negation ability and sector # wildcarding in
+			  reject exception specification; removed -x option
+			  and moved exception list to -r
+			o Added pack and unpack functions
+			o Better command line help
+			o Added quiet output option
+
+1.3  April    1995	o Second released version
+			o Implemented packed blockmap
+			o Added unique sector method to node generator
+			o Reject generator is faster
+			o Improvements to the dmit() routine
+			o Improvements to the emstat() routine
+			o Added rename function
+			o Fixed memory usage bug in node generator (only
+			  affected Linux executable)
+			o Tested under FreeBSD, HP-UX, VMS, and Windows/NT
+
+1.2  February 1995	o Never released
+			o Experimental optimizations that didn't really speed
+			  anything up
+
+1.1  January  1995	o First released version, compiled for MS-DOS, OS/2,
+			  SunOS, Solaris, Linux
+			o Fixed obscure bugs in the nodes, blockmap, and reject
+			  generation routines
+			o Added Deathmatch v2.0 option to dmit() routine
+
+1.0  August   1994	o Never released, update of original VNB program
+			o Compiled for MS-DOS and SunOS
+			o Includes automatic reject builder

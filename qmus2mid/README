@@ -1,0 +1,34 @@
+
+This README covers the unix version of qmus2mid. 
+
+QMUS2MID is a program for converting MUS-files to MIDI files.
+It is originally written by Sebastien Bacquet (bacquet@iie.cnam.fr) 
+for DOS (gcc), and has been ported to Unix by Hans Peter Verne 
+(hpv@kjemi.uio.no).  The command line syntax is somewhat simplified 
+in the unix-version, but the versions are otherwise identical.
+
+Qmus2mid is tested on i386-linux, dec-alpha-osf1 and dec-mips-ultrix, 
+and of course MSDOS (the DOS executable hung the machine when I tried 
+it :-). Currently, the program does not work on Big-Endian machines. 
+
+To compile, do
+
+  gcc -O3 -Wall -Wstrict-prototypes -ansi -pedantic -o qmus2mid qmus2mid.c
+
+or simply
+
+  cc -o qmus2mid qmus2mid.c
+
+and drop the binary in a suitable directory, such as /usr/local/bin/. 
+Put the man-page qmus2mid.1 in a corresponding man directory, such as
+/usr/local/man/man1/.  Don't forget to read it!
+
+You can still compile it under dos, you would then probably want to
+#define MSDOG  somewhere (gcc -DMSDOG qmus2mid.c should do), to include
+the features in the DOS-version.
+
+QMUS2MID is (C) 1995,96 Sebastien Bacquet, and is released under the 
+GNU General Public License, see the file COPYING for details.
+
+--
+hpv

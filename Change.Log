@@ -1,0 +1,1188 @@
+* general
+  - modified makefiles so that vanilla UNIX make can be used. everything
+    other than deutex/deusf now can be build with vanilla UNIX make.
+  - documentation work here and there.
+
+* idbsp
+  - fixed a bug in makefile.
+
+* slige
+  - fixed some warnings.
+
+* reject
+  - fixed the broken comments, use plain C++ style comments so that
+    C++ compilers like cfront won't get confused.
+  - still included another copy of the GPL, removed, is in doc directory.
+  - fixed manual page.
+
+* wadgc
+  - changed prototypes from K&R to ANSI style and fixed compiler warnings.
+  - reformatted whole source.
+  - fixed some NULL pointer problems.
+  - information output was incomplete, fixed.
+
+* toolstest
+  - overworked test.sh a bit.
+
+* tkwadcad
+  - consistency checking message boxes weren't unmapped because of
+    missing 'update idletasks', fixed.
+  - bit 13 of linedef flags now is used in XDoom to block line of sight.
+  - added the new XDoom linedefs 271, 272 for sky property transfer.
+  - added the new XDoom linedef 242 for two level sectors.
+  - the linedef consistency checker now accepts all Boom generalized
+    linedefs, if map is for XDoom.
+  - added the new XDoom linedefs 223, 224, 225, 226 for friction and
+    wind/current property transfer.
+  - added the new XDoom 5001/5002 thingies, wind/current.
+  - added hotkeys to show/hide things, vertices and line arrowheads.
+  - modified options so that editor comes up not showing vertices
+    and line arrows, faster and one might want to look at the map only
+    and not edit it.
+  - added a menu to set the zoom factor, so that one won't have to step
+    through all scales. made it tear-off menu too, so that it can be placed
+    as toolbox besides the editor main window.
+  - added -title to tear-off menus, so that a default title like "tearoff1"
+    won't be used.
+  - added a menu to set the grid size, so that one won't have to step
+    through all sizes. made it tear-off menu too, so that it can be placed
+    as toolbox besides the editor main window.
+  - added skill to the engine options, so that a map can be tested in all
+    skills right from the editor.
+
+* trigcalc:
+  - tool by Jim Flynn added to calculate generalized triggers, no dialogs for
+    those yet in yadex or tkwadcad.
+  - wrote manual page.
+
+Sun Jul 23 22:14:13 2000 <um@compuserve.com>
+
+* tkwadcad
+  - added all the new linedefs for XDoom.
+  - fixed linedefs for Doom/Doom2.
+  - modified the script to run lxdoom in /usr/local/games, newer releases
+    get installed there.
+
+Tue Jun 27 10:59:43 2000	<um@compuserve.com>
+
+* slige
+  - integrated build 485, includes big endian fixes from Oliver Kraus.
+
+* wreject
+  - merged with big endian fixes from Oliver Kraus
+
+* waddwd
+  - merged with big endian fixes from Oliver Kraus
+
+* wadps
+  - merged with big endian fixes from Oliver Kraus
+
+* tkwadcad
+  - added new linedefs for XDoom
+
+* lib and include
+  - added big endian swap functions from Oliver Kraus
+
+* general
+  - Oliver Kraus wrote a testbed which automates testing of
+    the node builders and level map compilers/decompilers, is
+    included.
+
+Sun Mar  5 20:05:13 2000	<um@compuserve.com>
+
+* slige
+  - integrated build 474, includes big endian fixes from Oliver Kraus.
+  - added config file support to the example shell scripts.
+
+* deutex
+  - new release 4.4.0 integrated.
+
+* warm
+  - fixed a big endian bug reported by Oliver Kraus.
+
+* tkwadcad
+  - modified hotkey for building nodes from ctrl-c to ctrl-b, so that we
+    have ctrl-c free for copy/paste functions.
+  - set lib directory dependend on platform for UNIX and Windows.
+  - added some generic engine option to options menu, engine shell wrappers
+    adjusted appropriate too.
+  - added new linedefs for XDoom/XDoomPlus.
+  - under Windows texture names in the wall texture picker dialog weren't
+    fully readable, somehow the grid manager calculates the necessary
+    width of a listbox wrong under Windows. Made it wide enough so that
+    texture names are readable under Windows too.
+  - if user nuked linedef type dialogs program puked, fixed this bug.
+  - also added cancel button to linedef type dialogs, more consistent.
+  - same for sector type dialog, puked if nuked, fixed and cancel button
+    added.
+  - same for Hexen style linedef activation flag, puked if dialog nuked,
+    fixed and cancel button added.
+  - the project local texture list file wasn't read if path used, fixed.
+  - the project local textures weren't displayed if path used, fixed.
+  - implemented copy/paste of thing properties.
+  - implemented copy/paste of line/sidedef properties
+  - implemented find next unused tid for Hexen style maps.
+  - made the pipes non-blocking, gives faster response in the log widgets.
+  - display map modified status with Y/N instead of using the 1/0 flag.
+
+* lswad
+  - Andre Majorel added support to list contents of multiple WAD files.
+
+* wadpatch
+  - renamed to wadpat as requested by Andre Majorel. A program wadpatch
+    is in the works, which will do something different.
+
+* wadsprit
+  - documented and kinda worked arround a problem under Windows, some
+    sprites include \ in their name and that is used as path separator.
+
+* wadps
+  - fixed a bug reported by Oliver Kraus.
+
+* general
+  - documentation work, integrated updated manual pages from Andre
+    Majorel with more cross references and automatically build
+    manual page for xwadtools.
+  - minor fix for the Windows/Cygwin 'man' command.
+
+Sun Dec  5 21:07:24 1999	<um@compuserve.com>
+
+* deutex
+  - new release 4.2.0
+
+* tkwadcad
+  - added new linedefs for XDoom to linedefs.lst configuration file.
+  - reordered sections in linedef files for Doom, Doom2 and XDoom.
+  - corrected several thing height/radius in the things.lst files
+    for Doom, Doom][, XDoom and XDoomPlus.
+
+* bsp
+  - fixed more EGCS warnings.
+  - merged with the features and bugfixes of bsp included in Yadex.
+  - raised version number to 4.0, this definitely is not bsp23x anymore
+    and there is a 3.0 release without sources floating arround.
+
+* acc
+  - for loops working now.
+
+* lib
+  - integrated Andre's my_getopt, better for portability because we
+    don't have to depend on a getopt in libc anymore.
+
+* multigen
+  - added documentation about the broken code in original Doom sources
+    for number of sprites calculation. Not multigen needs to be fixed,
+    but the broken code in r_things.c.
+
+* listacs
+  - new tool to disassemble ACS object code, written by Randy Heit.
+
+* dm2au
+  - new tool written by Sam Lantinga to extract sfx data from WAD's as
+    Sun Ulaw audio format, suitable for cat >/dev/audio.
+
+* general
+  - better copyright text for sources I wrote.
+  - removed the multiple copies of GNU license, one copy is left
+    in doc directory, go read there.
+  - overworked all manual pages, they format better now with V7 formatters.
+
+Mon Nov  1 22:32:12 1999	<um@compuserve.com>
+
+* raw2ppm
+  Andre Majorel has hacked this program, so that it can handle graphics
+  from the Alpha Doom releases.
+
+* deutex
+  - new release 4.0.3, fixes some minor problem.
+
+* tkwadcad:
+  - made thing editor look a bit better and added label for thing id.
+
+* bsp
+  - fixed EGCS warnings.
+
+* dmpsmu
+  - fixed EGCS warnings.
+
+* xew
+  - fixed EGCS warnings.
+
+* acc
+  - tried to fix broken for loops, still not working correct, but at
+    least compiler doesn't get stuck anymore.
+
+* library
+  The palette.c file now includes the palettes from Alpha Doom releases,
+  extracted by Andre Majorel. Right now only raw2ppm uses this palettes,
+  but other tools could be improved to make use of them too, if needed.
+
+* various
+  - forgot to create man1 directory in the Windows makefile, fixed.
+  - several other modifications in makefiles.
+
+Mon Sep 27 04:54:25 1999	<um@compuserve.com>
+
+* general
+  Most tools are big endian fixed and tested now, thanks to
+  Oliver Kraus (olikraus@yahoo.com).
+
+* wadtex
+  - can decompile textures now build from some patches in the PWAD and some
+    in the IWAD.
+
+* slige
+  - integrated new build 464, has a config file and some other improvements.
+  - also is big endian fixed, thanks to Oliver Kraus.
+
+* tkwadcad
+  - the documentation is lagging much behind the code, worked a bit on it
+    to catch up.
+
+* wadldc
+  - bug fix from Oliver Kraus for big endian.
+
+* deutex/deusf
+  - new, integrated release 4.0.2 from Andre Majorel.
+
+* lib
+  - print file name which open_wad() can't open.
+
+* various
+  - copy manual pages under Windows to c:\man\man6 with 'make install'.
+  - added cawf to support directory, is faster than awf, but more picky.
+  - wrote man command for Windows/Cygwin.
+
+Mon Aug 16 05:54:43 1999	<um@compuserve.com>
+
+* acc
+  - commented out byte order options, use BIGEND define from Makefile
+    and compile program using the correct byte order for the host. Also
+    fixed all makefiles using the byte order option in xwadtools and
+    xdoom.
+  - don't use .o as default extension for object files, use .aco.
+  - implemented #include <...> and #include "..." properly, so that
+    it is not necessary anymore, to have the game includes in the
+    PWAD project directory. Fixed the include files for Hexen and
+    XDoom appropriate and modified the Makefiles for Hexen and
+    XDoomPlus to use the improved acc.
+  - didn't compile with DJGPP under DOS, fixed and tested a bit too.
+  - updated manual page.
+
+* tkwadcad
+  - added special activation "use and passthrough" to line special list
+    for XDoomPlus/ZDoom.
+  - overworked thing editor dialog. now it allows to enter a thing type
+    too, not just selection from the list. this allows to enter things
+    not defined in the thing list. also it won't fail on unknown things
+    anymore, the listbox has a new entry UNKNOWN, which is handled special.
+  - same for sector type selection, added UNKNOWN to the listbox, which
+    is handled special.
+  - also linedef type selection has an entry UNKNOWN now, which is handled
+    special.
+  - for XDoomPlus and ZDoom added the block everything flag to the linedef
+    flags.
+  - the linedef type picker dialog showed Doom style informations for the
+    linedef types, also for maps in Hexen format. This is fixed, wrote
+    new dialog and support functions for Hexen style maps.
+  - for that the function reading in linedef.lst also needed to be modified
+    to be game type aware, so that it handles the different arguments
+    correct.
+  - added support for local sprite textures, sprites can be merged in from
+    PWAD's with all Boom like corrected Doom engines. Filename can either
+    be local and then the sprite name, or the thing can be assigned a
+    file different from the sprite name in ~/.textures. The .textures file
+    got sections now, for the various different graphic resources.
+  - added support for local flat textures, those can be merged in from PWAD's
+    too with most Doom engines.
+  - added option -debug for Windows to show the console for debugging.
+  - sort the engines list.
+  - fixed the help texts for Windows, fixed system fonts don't work, use
+    Courier for the texts.
+  - moved GUI stuff to the end of the source, so that GUI comes up after
+    options were checked.
+  - moved selection for node builder and WAD engine into cascade menus
+    of option menu, dialogs for both removed.
+  - added option "Show Things", which allows to display things or not.
+    helps a lot in packed areas on the map and vertices often are overlaid
+    with things and one couldn't get at them, without moving the thing.
+    Now one can...
+  - added option "Show Vertices", similar to show things. Also this draws
+    vertices on top of everything, helpfull to get at vertices in packed
+    areas.
+  - added options "Show Arrows", which allows to display lines with
+    arrow head and without.
+  - more different colors for lines to show trigger lines.
+  - added button to goto player1 start in toolbox.
+
+* wadgc
+  - modified so that sprites are written between S_START and S_END markers,
+    all bug fixed engines can handle this.
+  - now with flats, sprites and textures used in some PWAD's the problems
+    are sorted out. Updated manual page so that it is correct with regards
+    to what has been tested.
+
+* idbsp
+  - overworked the whole sources, reformatted and Objective-C and other
+    uninteresting fragments removed for better readability.
+  - added support to read map files in Doom format directly.
+  - added support to read map files in Hexen format directly.
+  - added option to suppress splitting of lines.
+  - added option for quiet processing.
+  - added option to insert BEHAVIOR resource into Hexen style WAD's.
+  - renamed wad_dwd to waddwd, easier to type etc.
+  - overworked the manual pages.
+  - overworked all Makefiles in xwadtools and xdoom for usage with the new
+    idbsp. For maps in extended Hexen format two Makefiles are provided now,
+    one for node building with warm, one for idbsp.
+
+* warm
+  - fixed some warnings about possible ambiguous else's, newer EGCS releases
+    are more picky about this.
+
+* reject
+  - fixed a few remaining warnings about signed/unsigned comparisons.
+  - fixed further so that is also compiles with Cfront C++ compiler, tested
+    with Cfront 3.0.2 on a OpenServer5 system.
+  - some minor modifications of manual page.
+
+* slige
+  - modified slidbsp.sh to use the MAP format instead of DWD format.
+    Faster processing and probably will avoid problems too.
+  - some minor modifications of manual page.
+
+* examples
+  - worked a bit on compland.wad and threw out that yuckie Doom plants. I
+    used good looking plants from another Doom2 PWAD instead, where the
+    author allows usage of his textures. Also made a marble texture rendered
+    with povray and used it for a well. The outdoor areas in this level
+    look much nicer now, but more essential, the example shows how to add
+    sprites and flats to a PWAD for bug fixed engines. Tested if the PWAD
+    plays with original Doom][ and Doom95 if merged with DeuSF, works OK.
+
+Tue Jul 20 16:35:39 1999	<um@compuserve.com>
+
+* slige
+  replaced release 426 with new release 449.
+
+* wadldc
+  - Added support for Hexen, also works with ZDoom PWAD's.
+  - Added new option -g <game>, so that it can write the game type into
+    LEVEL_START. If this option is not used assume Doom2. Manual page updated.
+
+* wadlc
+  - Raised size of the arrays for things, linedefs... to the max possible
+    sizes.
+  - Fixed warning from GNU C/EGCS.
+  - Added support for Hexen, also works with ZDoom PWAD's.
+  - Documented additional Hexen map format in manual page.
+  - Read in and ignore new game type field in LEVEL_START, updated manual page.
+
+* tkwadcad
+  - added selection widget to select type of map.
+  - use the new third argument in LEVEL_START now, to differ between
+    standard Doom maps and extended Hexen maps.
+  - modified things map read routine to differ between standard Doom maps and
+    extended Hexen maps.
+  - modified editor internal representation of things to the Hexen extended
+    format and adjusted all code appropriate. now the editor displays things
+    at the correct location in Hexen and ZDoom maps, nice.
+  - ZDoom and Hexen maps are populated with things we have no clue about yet.
+    the routine trying to display thing images was not prepared for the
+    situation and barfed, fixed it.
+  - modified linedef read routine too, for reading both map format types,
+    internal data representation for linedefs always will be extended format.
+  - modified map write routines, so that both map format types can be written.
+  - modified the scripts mkflatlst and mktexlst to include the filename of
+    the texture in the list. with that done the editor now can show a texture,
+    which is in a file with the filename != texturename. Modified the local
+    project texture files for compland.wad and all PWAD examples included in
+    XDoom appropriate.
+  - Added Hexen to the supported games, created flats and texture lists
+    from hexen.wad. Typed in sectors and things lists from Hexen Specs.
+  - Thing colors in Hexen maps were all wrong, because the routine deciding
+    the color was hardcoded for Doom things. Modified, it uses the thing
+    class now from things.lst. That didn't work great with Hexen, because
+    the game type was set to Doom or Doom2 by the read routine. Added another
+    field to LEVEL_START, which must be the game the map is for. If the
+    field is missing assume Doom2.
+  - Added game type field to all example maps here and in XDoom.
+  - The default textures and thing for inserting stuff into a map was all
+    setup for Doom. That caused problems with Hexen maps of course. Now
+    proper initialization of the defaults is done, based on the game.
+  - Typed in linedef list from Hexen Specs. Tested sector, linedef and
+    thing list with reference checker on various decompiled Hexen maps,
+    lists seem to be OK so far.
+  - Show texture image now too in the image info widget, user customizable
+    with checkbutton.
+  - Modified thing editor dialog, so that is can edit extended Hexen maps too.
+  - The background color for the image canvases was setup for the Doom
+    transparent color. Hexen uses another color, so configure background
+    color for the canvases dependend on the game.
+  - Modified the teleport exit class in things.lst for Doom, Doom2 and XDoom
+    to class player. So they will show with player color things in the editor,
+    same as for Hexen. Documentation modified too.
+  - Modified line editor dialog, so that it can edit extended Hexen maps too.
+  - fixed the problem with running maps from the current directory,
+    when a cd in the engine scripts is necessary, to change directory
+    to the one with the engine it self. this was never necessary with
+    XDoom, it runs from any directory, but it is not the case with
+    lxdoom and Linux Hexen. Also the file select box now works better,
+    because it never just cointains "." as the current directory, but
+    the full pathname.
+  - similar problem with make, did only work from current directory.
+    tkwadcad now passes the directory with the WAD to the make script,
+    so that this script can cd to there and run make.
+  - added a prefered WAD engine to the cadconf() array, different for
+    Doom and Hexen. Now, when game is selected the run script automatically
+    will be set to the prefered engine. Means, it won't try to play
+    a Hexen map with XDoom anymore, it uses Linux Hexen now.
+  - forgot to set the selection in the new line special select dialog for
+    Hexen, fixed.
+  - for Doom a callback on a traced variable made sure, that the angle of
+    things is in 45 degree steps. this can't be done for Hexen anymore,
+    the angle field is abused for the Polyobj id's and so it must be possible
+    to set it to anything between 0 and 255. modified traceing of the callback
+    so that it won't set the angle to 45 degree steps anymore, also not for
+    Doom, odd angles won't hurt.
+  - for Hexen the find sector tag function only needs to walk the sectors
+    to find an unused tag, lines have no tags in Hexen maps.
+  - added XDoomPlus as game, Doom map but in Hexen style format with
+    BEHAVIOR script lump.
+  - Added ZDoom to the engine list and wrote start script for it, works
+    OK under Windows 9x.
+
+* swantbls
+   Tool from Jim Flynn to customize switches, animated flats and textures,
+   originaly written for Boom by TeamTNT.
+   - Integrated into xwadtools.
+   - Ported to UNIX.
+   - Fixed for big endian.
+   - Wrote Makefile and manual page.
+   - Tested it out by including the default tables into a PWAD which hasn't
+     had this resources so far and played that with Lxdoom under Linux.
+     Texture and flat animations still look OK, so I guess it works.
+   - More tests done after adding support for loadable tables to XDoom,
+     see example PWAD's there, seems to work OK.
+
+* acc
+  Hexen "Action Code Script" compiler, or short ACS, copyright by Activision,
+  but free for non profit use.
+  - Wrote Makefile for GNU make.
+  - Integrated into xwadtools.
+  - Fixed all GNU C/EGCS compiler warnings.
+  - Ported to UNIX.
+  - Compiled the included test.acs on various x86 UNIX's and Win 9x and
+    compared the resulting object files with one created with acc for DOS,
+    compiled by Activison with Watcom C. The object files all are identical,
+    so the compiler probably works ok, at least for little endian systems.
+  - Wrote manual page.
+  - Converted the license document from some funny .doc format into plain
+    ASCII text, so that it can be read on any platform.
+
+* lswad
+  - made the assumption that a flat is 4096 bytes large. this is not true
+    for the water flats in hexen.wad, those are larger for some reason, hm.
+    modified so that everything between F_START and F_END with a size > 0
+    is listed as flat when used with option -F.
+
+* wadtxls
+  - fixed the warning from GNU C/EGCS
+
+* idbsp
+  - fixed the warnings from GNU C/EGCS
+  - changed radius for point on side check from 2.0 to 1.5, is supposed to
+    produce better results sometimes.
+
+* wadgc
+  - fixed the warnings from GNU C/EGCS
+
+* reject
+  - fixed wrong order warnings in class declarations from GNU C/EGCS
+
+* dmpsmu
+  - fixed all warnings from GNU C/EGCS
+  - removed string functions and endian support, use those from the
+    library instead.
+
+* include files for library:
+   - added structures for Hexen lumps to wad.h.
+   - added string define for path and extension seperator to sysdep.h
+
+* library:
+   - added function check_lump_name(), used to figure if a lump exists.
+   - added Hexen BEHAVIOR lump to get_map_lump(), so we can get at this
+     one too.
+
+* various:
+   - added Raven and Activision to the DISCLAIMER section of manual pages,
+     many of the tools work with their games too and no one should bother
+     the vendors, if the program won't work correct.
+   - Downloaded Hexen Spec and added it to the doc directory, to be able
+     to understand the differences in the WAD format and ACS scripts.
+     Converted the document from some funny .doc format into plain ASCII text,
+     so that it can be read on any platform.
+   - borrowed animated computer textures from Kurt Kesler's ZDoom PWAD
+     KZDoom1 and included it in compland.wad. This should show how to
+     use animated textures in standard Doom2 PWAD's with this tools.
+   - Found out what warm didn't like in compland.wad and fixed it, warm
+     manual page updated too.
+   - Woho, a Hexen PWAD example... I started to write a Hexen PWAD with
+     this tools, to see if it works, what is missing and so on.
+
+Thu Jun 24 16:55:25 1999	<um@compuserve.com>
+
+* tkwadcad
+  - Linedef files for Doom2 and XDoom had a wrong linedef 85, fixed.
+  - Added all the new linedefs for Boom features implemented into the
+    linedef file for XDoom.
+  - Print the thing type number in the invalid thing type dialog box
+    of the thing checker.
+  - Modified the scripts to build the texture and flats list with,
+    to write the name of the WAD file into the list file, so that
+    one knows where it came from.
+  - Forgot to set the map modified flag, if a thing is rotated with key
+    accelerators, fixed.
+
+* wadpatch
+  - New overworked version from Andre Majorel inserted. This one now can
+    extract a picture from any lump without looking in PNAMES.
+
+* examples
+  - Modified path for doom2.wad in the makefiles to /usr/local/games/xdoom.
+  - Modified makefile for the povray rendered textures, so that it leaves
+    the rendered true color images to have a look at them. Make clean gets
+    rid of them and leaves the quantized images only.
+
+Mon Jun 14 12:55:02 1999	<um@compuserve.com>
+
+* wadgc
+  - Modified so that additional texture patches are written between
+    PP_START and PP_END markers. This is not necessary for the game
+    engines, nor make this tools use of it, but it is a convention
+    used by some other tools.
+  - Finaly I found the bug why sometimes some colors were wrong in
+    imported graphics, while they were correct in the PPM source.
+    strncmp() doesn't do the same than memcmp(), the color compare
+    function didn't work correct, fixed.
+  - Added I_START...I_END section for images in the global namespace
+    like title picture, menu pictures...
+
+* raw2sfx
+  - New tool to convert 8bit 11kHz raw sound data into id's sfx sound
+    format.
+
+* tkwadcad
+  - Added the new linedefs for the comm gadget to xdoom linedef file.
+  - Added the new linedefs for Boom compatible texture scrollers to
+    xdoom linedef file.
+  - Made the object infos a bit more decriptive, was to cryptic probably.
+
+* dmpsmu
+  - Good tool from Frans P. de Vries for printing level maps in Postscript,
+    better than wadps. Also includes another WAD contents analyzer and some
+    more. Program can be compiled under DOS and Windows too, but so far
+    I have not taken the time to integrate it into the DOS and Windows
+    makefiles and try it out.
+
+* wadext
+  - Made output pipeable too.
+
+* examples
+  - The wadgc input file for compland.wad was missing the y offset for
+    the patches in the texture section, doh! Well, offset is 0 so it
+    worked without that I noticed it. Fixed.
+
+Sat Jun  5 12:28:49 1999	<um@compuserve.com>
+
+* tkwadcad
+  - The line length calculation routine returned the length as a float,
+    while other routines expect an integer, fixed.
+  - Modified sliding door linedef to 300, was 200 before which is
+    used by Boom for something else.
+  - Added support for building PWADs with make to the editor. PWADs with
+    graphic and sound resources require usage of a bunch of tools and
+    that nasty work best is done with make. Plain level maps still can
+    be compiled and processed with one of the node builders, same as
+    before.
+  - Added error message if one tries to run a Doom engine from the
+    editor, without any level map loaded.
+  - Made canvases showing images sunken, looks nicer.
+  - Bound key q to the quit function as accelerator.
+  - Added help menu entry. The help functions are implemented in an own
+    package, the main program is pretty huge already and keeps growing.
+    Also the help package uses its own namespace, to avoid global variable
+    conflicts.
+  - Modified thing lists, so that a teleport exit will show the green plasma
+    fog in the thing image canvas.
+  - Bound return key to object properties editor.
+  - Implemented rotation of things with accelerator keys.
+  - The Tk listbox binding is a bit unusual, replaced the default binding for
+    keys Home, End, Prior and Next with a more common functionality. Also the
+    listbox by default doesn't get focus, if one clicks with the pointer into
+    it. This is modified too, the listboxes now should behave more similar to
+    those in other GUI's.
+  - Made the help balloons timer controlled, so that they pop up after one
+    second. This is a lot less annoying and so I added some more help balloons
+    to various dialogs.
+  - The filenames for flats, textures and sprites can be lower case now too.
+  - Added support into the wall texture picker, to handle project local
+    textures in the current directory.
+  - Added counter for the number of sidedefs.
+  - All 16 bits of the linedef flag can be edited now, to support extensions
+    from XDoom and Boom and who knows what else.
+  - Moved the linedefs for laser to 32x, the old 20x values collided with
+    Boom.
+  - Implemented merging of lines, if a vertex connected to two lines is
+    deleted.
+  - Fixed a bug in the line reference checker, it barfed on checking a map
+    with lines but without any sectors.
+  - Completely overworked the engine support to get XDoom separated from
+    Doom][. Is much easier now too to add support for more engines, Boom
+    someday maybe.
+  - Implemented flipping of sidedefs.
+  - Added the linedef for UAC communication gadget to xdoom linedefs.
+  - Worked a bit on the manual.
+
+* idbsp
+  - If the output wad already existed, the program asked if it should
+    overwrite it. Because I use make to build my WAD's and because I
+    don't like such stupid questions from programs, I have deactivated
+    this, it just gets into the way if used from make. If no one
+    complains I'll not add an option for this, because IMHO it's not
+    worth it.
+
+* mkgipal
+  - Modified the color string 'Untitled' to the color index number, is
+    more comfortable to use in the gimp palette dialog than counting
+    rows and columns.
+
+* mkpopal
+  - New tool to make a color include file for povray.
+
+* mkqmap
+  - New tool to make a color quantization map for ppmquant.
+
+* lswad
+  - New version from Andre Majorel inserted, with some new flags to
+    control output better than before.
+
+* wadgc
+  - Modified so that sprites are written between SS_START and S_END
+    markers. With this adding new sprites works and replacing existing
+    sprites might work too.
+
+* wadlc
+  - New version from Andre Majorel inserted, which does support piped
+    input and output too.
+
+* examples
+  - Added some new tunes to compland.wad, I can't hear D_RUNNIN anymore.
+    Also the example shows how to add new music to PWADs with this tools.
+  - Converted Hexen rock textures to the Doom palette with mkqmap and
+    ppmquant.  I redesigned some outside area in compland.wad with this new
+    textures, looks much better now.
+  - Fixed some small glitches in compland.wad, I hadn't noticed before.
+  - Overworked the EXAMPLES directory structure some, to keep the various
+    examples separated.
+  - Worked on povray rendered textures for Doom and included some sources
+    in the examples.
+
+Sat Mar 27 11:12:37 1999	<um@compuserve.com>
+
+* general
+  - Andre Majorel send me the color palette for Strife extraced from that
+    WAD, so I added Strife support to all tools using a color palette.
+    Thanks Andre.
+
+* xew
+  - it uses the Strife palette from the library now and I deleted the
+    included Strife palette. Only an extra palette for Heretic is used
+    by this program now localy, I don't know what this one is for.
+
+* wadpatch
+  - the color palette was used uninitialized, thanks to Jamie Guinan
+    (guinan@bluebutton.com) for the bug report.
+
+* wadtex
+  - crashed on very large textures. Fixed by Andre Majorel, it supports
+    textures up to 1024x256 now and clips larger textures with a warning.
+
+* wadflat
+  - it didn't allow to extract flats from PWADS so far, because PWADS
+    cannot include a F_START label. Modified so that the program accepts
+    FF_START as start label too, which is used by convention with most
+    WAD tools.
+
+Tue Feb 16 12:48:25 1999	<um@compuserve.com>
+
+* general
+  - After installing Linux Heretic and Linux Hexen I realized, that this
+    tools work to some degree with this games too and they could be improved
+    to work fully with all WAD file based games, like Strife, Heretic and
+    Hexen. So I felt that the name 'xdoomtools' is not appropriate for this
+    tools collection anymore and I renamed it to 'xwadtools', which means
+    cross-platform, portable WAD tools.
+  - overworked all manual pages, removed references to XDoom and added
+    new section 'SUPPORTED GAMES' instead.
+
+* slige
+  - integrated new version build 426 from 1999/02/09
+  - with the new -nulls option it is much easier now to build nodes
+    with WARM, because all necessary lump entries for a map are created
+    with this option. So no run through wadldc, wadlc and wadcat necessary
+    anymore. So I modified slwarm.sh to reflect this. The complicated
+    way still is necessary for IDBSP, but that is fine, this way the
+    other tools will be used more and tested more.
+  - updated manual page.
+
+* dmtxls
+  - renamed to wadtxls, it did support Heretic WAD files already.
+  - modified source filenames, comments in sources, makefile, printed
+    texts etc. etc. appropriate too.
+
+* doom_ps
+  - renamed to wadps, it works to some degree with Heretic WADs too.
+  - modified source filenames, comments in sources, makefile, printed
+    texts, etc. etc. appropriate too.
+  - the program made assumptions about length of pathnames, fixed.
+
+* pal2c
+  - new program from scratch, used to extract a color palette from the
+    PLAYPAL resource in an IWAD file.
+
+* library
+  - renamed doompal.c -> palettes.c and added the palettes from hexen.wad
+    and heretic_share.wad extracted with pal2c.
+
+* xew
+  - after importing the correct color palettes into the library I deleted
+    the wrong palettes for Heretic and Hexen from the sources. It uses
+    the correct ones from the library now for this games too.
+  - fixed manual page appropriate too.
+
+* wadtext
+  - added option to select the used color palette, so the program now
+    supports Heretic and Hexen too.
+  - increased the largest possible texture to 256x200, this is the size
+    of the sky textures used in Hexen.
+  - modified manual page appropriate.
+  - renamed to wadtex as suggested by Andre Majorel
+  - fixed all documentation references to the old name
+
+* wadfext
+  - added option to select the used color palette. so that the program
+    now supports Heretic and Hexen too.
+  - modified manual page appropriate.
+  - renamed to wadflat as suggested by Andre Majorel
+  - fixed all documentation references to the old name
+
+* wadgc
+  - added option to select the used color palette, so that the program
+    now supports Heretic and Hexen too.
+  - modified manual page appropriate.
+
+* wadpext
+  - added option to select the used color palette. so that the program
+    now supports Heretic and Hexen too.
+  - modified manual page appropriate.
+  - renamed to wadpatch as suggested by Andre Majorel
+  - fixed all documentation references to the old name
+
+* wadsext
+  - added option to select the used color palette. so that the program
+    now supports Heretic and Hexen too.
+  - modified manual page appropriate.
+  - renamed to wadsprit as suggested by Andre Majorel
+  - fixed all documentation references to the old name
+
+* mkgipal
+  - modified to write the palette to stdout.
+  - modified to support palettes for Doom, Heretic and Hexen.
+  - added manual page.
+  - will be installed from the top level makefile now too.
+
+Thu Feb 11 21:59:47 1999
+
+* tkwadcad
+  - added sector height calculator to the sector editor
+  - added line length calculator to line editor and line object info
+  - added checking of things
+  - improved sector checker, it finds invalid types now
+  - improved linedef checker, it finds invalid types now
+
+* xew
+  - modified to use the Doom color palette from library.
+
+* wadgc
+  - modified to use Doom color palette from library.
+
+* wadfext
+  - included Andre Majorel's bug fix on STEP1 and the -p option.
+
+* wadtext
+  - include Andre Majorel's bug fix that made the first row and column
+    appear pink.
+  - included Andre Majorel's bug fix for handling of patches with negative
+    Y offset.
+  - included Andre Majorel's patches for the new options -p, -m and -M.
+
+* wadpext
+  - added option -p same as Andre did for wad[ft]ext.
+
+* wadsext
+  - added option -p same as Andre did for wad[ft]ext.
+
+* lib
+  - included Andre's Doom color palette.
+  - included Andre's strlcat() routine.
+
+* various
+  - worked over all manual pages to make them more UNIX conformant and
+    made them consistent with all patches applied.
+
+Mon Jan 25 17:33:44 GMT 1999
+
+* Tkwadcad
+  - added a balloon help widget, I keep forgetting what my abbreviations
+    for the linedef flags mean, tee hee.
+  - then added balloons to the linedef flags.
+  - installation is different now, local files for setup and local PWAD
+    resources will be needed soon, wrote new readme and installation hints.
+  - we use defined fonts now, so that font size can be configured by user,
+    added font size configuration to options menu.
+  - implemented change of grid step, bound to keys and from menu.
+  - implemented checkbutton in toolbox for snapping on grid.
+  - implemented snapping of vertices on grid.
+  - implemented snapping of things on grid.
+  - implemented snapping of the prefabs on grid.
+  - fixed bug in 'save as' function if user aborted.
+  - a map filename can be given as argument now, existing or new one.
+  - made some dialogs prettier.
+  - if the texture picker for sectors or sidedefs is called, display the
+    entry in red, so one sees which one is edited.
+  - modified flag wasn't set, if left sidedef was removed or added, fixed.
+  - splitting of lines bound to keyboard too, manual updated.
+  - binding mouse events to entries is not a good idea, it messes up the
+    whole event system. Fixed, provided a button for every entry where
+    the contents can be selected from some list, that got rid of the
+    various problems with event handling.
+  - added the find tag button to the linedef tag entry too.
+  - added help balloons to both find tag buttons, might not be obvious what
+    the buttons do.
+  - disabled X selection in the disabled entries in the wall texture picker,
+    now the selection on the listbox won't get lost anymore.
+  - same for linedef type picker.
+  - it was possible to create zero length lines (both vertices the same),
+    from the menu and with ctrl-l, fixed. Now with the grid snapping it
+    can happen that the vertex snaps to a location, already occupied
+    by a vertex, creating a zero length line again, bummer.
+  - Implemented deletion of vertices, lines and things with delete key, manual
+    updated.
+  - The linedef list file had some bugs and the linedef for scrolling textures
+    was missing, fixed.
+  - Doom does not implement the same linedefs than Doom2, this was wrong.
+    After fixing some bugs in the linedefs list I made a correct one for
+    Doom from it, by removing the linedefs which were introduced with Doom2.
+  - In the things list the ID for the Spider Mastermind was wrong, fixed.
+  - The things list had ID and description so far only, I added height,
+    radius, name of a sprite and class to the list. This will allow to show
+    size boxes for things and the images.
+  - Now changed all functions which deal with the things list to the new
+    list file format.
+  - Added image canvas to the thing editor which shows the sprites, with
+    gamma correction, as for the other images too.
+  - Added the class, height and radius info from the new thing list format
+    into the thing editor.
+  - Added a canvas for showing thing images to the toolbox frame too, can
+    be activated/deactivated with a checkbutton.
+  - Avoided the resizing problem with TK8.0 from Cygnus for Win9x/NT.
+    For some reason the height of the drawing canvas widget is ignored
+    and the window will initially get the height of the screen. Because
+    I set then minimum size of the window to it's intial size, it wasn't
+    possible to shrink the window in height. Avoid this for now by using
+    a fixed minimum window size, if running under any Windows OS.
+  - Switched sectors in info line for linedefs, was right/left instead
+    of left/right, is correct now.
+  - Vertices, lines, sectors and things are written sorted by name now,
+    so that the numbers used in tkwadcad are the same ones, than in tools
+    working on binary WAD data. Helps a great deal with using other tools,
+    a diff between a map and its backup does work now and this is essential
+    for sectors, their order DOES matter.
+  - binding events to tk_optionMenu doesn't work under Windows, only under
+    UNIX. Modified to trace the variable for writing instead, to execute
+    a callback, that works under Windows and UNIX.
+  - implemented flipping of lines.
+  - wrote checking for unused sectors, usable from new Check menu.
+  - wrote function to remove all unused vertices, usable from vertices menu.
+    This gets rid of all the unneeded vertices node builders put into the
+    maps, which is annoying if one edits a map decompiled from a WAD file.
+  - wrote consistency checker for lindef/sidedef references, usable from
+    Check menu.
+  - wrote consistency checker for tags, usable from Check menu.
+  - added support for new thing flags "not cooperative" and "not deathmatch",
+    help ballons too. Those are implemented in XDoom, lxdoom and Boom at least.
+  - corrected the wrong background color for image canvasas, this came from
+    the wrong color palette from xew, now the correct one is used.
+  - added support for new lindef flag "translucent", help balloon too. XDoom
+    only, Boom uses lindefs for this and I don't like it.
+  - added the new linedef types used for lasers in XDoom
+  - protected lindef type and sector type pickers against usage with types
+    undefined in the configuration files. One still can edit the value
+    by hand.
+
+* wadcat
+  - written from scratch, for being able to build slige maps with the
+    idbsp and warm node builders, but this tool was needed anyway, so
+    there.
+  - wrote manual page.
+
+* wadsext
+  - new tool to extract sprite images from WAD files, I needed that for
+    displaying the thing images in tkwadcad.
+  - wrote manual page.
+
+* wadpext
+  - new tool to extract texture patches from WAD files. Not used yet, but
+    now I can start writing a texture editor sometime.
+  - wrote manual page.
+
+* slige
+  - added shell scripts to build ready to run PWAD's with bsp, idbsp
+    and warm. Nice way to test the tools, I sure love slige.
+
+* wadtext
+  - got a new option to write a text file with the texture composition,
+    ready to use with wadgc.
+
+* mkxppal
+  - a little tool to make a .rc file for xpaint with the Doom color
+    palette, so that one can edit PPM images with the correct colors.
+
+* mkgipal
+  - same as above but for gimp.
+
+* xew
+  - I made the assumption that the color palette from this program is
+    correct for Doom, the images looked fine. But not so, the palette
+    was slightly off the real Doom palette :( So images couldn't be
+    used exported with this tool, to import them into PWAD's again.
+    Fixed by using the Doom palette included in wadgc, this one is
+    a correct one, err, I hope ...
+  - Added option -t. If XPM files are exported the program substituted
+    the color 0 from Doom into a transparent color for the desktop. This
+    is great for making desktop icons, but the images can't be used without
+    pain for PWAD files. I added option -t which tells the program to leave
+    all Doom colors alone, when exporting into a XPM file.
+
+* library
+  - yup, wrong color palette was used, the one from xew :( Now using the
+    hopefully correct one from wadgc.
+
+* various
+  - uh oh, forgot a book shelf in the computer lab in the example
+    map compland.map, added. Well, some improvements, go have a
+    look...
+
+Sun Jan 3 17:29:51 1999
+
+* Tkwadcad
+  - allow upper case letters in the Doom engine names, names in the list
+    changed to test that, it was a bug.
+  - added glDoom to the engine selection.
+  - added support for warm node builder.
+  - cursor keys bound to scroll the map in the drawing canvas.
+
+* reject
+  - renamed the C++ sources to .C and tried compiling them with cfront 3.0,
+    no luck yet.
+
+* wadwhat
+  - took the DOS conditionals out, so that options are the same as under UNIX.
+
+* mkwad
+  - usage of response files wasn't documented, manual page modified and
+    put a hint into the usage() function for the program.
+
+* bsp
+  - this progress indicator is littering the logs, added option -noprog to
+    switch it off. Manual page updated appropriate and the build script for
+    tkwadcad modified to use this new option.
+
+* warm
+  - integrated into the collection.
+  - wrote script for tkwadcad to use warm as node builder.
+  - moved macros for byte order support into the sysdep files in the lib.
+  - the quiet option wasn't that quiet, modified a bit so that it won't
+    litter the log in tkwadcad.
+  - wrote manual page.
+
+* slige
+  - added to the collection.
+
+* wadtexext
+  - renamed to wadtext... DOS... sigh.
+
+* wadflatext
+  - renamed to wadfext... DOS... sigh.
+
+* various
+  - various changes here and there in the system dependent stuff for
+    compiling with DJGPP under DOS.
+  - took the awf runs out of the Windows makefile, so that I don't
+    have to maintain this for DOS too.
+  - had to rename some files, violated the 8.3 DOS filenames, sigh.
+  - some bug fixes and changes in the compland.map example.
+
+Sat Dec 19 23:44:05 1998
+
+* Tkwadcad
+  - all shell scripts rewritten into plain old Bourne shell and tested with
+    bash under Cygwin too.
+  - modified so that it can run the scripts under Cygwin now too via bash.
+  - node builder selection uses radiobuttons now, running both after each
+    other didn't work correct anyway, so got rid of this feature.
+  - usage of the reject program integrated if BSP node builder is used.
+  - game engine selectable from options, user configurable too.
+  - added log for running the PWAD from editor.
+
+* reject
+  - modified into ANSI C++, compiles now with GNU C++ 2.7 and 2.8, EGCS,
+    Unixware7 C++ and Cygwin EGCS.
+  - added it into all top level makefiles.
+  - wrote manual page.
+
+* library
+  - all OS dependent string functions now in strfunc.[c/h].
+  - all other OS dependent stuff for endian, file handling... in
+    sysdep.[c/h], that filename endian.h caused problems because
+    it exists on Linux systems under /usr/include and the compiler
+    is to dumb to differ between "endian.h" and <endian.h>.
+
+* various
+  - file INSTALL renamed to INSTALLATION, make install under Windows
+    didn't work anymore. Filenames aren't case sensitive under Windows
+    and I never ever will get used to the crap as it is.
+
+Mon Dec 14 22:49:40 1998
+
+* Various all over the place to get the tools compiled with the Cygwin
+  development system. The changes weren't drastic, this tools are
+  pretty good with emulating an UNIX environment under Windows and I
+  don't want to bore you with minor details. The major problem was that
+  the MS OS's differ between text files and binary files, while UNIX
+  doesn't. So most of the work was to find the open() functions in the
+  sources, which opened files in the wrong mode for Windows. There you
+  go with your CR/LF sh*t Billy, oh well...
+
+* Makefile for Windows written.
+
+* Added awf for formatting the manual pages under Windows. Some UNIX
+  systems come without any roff formatter too, if you are using one
+  and don't wish to port/compile GNU roff on it, well, use awf, is
+  written in awk and should work on any UNIX.
+
+
+Hm, I forgot to put the timestamp in here, too bad...
+
+* Bugfix for Wadext from Alan Curry
+
+Tue Oct 27 13:17:13 1998
+
+* Tkwadcad
+  - bug fixes
+  - added deletion of vertices and lines
+  - always displays current x/y coordinates
+
+* mktran
+  - brightness correction implemented
+
+* Patches for RISCOS from Justin Fletcher integrated.
+
+Sun Sep 20 10:44:36 1998
+
+* Tkwadcad:
+  - bug fixes
+  - did some work on the manual
+  - scrolling canvas without using the scrollbars implemented
+  - dialog to select sector types added
+  - dialog to select linedef types added
+  - things are drawn with different colors now
+  - Splitting of lines implemented
+  - option dialog to select node builder implemented and new compile
+    scripts added
+  - added 'find next unused tag' to sector editor
+  - added support for pre-fabricated rooms, rectangular shape only for now
+  - function added to connect two existing vertices with a new line
+  - support for inserting vertices added
+  - support to connect two existing vertices with a new line added
+* Added idbsp node builder and modified it, so it can handle Doom][ maps too.
+  Wrote a README file and manual pages for the thing, more details in there.
+* The more progress the tools make, the more progress the example level
+  compland.wad makes.
+* Added support for Doom WAD files to wadwhat.
+
+Mon Aug 31 16:51:00 1998
+
+* Tkwadcad:
+  - bug fixes
+  - added script to create the wall texture list from WAD files
+  - wall texture picker shows the textures in the canvas now, if one has them
+    as ppm files, that is (wadtexext)
+  - add/remove things in map
+  - added script to create the flat list from WAD files
+  - sector editor with canvases showing the flat images
+  - started writing user manual, won't be fun to write it all afterwards
+* Added option -T to lswad to generate a wall texture list usable for tkwadcad
+* Added option -F to lswad to generate a flat list usable for tkwadcad
+* Fixed stupid bug in lib function get_lump_by_name()
+* Wrote wadtexext to decompile textures into ppm files
+* Moved Doom palette into lib, is needed by several tools
+* Wrote wadflatext to decompile flats into ppm files
+* Wrote raw2ppm to convert raw graphics extracted with wadext into ppm files.
+* Modified multigen, so that we have conflict free translucent rendering and
+  multiplayer color tables now.
+
+Sat Aug 22 16:21:39 1998
+
+* The example PWAD really sucked. I took the time to align the textures,
+  added more realistic lightning and such. Is just a tiny example, but at
+  least one can do it right.
+* Pre-release of tkwadcad included.
+* Added function to the lib, which finds one of the level map lumps for
+  a specific map.
+* Wrote wadldc, a decompiler which produces map files for level maps from
+  existing WAD files for usage with tkwadcad.
+* Added option -P to lswad to list contents of the PNAMES lump.
+
+Thu Jul 30 17:24:04 1998
+
+* Added wadgc to the collection, wrote manual page.
+* Manual page for xew fixed, no palette file option necessary for
+  Doom, Heretic and Hexen graphics, it has builtin palettes for
+  those.
+* Fixed lswad to use the endian routines, should work on little and
+  big endian systems now. Manual page changed too.
+* Fixed all library routines to use the endian support. This makes
+  mktran working on big endian systems, manual page updated.
+* Fixed mkwad to use the endian routines, should work on little and
+  big endian systems now. Manual page fixed too.
+* Added id Softwares lib functions cmdlib.c and scriplib.c to the
+  library, to be able to build multigen.
+* Added multigen to the collection and integrated it. Made sure the
+  compiled sources are the same then the distributed ones, functionality
+  wise.
+* Fixed manual page for bsp, it doesn't build the reject map, it
+  only includes an empty one into the wad.
+* All manual pages spell corrected.
+
+Sun Jun 21 14:00:02 1998
+
+* Ops, implemented a bug in the endian support routines, fixed.
+* Added support for Doom][ levels to wadlc, manual page updated too.
+
+Sun Jun 21 04:45:39 1998
+
+* Boh, I'm up and running with enough tools now to build WAD files
+  completely under UNIX, so it's about time to add a ChangeLog
+  for the tools collection.

@@ -1,0 +1,37 @@
+Manifest for DMPSMU: DooM PostScript Maps Utility
+=================================================
+
+README		- Compulsory reading ;)
+Manifest	- This file
+COPYING		- The GNU General Public License
+Changes.Log	- Log of changes to the package
+dmpsmu26.txt	- Short distribution blurb
+
+dmpsmu.1	- Manual pages for 'dmpsmu' utility
+dmpsmap.1	- Manual pages for 'dmpsmap' sidekick
+dmps2ul.sh	- Shell script to output part of double page DMPSMU map
+dmps4qd.sh	- Shell script to output part of quadruple page DMPSMU map
+
+allmap.sh	- Shell script to generate all DOOM maps
+allmap2.sh	- Shell script to generate all DOOM ][ maps
+allmaph.sh	- Shell script to generate all Heretic maps
+allmapu.sh	- Shell script to generate the E4 Ultimate DOOM maps
+allsts.sh	- Shell script to list statistics of all DOOM maps
+allsts2.sh	- Shell script to list statistics of all DOOM ][ maps
+allstsh.sh	- Shell script to list statistics of all Heretic maps
+allstsu.sh	- Shell script to list statistics of the E4 Ultimate DOOM maps
+
+source/Makefile		- Unix Makefile for building both programs
+source/dmps.h		- Main DMPSMU and DMPSMAP defines
+source/dmunix.h		- Some UNIX specific things
+source/dmpsmu.c		- Main program routines for interactive utility
+source/dmpsmap.c	- Main program routines for command-line sidekick
+source/wstructs.h	- WAD files data structures
+source/wads.c		- WAD files routines
+source/things.h		- Thing type and class definitions
+source/things.c		- Thing class and size routines
+source/levels.h		- Level data definitions
+source/levels.c		- Level loading and saving routines
+source/print.h		- Print flag definitions
+source/print.c		- Print and Analyze routines
+source/ps.c		- PostScript routines

@@ -1,0 +1,68 @@
+.TH man 1 "8 December 1999"
+
+.SH NAME
+man \- display UNIX style reference manual pages
+
+.SH SYNOPSIS
+.BR man " [" \-w "] [" \-a "] [" \-c "]"
+.BR "" "[" "\-p \fIpager\fR" "]"
+.BR "" "[" "\-r \fIroff\fR" "]"
+.BR "" "[" \fIsection\fR "] " \fItitle\fR
+
+.SH DESCRIPTION
+.B man
+locates and displays the reference manual \fItitle\fR from the designated
+reference \fIsection\fR. If no \fIsection\fR is specified, the whole guide
+is searched for \fItitle\fR and the first occurrence of it is displayed.
+
+.SH OPTIONS
+.TP
+.B \-a
+ALL mode. Display all manual pages with matching \fItitle\fR.
+.TP
+.B \-c
+Invoke \fBbsfilt\fR(1) with the formatted text to filter out
+character formatting. This option is compatible to the original
+UNIX man command, where \fBcol\fR(1) is used, which is missing
+in Cygwin tools as of this writing.
+.TP
+.BR \-p " " \fIpager\fR
+Select paging program \fIpager\fR to display the text. Programs
+like \fBmore\fR(1), \fBpg\fR(1), \fBcat\fR(1) or whatever custom
+pagers are available may be used.
+.br
+The used default pager \fBless\fR(1) may be overridden by setting
+the environment variable \fBPAGER\fR to the name of a suitable
+program. The \fIpager\fR defined with this option overrides
+both of these.
+.TP
+.BR \-r " " \fIroff\fR
+Select \fIroff\fR formatter to format the manual. Programs like
+\fBawf\fR(1), \fBcawf\fR(1) or \fBnroff\fR(1) may be used.
+.br
+The used default formatter \fBawf\fR(1) may be overridden by
+setting the environment variable \fBROFF\fR to the name of a
+suitable program. The \fIroff\fR defined with this option
+overrides both of these.
+.TP
+.B \-w
+Print pathname of found entries only.
+
+.SH ENVIRONMENT VARIABLES
+.TP
+.B PAGER
+Default pager used to display formatted text.
+.TP
+.B ROFF
+Roff formatter used to format manual page.
+
+.SH SEE ALSO
+.BR awf "(1), "
+.BR cawf "(1), "
+.BR bsfilt (1)
+
+.SH BUGS/ERRORS
+None.
+
+.SH AUTHOR
+\fBman\fR was written by Udo Munk (um@compuserve.com)

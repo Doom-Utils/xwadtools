@@ -1,0 +1,80 @@
+.TH wadtex 6 "12 January 2000"
+
+.SH NAME
+wadtex \- extract textures from WAD files into ppm graphic files
+
+.SH SYNOPSIS
+.BR wadtex " [" \-tp ]
+.RB [ \-m " | " \-M ]
+.RB [ "\-c \fIpalette\fR" "] [" "\-i \fIiwadfile\fR" ]
+.I wadfile
+
+.SH DISCLAIMER
+This program is furnished on an AS IS basis for the fun of it.
+id Software, Raven Software and Activision do not support this program.
+
+.SH DESCRIPTION
+The program takes a WAD file (either IWAD or PWAD) as input, and decompiles
+all texture compositions found in the TEXTURE1/2 lumps into ppm graphic
+files.
+.P
+Textures in PWAD files partially build with patches in the PWAD
+can be completed with patches from an IWAD.
+.P
+A texture named \fBFRED\fP would be saved as \fB./textures/fred.ppm\fP.
+If the \fB./textures\fP directory does not already exist, it is created.
+
+.SH OPTIONS
+.TP
+.B \-m
+Don't output a texture if some of its patches are missing.
+By default, a texture is output if and only if at least one of its patches
+is found. \fB\-m\fP and \fB\-M\fP are mutually exclusive.
+.TP
+.B \-M
+Output a texture even if all of its patches are missing.
+By default, a texture is output if and only if at least one of its patches
+is found. \fB\-m\fP and \fB\-M\fP are mutually exclusive.
+.TP
+.B \-t
+Also write the texture composition into a text .wgc file for usage with
+\fBwadgc\fR(6).
+.TP
+.B \-p
+Preserve case. Prevent the name of the graphic and text files to be forced to
+lower case. For example, a texture named \fBFRED\fP would be saved as
+.B ./textures/FRED.ppm
+and
+.B ./textures/FRED.wgc
+.TP
+\fB\-c\fR \fIpalette\fR
+By default the program uses the Doom palette for the color table lookup.
+With this option another palette can be used, \fIpalette\fR can be \fIdoom\fR,
+\fIheretic\fR, \fIhexen\fR or \fIstrife\fR.
+.TP
+\fB\-i\fR \fIiwadfile\fR
+A PWAD file can include partially patches for a texture only and use
+patches from an IWAD to complete this textures. If this option is used
+and a patch is not found in the PWAD, \fIiwadfile\fR will be searched
+for the missing patch, to complete the texture.
+
+.SH SUPPORTED GAMES
+Doom, Ultimate Doom, Doom][, Final Doom, Heretic, Hexen, Strife.
+
+.SH SEE ALSO
+The Unofficial Doom Specs by Matthew S Fell.
+.br
+.BR tkwadcad "(6), "
+.BR wadgc "(6), "
+.BR ppm "(5), "
+.BR xwadtools (6)
+
+.SH BUGS/ERRORS
+Textures are clipped to 1024x256 with a warning.
+
+.SH AUTHOR
+.B wadtex
+was written by Udo Munk (um@compuserve.com).
+.LP
+Various bug fixes and option \-p, \-m and \-M added by
+Andre Majorel <amajorel@teaser.fr>.

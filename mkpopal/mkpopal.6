@@ -1,0 +1,38 @@
+.TH mkpopal 6 "13 January 2000"
+
+.SH NAME
+mkpopal \- make a povray include file with color definitions for WAD file graphic resources
+
+.SH SYNOPSIS
+.BR mkpopal " [" "\-c \fIpalette\fP" ]
+
+.SH DISCLAIMER
+This program is furnished on an AS IS basis for the fun of it.
+id Software, Raven Software and Activision do not support this program.
+
+.SH DESCRIPTION
+The program writes a color definition to stdout, which is suitable
+to be used as an include file for povray, instead of the included
+colors.inc include file.
+
+.SH OPTIONS
+.TP
+\fB\-c\fR \fIpalette\fR
+By default the program generates Doom color defines. With this option another
+palette can be used, \fIpalette\fR can be \fIdoom\fR, \fIheretic\fR,
+\fIhexen\fR or \fIstrife\fR.
+
+.SH SUPPORTED GAMES
+Doom, Ultimate Doom, Doom][, Final Doom, Heretic, Hexen, Strife.
+
+.SH SEE ALSO
+.BR povray "(1), "
+.BR wadgc "(6), "
+.BR xwadtools (6)
+
+.SH BUGS/ERRORS
+None.
+
+.SH AUTHOR
+.B mkpopal
+was written by Udo Munk (um@compuserve.com).

@@ -1,0 +1,64 @@
+.TH wadps 6 "23 June 2000"
+
+.SH NAME
+wadps \- create PostScript maps of WAD levels
+
+.SH SYNOPSIS
+.BR wadps " [" \-o "] [" \-m ]
+.RB [ \-dm "] [" \fIwadfile\fR ]
+.RB [ \fIlevel\fR ]
+
+.SH DISCLAIMER
+This program is furnished on an AS IS basis for the fun of it.
+id Software, Raven Software and Activision do not support this program.
+
+.SH DESCRIPTION
+This program produces PostScript maps of
+levels, extracted from a WAD file. Thick lines represent solid walls on
+the map. Circles represent objects. Arrows represent enemies, the
+direction of the arrow is the direction the creature is facing.
+Gray lines represent secret passages. The PostScript output will be
+written to stdout.
+
+.SH OPTIONS
+.TP
+.B \-o
+Do not display objects.
+.TP
+.B \-m
+Do not display monsters.
+.TP
+.B \-dm
+Display deathmatch items.
+.TP
+.I wadfile
+Selects another WAD file than the default, doom.wad.
+.TP
+.I level
+Select the level, default for Doom 1 WAD files is all levels. For
+selected Doom 1 levels use E1M1 or just 11, etc. For Doom][ levels
+use MAP01, etc.
+
+.SH SUPPORTED GAMES
+Doom, Ultimate Doom, Doom][, Final Doom. Heretic maps will be printed
+too, but the monsters and equipment will be wrong or not printed at all.
+
+.SH SEE ALSO
+.BR dmpsmap "(6), "
+.BR dmpsmu "(6), "
+.BR xwadtools (6)
+
+.SH BUGS/ERRORS
+None.
+
+.SH AUTHOR
+.B wadps
+originally was written by James Bonfield.
+.LP
+Then it was enhanced and ported to DOS by Gerhard Karnik (g.karnik@att.com).
+.LP
+This version then was ported back to UNIX by
+Udo Munk (um@compuserve.com).
+.LP
+A bug fix and big endian support was contributed by
+Oliver Kraus (olikraus@yahoo.com).

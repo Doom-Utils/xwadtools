@@ -1,0 +1,265 @@
+# This is the list of things which can be placed in a Hexen map.
+# The list doesn't need to be in any particular order, tkwadcad
+# will sort it by name.
+#
+# I don't know about height and radius of things in Hexen, so
+# all values just are 0 until I figure them out. Many sprite
+# names are missing, I have no idea what all that stuff is,
+# have to figure it out sometime.
+#
+#ID	Height	Radius	Sprite		Class	Description
+1	0	0	playa1		Player	: Player 1 Start
+2	0	0	playa1		Player	: Player 2 Start
+3	0	0	playa1		Player	: Player 3 Start
+4	0	0	playa1		Player	: Player 4 Start
+11	0	0	magef1		Player	: Deathmatch Start
+14	0	0	tsmka0		Player	: Teleport Spot
+
+10	0	0	wcssa0		Weapon	: Cleric Serpent Staff
+8010	0	0	wfaxa0		Weapon	: Fighter Axe
+53	0	0	wmcsa0		Weapon	: Mage Cone Of Shards
+8009	0	0	wchsa0		Weapon	: Cleric Firestorm
+123	0	0	wfhma0		Weapon	: Fighter Hammer
+8040	0	0	wmlgg0		Weapon	: Mage Lightning
+20	0	0	wch1a0		Weapon	: Cleric part 1 Shaft
+19	0	0	wch2a0		Weapon	: Cleric part 2 Cross
+18	0	0	wch3a0		Weapon	: Cleric part 3 Arc
+16	0	0	wfr1a0		Weapon	: Fighter part 1 Hilt
+13	0	0	wfr2a0		Weapon	: Fighter part 2 Crosspiece
+12	0	0	wfr3a0		Weapon	: Figther part 3 Blade
+23	0	0	wms1a0		Weapon	: Mage part 1 Stick
+22	0	0	wms2a0		Weapon	: Mage part 2 Stub
+21	0	0	wms3a0		Weapon	: Mage part 3 Skull
+
+10110	0	0	artipsbg	Item	: Flechette
+8003	0	0	artibman	Item	: Boost Mana
+8002	0	0	artisped	Item	: Boots Of Speed
+8041	0	0	artibrac	Item	: Bracers
+84	0	0	artiinvu	Item	: Icon Of Defender
+30	0	0	artipork	Item	: Porkelator
+83	0	0	artisoar	Item	: Wings Of Wrath
+32	0	0	artisphl	Item	: Healing Complete (Urn)
+82	0	0	artiptn2	Item	: Healing Hefty (Flask)
+81	0	0	ptn1a0		Item	: Healing Wimpy (Vial)
+10120	0	0	-		Item	: Heal Radius
+8000	0	0	artiblst	Item	: Repulsion
+86	0	0	artisumn	Item	: Dark Servant
+36	0	0	artiatlp	Item	: Chaos Device
+33	0	0	artitrch	Item	: Torch
+10040	0	0	artitelo	Item	: Banishment
+
+8008	0	0	arm4a0		Armor	: Amulet
+8005	0	0	arm1a0		Armor	: Armor
+8007	0	0	arm3a0		Armor	: Helmet
+8006	0	0	arm2a0		Armor	: Shield
+
+114	0	0	bisha1		Monster	: Bishop
+107	0	0	centa1		Monster	: Centaur
+115	0	0	-		Monster	: Centaur Leader
+10101	0	0	-		Monster	: Cleric Boss
+31	0	0	demna1		Monster	: Demon
+8080	0	0	dem2a1		Monster	: Demon 2
+254	0	0	draga1		Monster	: Dragon
+10030	0	0	ettna1		Monster	: Ettin
+10100	0	0	-		Monster	: Fighter Boss
+10060	0	0	fdmna1		Monster	: Fire Imp
+112	0	0	-		Monster	: Fly
+10080	0	0	-		Monster : Heresiarch
+8020	0	0	iceya1		Monster	: Ice Guy
+10200	0	0	korxa1		Monster	: Korax
+10102	0	0	magea1		Monster	: Mage Boss
+121	0	0	ssdva0		Monster	: Serpent
+120	0	0	-		Monster	: Serpent Leader
+34	0	0	wrtha1		Monster	: Wraith
+10011	0	0	-		Monster	: Wraith 2
+
+8032	0	0	-		Key	: Axe Key
+8034	0	0	-		Key	: Castle Key
+8031	0	0	-		Key	: Cave Key
+8035	0	0	-		Key	: Dungeon Key
+8033	0	0	-		Key	: Fire Key
+8200	0	0	-		Key	: Gold Key
+8037	0	0	-		Key	: Rusty Key
+8036	0	0	-		Key	: Silver Key
+8030	0	0	-		Key	: Steel Key
+8039	0	0	-		Key	: Swamp Key
+8038	0	0	-		Key	: Waste Key
+
+122	0	0	man1a0		Ammo	: Mana 1
+124	0	0	man2a0		Ammo	: Mana 2
+8004	0	0	man3a0		Ammo	: Mana Combined
+
+3000	0	0	-		Poly	: PolyObj Anchor
+3001	0	0	-		Poly	: PolyObj Start Spot
+3002	0	0	-		Poly	: PolyObj Start Spot Crush
+
+10225	0	0	abatb1		Effect	: Spawn Bat
+10000	0	0	fogla0		Effect	: Spawn Fog
+10001	0	0	fogma0		Effect	: Spawn Fog A
+10002	0	0	fogsa0		Effect	: Spawn Fog B
+10003	0	0	-		Effect	: Spawn Fog C
+113	0	0	lef1a0		Effect	: Spawn Leaf
+10090	0	0	tspkd0		Effect	: Spike Down
+10091	0	0	tspka0		Effect	: Spike Up
+
+1403	0	0	-		Sound	: Sound Creak
+1408	0	0	-		Sound	: Sound Earth Crack
+1401	0	0	-		Sound	: Sound Heavy
+1407	0	0	-		Sound	: Sound Ice
+1405	0	0	-		Sound	: Sound Lava
+1402	0	0	-		Sound	: Sound Metal
+1409	0	0	-		Sound	: Sound Metal 2
+1404	0	0	-		Sound	: Sound Silent
+1400	0	0	-		Sound	: Sound Stone
+1406	0	0	-		Sound	: Sound Water
+1410	0	0	-		Sound	: Sound Wind
+
+9001	0	0	teleg0		Spot	: Map Spot
+9013	0	0	teleg0		Spot	: Map Spot Gravity
+
+8064	0	0	suita0		Deco	: Armor Suit
+77	0	0	bnr1a0		Deco	: Banner
+8100	0	0	barla0		Deco	: Barrel
+8065	0	0	bblla0		Deco	: Bell
+8066	0	0	canda0		Deco	: Blue Candle
+8061	0	0	-		Deco	: Brass Brazier
+8103	0	0	-		Deco	: Bucket
+119	0	0	-		Deco	: Candle
+8069	0	0	cdrnb0		Deco	: Cauldron
+8070	0	0	cdrna0		Deco	: Cauldron Unlit
+8071	0	0	chnsa0		Deco	: Chain 32
+8072	0	0	chnsb0		Deco	: Chain 64
+8073	0	0	chnsc0		Deco	: Chain Heart
+8074	0	0	chnsd0		Deco	: Chain Large Hook
+8075	0	0	chnse0		Deco	: Chain Small Hook
+8077	0	0	chnsg0		Deco	: Chain Skull
+8076	0	0	chnsf0		Deco	: Chain Spike Ball
+17	0	0	cdlra0		Deco	: Chandelier
+8063	0	0	cdlrd0		Deco	: Chandelier Unlit
+8042	0	0	fbula0		Deco	: Fire Bull
+8043	0	0	fbulh0		Deco	: Fire Bull Unlit
+8060	0	0	-		Deco	: Fire Skull
+118	0	0	-		Deco	: Glitter Bridge
+10503	0	0	-		Deco	: Large Flame Permanent
+10502	0	0	-		Deco	: Large Flame Timed
+10501	0	0	-		Deco	: Small Flame Permanent
+10500	0	0	-		Deco	: Small Flame Timed
+140	0	0	-		Deco	: Teleport Smoke
+116	0	0	-		Deco	: Twined Torch
+117	0	0	-		Deco	: Twined Torch Unlit
+103	0	0	-		Deco	: Vase Pillar
+54	0	0	-		Deco	: Wall Torch Lit
+55	0	0	-		Deco	: Wall Torch Unlit
+5	0	0	-		Deco	: Winged Statue
+6	0	0	rck1a0		Deco	: Rock 1
+7	0	0	rck2a0		Deco	: Rock 2
+9	0	0	rck3a0		Deco	: Rock 3
+15	0	0	rck4a0		Deco	: Rock 4
+41	0	0	-		Deco	: Shroom Large
+42	0	0	-		Deco	: Shroom Small 1
+44	0	0	-		Deco	: Shroom Small 2
+45	0	0	-		Deco	: Shroom Small 3
+52	0	0	slc1a0		Deco	: Stalactite Large
+56	0	0	slc2a0		Deco	: Stalactite Medium
+57	0	0	slc3a0		Deco	: Stalactite Small
+48	0	0	sgmpa0		Deco	: Stalagmite Pillar
+49	0	0	sgm1a0		Deco	: Stalagmite Large
+50	0	0	sgm2a0		Deco	: Stalagmite Medium
+51	0	0	sgm3a0		Deco	: Stalagmite Small
+8062	0	0	trdta0		Deco	: Destructible Tree
+8068	0	0	-		Deco	: Hedge
+8104	0	0	-		Deco	: Shroom Boom
+39	0	0	-		Deco	: Shroom Large 1
+40	0	0	-		Deco	: Shroom Large 2
+46	0	0	-		Deco	: Shroom Small 1
+47	0	0	-		Deco	: Shroom Small 2
+8101	0	0	-		Deco	: Shrub 1
+8102	0	0	-		Deco	: Shrub 2
+29	0	0	-		Deco	: Stump Bare
+28	0	0	-		Deco	: Stump Burned
+24	0	0	-		Deco	: Tree Dead
+25	0	0	-		Deco	: Tree Destructible
+80	0	0	-		Deco	: Tree Gnarled 1
+87	0	0	-		Deco	: Tree Gnarled 2
+78	0	0	-		Deco	: Tree Large 1
+79	0	0	-		Deco	: Tree Large 2
+111	0	0	-		Deco	: Blood Pool
+71	0	0	-		Deco	: Corpse Hanging
+61	0	0	-		Deco	: Corpse Kabob
+108	0	0	-		Deco	: Corpse Lynched
+109	0	0	-		Deco	: Corpse No Heart
+110	0	0	cps6a0		Deco	: Corpse Sitting
+62	0	0	-		Deco	: Corpse Sleeping
+8067	0	0	-		Deco	: Iron Maiden
+65	0	0	-		Deco	: Tombstone Big Cross
+69	0	0	-		Deco	: Tombstone Brian P
+66	0	0	-		Deco	: Tompstone Brian R
+67	0	0	-		Deco	: Tombstone Cross Circle
+63	0	0	-		Deco	: Tompstone RIP
+64	0	0	-		Deco	: Tombstone Shane
+68	0	0	-		Deco	: Tombstone Small Cross
+93	0	0	icm1a0		Deco	: Ice Spike Large
+94	0	0	icm2a0		Deco	: Ice Spike Medium
+95	0	0	icm3a0		Deco	: Ice Spike Small
+89	0	0	ict1a0		Deco	: Icicle Large
+90	0	0	ict2a0		Deco	: Icicle Medium
+91	0	0	ict3a0		Deco	: Icicle Small
+8502	0	0	tst3a0		Deco	: Candle Web
+8509	0	0	-		Deco	: Cleaver Meat
+8508	0	0	-		Deco	: Goblet Silver
+8507	0	0	-		Deco	: Goblet Small
+8505	0	0	-		Deco	: Goblet Spill
+8506	0	0	-		Deco	: Goblet Tall
+8504	0	0	-		Deco	: Large Candle
+8500	0	0	-		Deco	: Large Stein
+104	0	0	pot1a0		Deco	: Pot 1
+105	0	0	pot2a0		Deco	: Pot 2
+106	0	0	pot3a0		Deco	: Pot 3
+100	0	0	rbl1a0		Deco	: Rubble 1
+101	0	0	rbl2a0		Deco	: Rubble 2
+102	0	0	rbl3a0		Deco	: Rubble 3
+8503	0	0	-		Deco	: Small Candle
+8501	0	0	-		Deco	: Small Stein
+8051	0	0	-		Deco	: Gargoyle Bronze Short
+8047	0	0	-		Deco	: Gargoyle Bronze Tall
+8044	0	0	-		Deco	: Gargoyle Corrode
+76	0	0	-		Deco	: Gargoyle Ice Short
+73	0	0	-		Deco	: Gargoyle Ice Tall
+8050	0	0	-		Deco	: Gargoyle Lava Bright Short
+8046	0	0	-		Deco	: Gargoyle Lava Bright Tall
+8049	0	0	-		Deco	: Gargoyle Lava Dark Short
+8045	0	0	-		Deco	: Gargoyle Lava Dark Tall
+74	0	0	-		Deco	: Gargoyle Portal Short
+72	0	0	-		Deco	: Gargoyle Portal Tall
+8052	0	0	-		Deco	: Gargoyle Stl Short
+8048	0	0	-		Deco	: Gargoyle Stl Tall
+88	0	0	logga0		Deco	: Log
+58	0	0	mss1a0		Deco	: Moss 1
+59	0	0	mss2a0		Deco	: Moss 2
+37	0	0	stm1a0		Deco	: Stump 1
+38	0	0	stm2a0		Deco	: Stump 2
+27	0	0	-		Deco	: Tree 1
+26	0	0	-		Deco	: Tree 2
+60	0	0	-		Deco	: Vine
+99	0	0	rkbka0		Deco	: Rock Black
+97	0	0	rkbla0		Deco	: Rock Brown Large
+98	0	0	rkbsa0		Deco	: Rock Brown Small
+9003	0	0	-		Deco	: Big Gem
+9007	0	0	artibok1	Deco	: Book 1
+9008	0	0	artibok2	Deco	: Book 2
+9016	0	0	-		Deco	: C Weapon
+9015	0	0	-		Deco	: F Weapon
+9018	0	0	-		Deco	: Gear
+9019	0	0	-		Deco	: Gear 2
+9020	0	0	-		Deco	: Gear 3
+9021	0	0	-		Deco	: Gear 4
+9006	0	0	-		Deco	: Gem Blue 1
+9010	0	0	-		Deco	: Gem Blue 2
+9005	0	0	-		Deco	: Gem Green 1
+9009	0	0	-		Deco	: Gem Green 2
+9012	0	0	-		Deco	: Gem Pedestal
+9004	0	0	-		Deco	: Gem Red
+9017	0	0	-		Deco	: M Weapon
+9002	0	0	-		Deco	: Skull
+9014	0	0	-		Deco	: Skull 2
+9011	0	0	-		Deco	: Winged Statue No Skull

@@ -1,0 +1,19 @@
+# TkWadCad support file: local textures for this PWAD project
+
+[TEXTURES]
+ROCKSB rocksb.ppm 256 128 1
+ROCKSG rocksg.ppm 256 128 1
+UMMARB1 ummarb1.ppm 256 128 1
+BFALL1 k_a1.ppm 64 128 1
+BFALL2 k_a2.ppm 64 128 1
+BFALL3 k_a3.ppm 64 128 1
+BFALL4 k_a4.ppm 64 128 1
+
+[FLATS]
+UMMARBF1 ummarbf1.ppm
+
+[THINGS]
+37 palmtree
+43 smaltree
+28 tree1
+27 tree2

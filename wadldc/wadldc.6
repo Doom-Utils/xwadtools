@@ -1,0 +1,64 @@
+.TH wadldc 6 "23 January 2000"
+
+.SH NAME
+wadldc \- a WAD level map de-compiler
+
+.SH SYNOPSIS
+.BR wadldc " [" \-v "] [" "\-g \fIgame\fR" ]
+.I mapname wadfile mapfile
+
+.SH DISCLAIMER
+This program is furnished on an AS IS basis for the fun of it.
+id Software, Raven Software and Activision do not support this program.
+
+.SH OPTIONS
+.TP
+.B \-v
+Verbose output of processing.
+.TP
+.BR \-g " \fIgame\fR"
+The name of the game this level map is for. This can be one of \fBDoom\fR,
+\fBDoom2\fR, \fBXDoom\fR \fBXDoomPlus\fR or \fBHexen\fR. The decompiler
+writes the game name into the LEVEL_START marker and this is needed by map
+editors, otherwise the information is ignored. If the option is not used
+.B wadldc
+will write \fBDoom2\fR as the default, which might be all wrong of course.
+.TP
+.I mapname
+The name of the map to decompile. For Doom WAD files this would be
+E1M5 for episode 1 map 5 e.g., and for Doom][ and Hexen WAD files this would
+be MAP02 for the second map e.g.
+.TP
+.I wadfile
+The WAD file from which to decompile a level map.
+.TP
+.I mapfile
+The output map file for usage with
+.B tkwadcad.
+
+.SH DESCRIPTION
+The program takes a IWAD or PWAD input file and decompiles a level map into
+a map file for usage with
+.B tkwadcad.
+The format of the map file is explained in \fBwadlc\fR(6).
+
+.SH SUPPORTED GAMES
+Doom, Ultimate Doom, Doom][, Final Doom, Heretic, Hexen.
+
+.SH SEE ALSO
+The Unofficial Doom Specs by Matthew S Fell.
+.br
+The Official Hexen Technical Specs by Ben Morris.
+.br
+.BR tkwadcad "(6), "
+.BR wadlc "(6), "
+.BR xwadtools (6)
+
+.SH BUGS/ERRORS
+None.
+
+.SH AUTHOR
+.B wadldc
+was written by Udo Munk (um@compuserve.com).
+.LP
+Bug fixed for big endian by Oliver Kraus (olikraus@yahoo.com).

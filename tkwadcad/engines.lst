@@ -1,0 +1,17 @@
+#
+# This is the list of WAD engines which can be executed directly from
+# tkwadcad. The list needs a name for the menu and a Bourne shell script
+# which runs the selected engine. Use the provided examples to add
+# your favorite engine to the editor, if it's not included already.
+# Or just throw out the engines you don't use, they will not be in the
+# option menu then.
+#
+XDoom wadrun_xdoom.sh
+lxdoom wadrun_lxdoom.sh
+Doom wadrun_doom.sh
+Doom2 wadrun_doom2.sh
+Doom95 wadrun_doom95.sh
+Boom wadrun_boom.sh
+glDoom wadrun_gldoom.sh
+lxhexen wadrun_lxhexen.sh
+ZDoom wadrun_zdoom.sh

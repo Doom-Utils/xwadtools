@@ -1,0 +1,578 @@
+.TH acc 6 "12 January 2000"
+
+.SH NAME
+acc \- Action Code Script compiler for WAD files
+
+.SH SYNOPSIS
+.BR acc " [" "\-d" "[" "\fIfile\fP" "]] \fIsource\fP[\fI.acs\fR] [\fIobject\fR[\fI.aco\fR]]
+
+.SH DISCLAIMER
+This program is furnished on an AS IS basis for the fun of it.
+id Software, Raven Software and Activision do not support this program.
+
+.SH DESCRIPTION
+Each Hexen map has an "Action Code Script", ACS for short, that contains the
+scripts specific to that map. The compiler takes such an ACS source file and
+produces an object file that is the last lump in the Hexen map WAD (BEHAVIOR).
+So the contents of the output file can be directly used as the BEHAVIOR lump
+of the map it's used with.
+
+.SH OPTIONS
+.TP
+.BR \-d "[" \fIfile\fR "]"
+Output debugging informations, to stdout if \fIfile\fR isn't used.
+.TP
+.BI source
+The ACS source file, the extension .acs is optional and will be appended
+to the filename, if a filename without extension is used.
+.TP
+.BI object
+The produced object file with optional extension .aco. If no object filename is
+given as argument, the generated output will be written into a file with
+the name \fIsource\fR.aco.
+
+.SH LANGUAGE SPECIFICATION
+Map scripts should start with #include <game/common.acs>, which is just:
+.LP
+.nf
+    #include <game/specials.acs>
+    #include <game/defs.acs>
+    #include "wvars.acs"
+.fi
+.LP
+game should be something like hexen or xdoom, depending on the game
+this scripts were written for. Include files of the form <...> are
+included from /usr/local/lib/acc (c:\\lib\\acc under DOS and Windows) 
+and include files of the form "..." are included from the current directory.
+For the later one also could specify an absolute pathname for the file to be
+included.
+.LP
+The file specials.acs defines all the general specials. These are used
+within scripts just like function calls. The file defs.acs defines a
+bunch of constants that are used by scripts. The file wvars.acs defines
+all world variables. It needs to be included by all maps, so they use
+consistent indexing. This file must be provided in the current directory
+for a project, because common.acs includes it that way, see above.
+
+.TP
+.I Variables
+There is only one data type in ACS, a 4 byte integer. The keyword \fBint\fR
+is used to declare an integer variable. Also the keyword \fBstr\fR may be
+used, it is synonymous with \fBint\fR. It is used to indicate that the
+variable will be used as a string. The compiler doesn't use string pointers,
+it uses string handles, which just are integers. The maximal possible size
+of a string variable is 256 characters. The number of string variables is
+unlimited, the number of integer variables is limited dependent on scope,
+see below.
+.br
+.nf
+
+Examples:
+
+  str mystring;
+  str texture, sound;
+
+  int myint;
+  int i, tid;
+
+.fi
+.br
+\fBNote\fR: assigning values to variables cannot be done in its declaration; the
+value must be given in a different expression.
+.TP
+.I Variables Scope
+The scope of a variable is one of \fIWorld\-scope\fR, \fIMap\-scope\fR or
+\fIScript\-scope\fR.
+.RS
+.TP
+.I World\-scope:
+World\-scope variables are global, and can be accessed in any map. Hexen
+maintains 64 permanent globals, numbered 0\-63. Before a global variable
+can be used it must be assigned a name, like this:
+.nf
+
+  world int 5:Grunt;
+
+.fi
+This tells Hexen to reference world global variable number 5, whenever
+it encounters the name "Grunt".
+.TP
+.I Map\-scope:
+Map\-scope variables are local to the current map. They must be declared
+outside of any script code, but without the world keyword. These variables
+can't be accessed in any other map. Hexen maintains 32 Map\-scope variables
+per map.
+.TP
+.I Script\-scope:
+Script\-scope variables are local to the current script, they can't be
+accessed by any other script or map. Hexen maintains 10 Script\-scope
+variables. For scripts with n arguments the first n Script\-scope
+variables are used to pass the arguments and so reduce the number of
+Script\-variables usable in this script.
+.TP
+.I Examples:
+.nf
+  world int 3:DungeonAccess;    // World-scope
+  int mapTimer;                 // Map-scope
+
+  script 4 (void)
+  {
+    int x, y;                   // Script-scope
+    ...
+  }
+
+.fi
+.br
+\fBNote\fR: World\-scope variables should be declared in an include file
+to insure consistent indexing in all maps!
+.RE
+.TP
+.I Keywords
+The following identifiers are reserved for use as keywords in the ACS language,
+and may not be used otherwise:
+.nf
+
+    break
+    case
+    const
+    continue
+    default
+    define
+    do
+    else
+    for
+    goto
+    if
+    include
+    int
+    open
+    print
+    printbold
+    restart
+    script
+    special
+    str
+    suspend
+    switch
+    terminate
+    until
+    void
+    while
+    world
+.fi
+.TP
+.I Comments
+Comments are ignored by the script compiler.
+.br
+.nf
+
+    /*
+        This is a comment.
+    */
+
+    int a; // And this is a comment.
+.fi
+.TP
+.I World variable definitions
+Declares a global variable.
+.nf
+
+world int <constant-expression> : <identifier> ;
+world int <constant-expression> : <identifier> , ... ;
+
+.fi
+All identifiers may have a maximal length of 32 characters.
+.TP
+.I Map variable definitions
+Declares a variable local to the current map.
+.nf
+
+int <identifier> ;
+str <identifier> ;
+int <identifier> , ... ;
+.fi
+.TP
+.I Include Directive
+Includes the source of the specified file and compiles it.
+.nf
+
+#include <game/file>
+
+or
+
+#include "file"
+
+.fi
+Nested includes are allowed up to a depth of 16.
+The maximal possible pathname length for the file to be included
+is 512 characters.
+.TP
+.I Define Directive
+Replaces an identifier with a constant expression.
+.nf
+
+#define <identifier> <constant-expression>
+.fi
+.TP
+.I Constant Expressions
+.nf
+<integer-constant>:
+
+decimal        200
+hexadecimal    0x00a0, 0x00A0
+fixed point    32.0, 0.5, 103.329
+any radix      <radix>_digits
+  binary       2_01001010
+  octal        8_072310
+  decimal      10_50025
+  hexadecimal  16_00a03f2
+.fi
+.TP
+.I String Literals
+.nf
+<string-literal>: "string"
+.fi
+.TP
+.I Script Definitions
+To define a script:
+.nf
+
+  <script-definitions>:
+    script <constant-expression> ( <arglist> ) { <statement> }
+    script <constant-expression> OPEN { <statement> }
+
+.fi
+<constant-expression> is used by the general special ACS_Execute() to
+execute that script, valid numbers are in the range from 0 to 999. Scripts
+declared as OPEN will not take arguments and will automatically run upon
+entering the map. This is used for level initialization, etc. \fBAcc\fR
+will not compile more than 64 scripts for one object file.
+.TP
+.I Statements
+.nf
+<statement>:
+  <declaration-statement>
+  <assignment-statement>
+  <compound-statement>
+  <switch-statement>
+  <jump-statement>
+  <selection-statement>
+  <iteration-statement>
+  <function-statement>
+  <linespecial-statement>
+  <print-statement>
+  <control-statement>
+.fi
+.TP
+.I Declaration Statements
+Declaration statements create script variables.
+.nf
+
+<declaration-statement>:
+  int <variable> ;
+  int <variable> ,  <variable> , ... ;
+.fi
+.TP
+.I Assignment Statements
+Assigns an expression to a variable.
+.nf
+
+<assignment-statement>:
+  <variable> <assignment-operator> <expression> ;
+
+<assignment-operator>:
+  =
+  +=
+  -=
+  *=
+  /=
+  %=
+
+.fi
+An assignment of the form V <op>= E is equivalent to V = V <op> E. For example:
+.nf
+
+  A += 5;     is the same as
+  A = A + 5;
+.fi
+.TP
+.I Compound Statements
+.nf
+<compound-statement>:
+  { <statement-list> }
+
+<statement-list>:
+  <statement> <statement> <...>
+.fi
+.TP
+.I Switch Statement
+A switch statement evaluates an integral expression and passes control to
+the code following the matched case.
+.nf
+
+<switch-statement>:
+  case <constant-expression> : <statement>
+  default : <statement>
+
+Example:
+
+  switch (a)
+  {
+  case 1:    // when a == 1
+    b = 1;   // .. this is executed,
+    break;   // and this breaks out of the switch.
+
+  case 2:    // when a == 2
+    b = 8;   // .. this is executed,
+             // but there is no break, so it continues to the next
+             // case, even though a != 3.
+
+  case 3:    // when a == 3
+    b = 666; // .. this is executed,
+    break;   // and this breaks out of the switch.
+
+  default:   // when none of the other cases match,
+    b = 777; // .. this is executed.
+  }
+
+.fi
+\fBNote\fR for C users: While C only allows integral expressions in a switch
+statement, ACS allows full expressions such as "a + 10".
+.TP
+.I Jump Statements
+A jump statement passes control to another portion of the script.
+.nf
+
+<jump-statement>:
+  continue ;
+  break ;
+  restart ;
+
+.fi
+The jump statements continue and break can be used inside of iteration
+statements, see below. The jump statement restart can be used anywhere
+in a script to restart it from the beginning.
+.TP
+.I Iteration Statements
+.nf
+<iteration-statement>:
+  while ( <expression> ) <statement>
+  until ( <expression> ) <statement>
+  do <statement> until ( <expression> ) ;
+  for ( <assignment-statement> ; <expression> ; <assignment-statement> )
+    <statement>
+
+.fi
+The continue and break restart keywords can be used in an
+iteration\-statement:
+.RS
+.TP
+.I continue
+The continue keyword jumps to the end of the last <statement> in the
+iteration\-statement. The loop continues.
+.TP
+.I break
+The break keyword jumps right out of the iteration\-statement.
+.RE
+.TP
+.I Function Statements
+A function statement calls a Hexen internal\-function, or a Hexen
+linespecial\-statement.
+.nf
+
+<function-statement>:
+  <internal-function> | <linespecial-statement>
+
+<internal-function>:
+  <identifier> ( <expression> , ... ) ;
+  <identifier> ( const : <constant-expression> , ... ) ;
+
+<linespecial-statement>:
+  <linespecial> ( <expression> , ... ) ;
+  <linespecial> ( const : <constant-expression> , ... ) ;
+.fi
+.TP
+.I Print Statements
+.nf
+<print-statement>:
+  print ( <print-type> : <expression> , ... ) ;
+  printbold ( <print-type> : <expression> , ... ) ;
+
+<print-type>
+  s  string
+  d  decimal
+  c  constant
+
+.fi
+\fBNote:\fR strings should be upper case, DOS Hexen 1.0 at least
+prints junk for lower case characters. Seems the engine doesn't check
+and convert strings before mapping them to font characters.
+.TP
+.I Selection Statements
+.nf
+<selection-statement>:
+  if ( <expression> ) <statement>
+  if ( <expression> ) <statement> else <statement>
+.fi
+.TP
+.I Control Statement
+.nf
+<control-statement>:
+  suspend ;   // suspend the script
+  terminate;  // terminate the script
+.fi
+.TP
+.I Internal functions
+.RS
+.TP
+.I void tagwait(int tag);
+The current script is suspended until all sectors marked with <tag>
+are inactive.
+.TP
+.I void polywait(int po);
+The current script is suspended until the polyobj marked with <po>
+is inactive.
+.TP
+.I void scriptwait(int script);
+The current script is suspended until the script specified by <script>
+has terminated.
+.TP
+.I void delay(int ticks);
+The current script is suspended for a time specified by <ticks>. A tick
+represents one cycle from a 35Hz timer.
+.TP
+.I void changefloor(int tag, str flatname);
+The floor flat for all sectors marked with <tag> is changed to <flatname>.
+.TP
+.I void changeceiling(int tag, str flatname);
+The ceiling flat for all sectors marked with <tag> is changed to <flatname>.
+.TP
+.I int random(int low, int high);
+Returns a random number between <low> and <high>, inclusive. The values may
+range from 0 to 255.
+.TP
+.I int lineside(void);
+Returns the side of the line the script was activated from. Use with defines
+LINE_FRONT and LINE_BACK, defined in defs.acs.
+.TP
+.I void clearlinespecial(void);
+The special of the line that activated the script is cleared.
+.TP
+.I int playercount(void);
+Returns the number of active players.
+.TP
+.I int gametype(void);
+Returns the type of the game being played, which is one of GAME_SINGLE_PLAYER,
+GAME_NET_COOPERATIVE or GAME_NET_DEATHMATCH.
+.TP
+.I int gameskill(void);
+Returns the skill of the game being played, which is one of
+SKILL_VERY_EASY, SKILL_EASY, SKILL_NORMAL, SKILL_HARD or SKILL_VERY_HARD.
+.TP
+.I int timer(void);
+Returns the current leveltime in ticks.
+.TP
+.I void sectorsound(str name, int volume);
+Plays a sound in the sector the line is facing. <volume> has the range
+0 to 127.
+.TP
+.I void thingsound(int tid, str name, int volume);
+Plays a sound at all things marked with <tid>. <volume> has the range
+0 to 127.
+.TP
+.I void ambientsound(str name, int volume);
+Plays a sound that all players hear at the same volume. <volume> has
+the range 0 to 127.
+.TP
+.I void soundsequence(str name);
+Plays a sound sequence in the sector the line is facing.
+.TP
+.I int thingcount(int type, int tid);
+Returns a count of things in the world. Use the thing type definitions
+in defs.acs for <type> and <tid> can be 0 to force the counting to ignore
+that information.
+.nf
+
+Examples:
+
+// Count all ettins that are marked with TID 28:
+c = thingcount(T_ETTIN, 29);
+
+// Count all ettins, no matter what their TID is:
+c = thingcount(T_ETTIN, 0);
+
+// Count all things with TID 28, no matter what
+// their type is:
+c = thingcount(0, 28);
+.fi
+.TP
+.I void setlinetexture(int line, int side, int pos, str texturename);
+Sets a texture on all lines identified by <line>. A line is identified
+by giving it the special Line_SetIdentification in a map editor.
+.nf
+
+<side>:
+  SIDE_FRONT
+  SIDE_BACK
+
+<pos>
+  TEXTURE_TOP
+  TEXTURE_MIDDLE
+  TEXTURE_BOTTOM
+
+Examples:
+
+setlinetexture(14, SIDE_FRONT, TEXTURE_MIDDLE, "ice01");
+setlinetexture(3, SIDE_BACK, TEXTURE_TOP, "forest03");
+.fi
+.TP
+.I void setlineblocking(int line, int blocking);
+Sets the blocking (impassable) flag on all lines identified by <line>.
+Blocking is either ON or OFF.
+.TP
+.I void setlinespecial(int line, int special, int arg1, int arg2, int arg3, int arg4, int arg5);
+Sets the line special and args on all lines identified by <line>.
+.RE
+
+.SH FILES
+.TP
+.I /usr/local/lib/acc/hexen/common.acs
+This must be included by all scripts, it just includes the following
+files with definitions for the Hexen game.
+.TP
+.I /usr/local/lib/acc/hexen/defs.acs
+Hexen game defines.
+.TP
+.I /usr/local/lib/acc/hexen/specials.acs
+Hexen game linespecial statement defines.
+.TP
+.I ./wvars.acs
+World variable declarations for the project.
+
+.SH SUPPORTED GAMES
+Hexen.
+.LP
+Extended Doom engines like XDoom and ZDoom include a Hexen binary compatible
+P code interpreter and \fBacc\fR can be used for this engines too. Just be
+sure to include <xdoom/common.acs> e.g. and not <hexen/common.acs> for this
+engines!
+
+.SH SEE ALSO
+The Unofficial Doom Specs by Matthew S Fell.
+.br
+The Official Hexen Technical Specs by Ben Morris.
+.br
+.BR listacs "(6), "
+.BR xwadtools (6)
+
+.SH BUGS/ERRORS
+None.
+
+.SH AUTHOR
+Ben Gokey, Raven Software.
+.LP
+Ported to UNIX, Windows Cygwin compiler, DOS DJGPP compiler, bug fixes,
+extensions and manual page by Udo Munk (um@compuserve.com).
+.LP
+The not implemented 'for' loop was implemented by
+Randy Heit (rheit@iastate.edu).

@@ -1,0 +1,107 @@
+ChangeLog for DMPSMU: DooM PostScript Maps Utility
+==================================================
+
+2.6:	added Heretic support (new monsters & things)
+950828	more tweakings to sector shading and teleport linking
+	updated various text files and manual pages
+	renamed/updated 'dmpsmu26.txt' for public release
+
+2.5:	fixed various shading problems for oddly shaped sectors (at last!)
+950810	rewritten teleport exit linking (solves all previous problems)
+
+2.4:	added Ultimate DOOM & Heretic support (new level names, DOOM.WAD
+950727	 & HERETIC.WAD recognition, additional level numbering)
+	added/updated all*.{sh,bat} files
+
+2.3:	allow spaces in dmpsmu Name command map name
+950112	closed legend box (just in case of printing maps w/o border)
+	added M print flag indicator to legend box
+	added damage sector shading
+
+2.2:	ported to DOS with DJGPP/GO32 compiler in 'makefile'
+941230	added 'djgpp' directory with files readme.dj and copying.dj
+	renamed README.DOS to djgpp/readme.1st and moved other files
+	added go32.exe, dmpsmu.exe and dmpsmap.exe to distribution
+
+2.1:	ported to Ultrix with 'gcc' compiler (in Makefile)
+941207	ported to HP-UX with 'cc -Aa' compiler (in Makefile)
+	moved email addresses from DMPSMU man page to README Credits
+	added 'allmaps.bat' & 'allmaps2.bat' batch files
+
+2.0:	updated 'mkman.sh' script for GNroff compatibility
+941031	updated manual pages & README file
+	added 'dmpsmu20.txt' file with blurb for public release
+
+1.999:	added DOOM ][ support (new level names, new monsters & things,
+941028	 DOOM2.WAD file & PWAD files recognition, new level numbering,
+	 new monster-only teleports)
+	added IWAD type indication to Wads command
+	added PowerUps and Enemies tables to Analyze command
+	added 'allmaps2.sh', 'allstts.sh' & 'allstts2.sh' scripts
+	fixed a problem with teleport linking on several DOOM ][ maps
+
+1.666:)	ported to Linux with 'gcc' compiler (in Makefile)
+941008	fixed a memory bug in Name command that other compilers were
+	too lenient on ;)
+
+1.11:	added README, README.DOS & COPYING files
+940914	renamed ChangeLog file into Changes.Log (for DOS compatibility)
+	moved sources into 'source' subdirectory
+	final polishing for intended public release
+
+1.10:	added 2 & 4 print flags & associated code
+940824	(nope, there won't ever be an 8 or 16 print flag ;)
+	added 'dmps2ul.sh' & 'dmps4qd.sh' scripts
+	added thin white stripe to border
+	improved & extended manual pages
+	added 'mkman.sh' script
+
+1.9:	added manual pages for 'dmpsmu' & 'dmpsmap'
+	added Name Command & associated code
+	added 'allmaps.sh' script
+	added Manifest file
+
+1.8:	added 'dmpsmap' command-line sidekick
+	renamed dmpsmu.h to dmps.h
+	updated Makefile
+	added Help alternative for '?' command
+
+1.7:	added map shape dependent auto-zoom scaling
+	localized printing related global variables into ps.c
+	improved Makefile rules
+	cleaned up the code yet again
+
+1.6:	renamed S print flag to F print flag
+	added S & U print flags & associated code
+	added miscellaneous refinements
+
+1.5:	added T print flag & associated code
+	added name/legend dependent auto-zoom scaling & other refinements
+
+1.4:	added actual PostScript generation for Things
+	added D, L & M print flags & associated code
+
+1.3:	added actual PostScript generation for Lines
+	added Z print flag & associated code
+	ported to IRIX4.0 with 'cc' compiler (in Makefile)
+
+1.2:	added Flags command with ABEGNPS print flags & associated code
+	added level name code to levels.c & print.c
+
+1.1:	added Analyze command & associated code
+	renamed remaining Scr[een]* variables/macros to Page*
+	removed more unused declarations
+
+1.0:	created Makefile & ChangeLog files
+940720	ported to SunOS4.1 with SunC 'acc' compiler (in Makefile)
+	renamed deu.[ch] into dmpsmu.[ch]
+	rebuild deu-go32.h into dmunix.h
+	removed commands B, C, E, G, I, S, V & associated code
+	removed use of config & log file and most command line parameters
+	removed miscellaneous bells & whistles (Beep, Reminder, Debug, ...)
+	removed all WAD writing code
+	rebuild edit.c core into print.c
+	rebuild gfx.c core into dummy ps.c
+	removed all graphics/editing/objects related code
+	removed unused definitions & variables
+

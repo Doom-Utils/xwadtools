@@ -1,0 +1,349 @@
+.\"	manual page for cawf(1)
+.\"
+.\"
+.\"	Copyright (c) 1991 Purdue University Research Foundation,
+.\"	West Lafayette, Indiana 47907.  All rights reserved.
+.\"
+.\"	Written by Victor A. Abell <abe@mace.cc.purdue.edu>,  Purdue
+.\"	University Computing Center.  Not derived from licensed software;
+.\"	derived from awf(1) by Henry Spencer of the University of Toronto.
+.\"
+.\"	Permission is granted to anyone to use this software for any
+.\"	purpose on any computer system, and to alter it and redistribute
+.\"	it freely, subject to the following restrictions:
+.\"
+.\"	1. The author is not responsible for any consequences of use of
+.\"	   this software, even if they arise from flaws in it.
+.\"
+.\"	2. The origin of this software must not be misrepresented, either
+.\"	   by explicit claim or by omission.  Credits must appear in the
+.\"	   documentation.
+.\"
+.\"	3. Altered versions must be plainly marked as such, and must not
+.\"	   be misrepresented as being the original software.  Credits must
+.\"	   appear in the documentation.
+.\"
+.\"	4. This notice may not be removed or altered.
+.\"
+.\" Some of the stuff in this file is a bit contorted, because it's also
+.\" the regression-test input.
+.nr ES 5n
+.de ES
+.PP
+.in +\\n(ESu
+.nf
+..
+.de EE
+.in -\\n(ESu
+.fi
+.PP
+..
+.de PT
+.ie \\n(.$>1 .TP "\\$2"
+.el .TP
+.ie !'\\$1'' \\$1
+.el \(bu
+..
+.ds Nr \fInroff\fR
+.TH CAWF 1 "February, 1991"
+.BY "Purdue University"
+.SH NAME
+cawf \- C version of the nroff-like, Amazingly Workable (text) Formatter
+.SH SYNOPSIS
+.B cawf
+[
+.BI \-m acros
+] [ file ... ]
+.SH DESCRIPTION
+.if t .tm OOPS -- AWF THINKS IT'S TROFF!!!
+.I Cawf
+formats the text from the input \fIfile\fR(s)
+(standard input if none)
+in an approximation of \*(Nr.
+It comes closest to duplicating \*(Nr's
+.B man
+or
+.B ms
+macro package styles.
+The
+.BI \-m acro
+argument is optional, and it must be first.
+(The standard
+.I cawf
+distribution supplies macro files to support `\-man' or `\-ms'.)
+.PP
+.I Cawf
+accepts the following raw \*(Nr requests:
+.LP
+	.\e"	.ad	.bp	.br	.ce	.de	.ds	.el	.fi
+	.ft	.i0	.ie	.if	.in	.it	.lg	.li	.ll
+	.ls	.na	.ne	.nf	.nr	.ns	.pl	.po	.ps
+	.rm	.rr	.rs	.so	.sp	.ta	.ti	.tm
+.LP
+and the following in-text codes:
+.ES
+\e$	\e%	\e*	\ec	\ef	\eh	\en	\es
+.EE
+plus the full list of \*(Nr/\c
+.I troff
+special characters in
+the original V7 \fItroff\fR manual.
+.PP
+Many restrictions are present; the behavior in general is a subset of
+\*(Nr's.  Of particular note are the following:
+.IP \(bu 2
+Point sizes do not exist;
+.B .ps
+is ignored.
+.PT
+Special vertical spacing \- the
+.B .vs
+command included \- is ignored.
+.PT
+Conditionals cover only numeric comparisons on
+.BR \en(.$ ,
+string com\%par\%isons between a macro parameter and a literal,
+and
+.B n
+(always true)
+and
+.BR t
+(always false).
+.PT
+The handling of strings is generally primitive.
+.IP \(bu
+Horizontal motion via
+.B \eh
+must be supplied with a number register interpolation and must be
+positive - e. g.,
+.BR \ew\en(NN ,
+where the value in NN is >= 0.
+.IP \(bu
+Expressions - e. g.,
+.B .sp
+- are reasonably general, but the
+.BR | ,
+.BR & ,
+and
+.BR :\&
+operators do not exist, there must be white space between the end of the \*(Nr
+command and the beginning of the expression, and 
+.B \ew
+requires that quote (') be used as the delimiters.
+.B \ew
+counts the characters inside the quotes and scales the result in ens,
+so that, for example, \ew'\e(bu' equals 4n, and \ew'\e(bu'/1n equals 4.
+.PT
+The only acceptable count for the
+.B .it
+command is one,
+and it is effective only with
+.B man
+or
+.B ms
+macros.
+.PT
+The default scaling factor is `v' for the
+.BR .ne ,
+.BR .sp ,
+and
+.B .pl
+raw \*(Nr requests; it is `u' for
+.BR .nr ;
+and `n' for
+.BR .in ,
+.BR .ll ,
+.BR .ls ,
+.BR .po ,
+.BR .ta
+and
+.BR .ti .
+(A different scaling factor may be specified with a trailing character.)
+.PT
+Some obsolete or meaningless commands \-
+.BR .i0 ,
+.B .lg
+and
+.B .li
+\&\- are silently ignored.
+.P
+White space at the beginning of lines,
+and embedded white space within lines is dealt with properly.
+Sentence terminators at ends of lines are understood to imply
+extra space afterward in filled lines.
+Tabs are im\%plemented crudely and not exactly, although
+usually they work as expected.
+Hyphenation is done only at explicit hyphens, em-dashes, and \*(Nr
+discretionary hyphens.
+Bolding and italicization are done with backspacing and overprinting.
+.SH "MAN MACROS"
+The
+.B man
+macro set replicates the full V7 manual macros,
+plus a few semi-random oddballs.
+The full list is:
+.ES
+\&.AT	.B	.BI	.BR	.BY	.DE	.DS	.DT	.HP	.I
+\&.IB	.IP	.IR	.IX	.LP	.NB	.P	.PD	.PP	.RB
+\&.RE	.RI	.RS	.SH	.SM	.TH	.TP	.UC
+.EE
+.B .BY
+and
+.B .NB
+each take a single string argument (respectively, an indi\%cation of
+authorship and a note about the status of the manual page) and arrange
+to place it in the page footer.
+.B .AT
+and
+.B .IX
+do nothing.
+.SH "MS MACROS"
+The
+.B ms
+macro set is a substantial subset of the V7 manuscript macros.
+The macros are:
+.ES
+\&.AB	.AE	.AI	.AU	.B	.CD	.DA	.DE	.DS	.I
+\&.ID	.IP	.LD	.LG	.LP	.ND	.NH	.NL	.PP	.QE
+\&.QP	.QS	.R	.RE	.RP	.RS	.SH	.SM	.TL	.TP
+\&.UL	.UX
+.EE
+Size changes are recognized but ignored, as are
+.B .RP
+and
+.BR .ND .
+.B .UL
+just prints its argument in italics.
+.BR .DS / .DE
+does not do a keep,
+nor do any of the other macros that normally imply keeps.
+.LP
+The
+.B DY
+string variable is available.
+The
+.BR PD ,
+.BR PI ,
+and
+.BR LL
+number registers exist and can be changed.
+.SH "HEADERS AND FOOTERS"
+.I Cawf
+can do limited header and footer processing from the
+.BR LH ,
+.BR CH ,
+.BR RF ,
+.BR LF ,
+.BR CF ,
+and
+.B RF
+string variables, via the control of the
+.B .^b
+command:
+.LP
+.ta \w'.^b HF 0'u+3n
+.nf
+\&.^b fh 1	enables a header on the first page
+\&.^b fh 0	disables the header on the first page
+\&.^b HF 1	enables header/footer processing
+\&.^b HF 0	enables header/footer processing
+.LP
+There are appropriate
+.B .^b
+commands in the distribution
+.B man
+and
+.B ms
+macro files.
+(The
+.B ms
+macro file uses another
+.B .^b
+command, \fB.^b NH\fP, to enable numbered header processing.)
+.SH OUTPUT
+The only output format supported by
+.IR cawf ,
+in its distributed form,
+is that appropriate to a dumb terminal,
+using overprinting for italics (via underlining) and bold.
+The \*(Nr special characters are printed as some vague approximation
+(it's sometimes extremely vague) to their correct appearance.
+.PP
+.IR Cawf 's
+knowledge of the output device is established by a device file,
+which is read before the user's input.
+The search for it begins in
+.IR cawf 's
+library directory, under the name \fIterm\fP.\fBdev\fP
+(where \fIterm\fR is the value of the TERM environment variable).
+Failing to find that,
+.I cawf
+searches for
+.BR dumb.dev .
+The device file
+uses special internal commands
+to set up resolution, special characters, fonts, etc.,
+and more normal \*(Nr commands to set up page length, etc.
+.SH FILES
+All files are located in \fIc:/sys/lib/cawf\fR (the author's MS-DOS
+environment default).
+This default can be overridden by the CAWFLIB environment variable,
+or changed in the source code.
+
+.ta \w'common'u+3n
+.nf
+common	common device-independent initialization
+*.dev	device-specific initialization
+m*.mac	macro package files
+.SH SEE ALSO
+bsfilt(1), colcrt(1), nroff(1), man(7), and ms(7).
+.SH DIAGNOSTICS
+Unlike
+.IR nroff ,
+.I cawf
+complains whenever it sees unknown commands and macros.
+All diagnostics (these and some internal ones) appear on the standard error
+file.
+.ad
+.SH HISTORY
+Vic Abell of Purdue University <abe@mace.cc.purdue.edu> derived
+.I cawf
+from
+.IR awf ,
+\&``the Amazingly Workable (text) Formatter'' that was
+written by Henry Spencer of the University of Toronto.
+The Toronto work was a supplement to the C News project.
+The Purdue effort was aimed at producing a C language version that
+would run on small systems, particularly MS-DOS ones.
+.PP
+The MS-DOS version of
+.I cawf
+has been compiled with Microsoft's Quick-C compiler.
+It runs under the Mortis Kern Systems Toolkit KornShell,
+.IR ksh (1),
+and COMMAND.COM.
+.SH BUGS
+Nroff and troff mavens will have many complaints.
+Some may even represent bugs and not deliberate omissions.
+.PP
+Watch out for scaling factors - especially on commands like
+.BR \ew .
+.PP
+The overprinting required to create bold and italicized characters is
+tiresome on a slow printer.
+Use
+.IR bsfilt (1)
+from this distribution to remove all the backspacing from
+.IR cawf 's
+output.
+.PP
+.I Cawf
+has a small amount of built-in code for the 
+.B man
+and
+.B ms
+macro packages, but none for any others.
+.PP
+The stacking for the
+.B .so
+command is limited.

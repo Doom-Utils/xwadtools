@@ -1,0 +1,115 @@
+.TH lswad 6 "12 January 2000"
+
+.SH NAME
+lswad \- list directory of WAD files
+
+.SH SYNOPSIS
+.B lswad
+.RB [ \-hHklsv ]
+.RB [ -F " | " -P
+.RB "| " -T ]
+.I wadfile ...
+
+.SH DISCLAIMER
+This program is furnished on an AS IS basis for the fun of it.
+id Software, Raven Software and Activision do not support this program.
+
+.SH DESCRIPTION
+.B lswad
+prints the contents of the directory of a wad file (iwad or
+pwad), much like \fBls\fP(1) prints the contents of a filesystem
+directory. It can also print the contents of certain lumps
+(\fBPNAMES\fP, \fBTEXTURE1\fP and \fBTEXTURE2\fP).
+.TP
+.B Specifying the lines to print
+By default, \fBlswad\fP lists the lumps in the wad directory.
+You can change this with \fB\-F\fP, \fB\-P\fP and \fB\-T\fP.
+.TP
+.B Specifying the fields to print
+By default, \fBlswad\fP prints only the names of the entries it
+lists. You can make it print more detail with \fB\-l\fP
+and \fB\-s\fP. If both \fB\-l\fP and \fB\-s\fP are used, \fB\-l\fP
+wins. Unless otherwise specified the fields in the output are
+separated by a tab.
+.TP
+.B "Specifying how fields are printed"
+By default, sizes and offsets are printed in bytes and in
+decimal. \fB\-k\fP causes sizes to be printed in kB. \fB\-h\fP
+causes offsets to printed in hexadecimal. \fB\-H\fP causes sizes
+to be printed in hexadecimal.
+.TP
+.B Sorting
+.B lswad
+does not sort the entries; it prints them in the same order they
+are in the wad.
+
+.SH OPTIONS
+.TP
+.B \-h
+If offsets are shown, they are printed in hexadecimal (the
+default is to print them in decimal).
+.TP
+.B \-H
+If sizes are shown, they are printed in hexadecimal (the default
+is to print them in decimal). If \fB\-k\fP is also
+present, this option has no effect.
+.TP
+.B \-k
+If sizes are shown, they are printed in kB (the default is to
+print them in bytes). If this option is present, \fB\-H\fP has
+no effect.
+.TP
+.B \-l
+If listing lumps, this option causes the size and offset of each
+lump to be printed to the right of its name. If listing
+textures, this option causes the width, height and number of
+patches of each texture to be printed to the right of its name.
+If listing flats or patches, this option has no effect.
+.TP
+.B \-s
+Show the size of the lumps.
+.TP
+.B \-v
+Verbose output of processing, without this option
+.B lswad
+works silently.
+.TP
+.B \-P
+List the contents of the PNAMES lump. This lump contains the names of
+texture patches used for wall textures.
+.TP
+.B \-T
+List the contents of the TEXTUREx lumps. These lumps contain name and patch
+decription of the wall textures. If this option is used together with
+.BR \-l ,
+the output format is appropriate for the texture list needed by
+.B tkwadcad.
+.TP
+.B \-F
+List the names of the flats between labels F_START and F_END. The output
+format is appropriate for the flats list needed by
+.B tkwadcad.
+
+.SH "EXIT STATUS"
+.ta 5
+\fB0\fP	OK.
+.br
+\fB1\fP	Incorrect invocation.
+.br
+\fB>1\fP	An error occurred on one or more of the files.
+
+.SH "SUPPORTED GAMES"
+Doom, Ultimate Doom, Doom][, Final Doom, Heretic, Hexen, Strife.
+
+.SH "SEE ALSO"
+The Unofficial Doom Specs by Matthew S Fell.
+.br
+.BR xwadtools (6)
+
+.SH BUGS/ERRORS
+None.
+
+.SH AUTHOR
+.B lswad
+was written by Udo Munk (um@compuserve.com) and later
+mercilessly hacked by Andre Majorel (amajorel@teaser.fr).

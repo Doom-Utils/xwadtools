@@ -1,0 +1,65 @@
+The goal of this is to get a portable CAD tool, which is able to read/write
+.map files like found in the EXAMPLES directory and design level maps with it.
+
+Currently the following games are fully supported:
+
+	Doom, Ultimate Doom
+	Doom2, Final Doom
+	XDoom, XDoomPlus
+	Hexen
+
+Heretic support would be trivial, it uses the same WAD format than Doom.
+The control files would be needed, which define the game, I can't work
+on this, I have no registered Heretic. If you would be willing to work
+on the control files and email them to me, I will do the necessary
+programming and add full Heretic support. Same for Strife.
+
+It is possible to edit ZDoom maps with the editor. For this decompile
+them as XDoomPlus maps. Better would be working on control files for
+ZDoom, so that one has all the line and sector specials at hand, the
+engine supports. Sometime I might do that, is not one of my top
+priorities, I prefer working on/with XDoom.
+
+Theoretically the editor should allow to edit WAD files for all and any
+WAD engines now. Unknown things, sectors and linedefs are handled gracefully
+and one can enter unknown stuff by number, if the control files don't
+include it.
+
+If you want to mail a bug report I need to know this informations:
+
+  1) OS name and release
+  2) Tcl/Tk release
+  3) Problem description
+
+If possible please include the map file in the bug report, so that I have
+a chance to reproduce the problem.
+
+Note: use wadldc to decompile the maps in existing WAD files into map
+files, which can be edited and compiled with this. Be sure to use
+wadldc with the correct -g option, the editor can't work if one tries
+to edit a Doom map decompiled as Hexen map e.g.
+
+Note: the user manual in Postscript format is ~/manual/tkwadcad.ps.
+If you would like to format it your self you need to have GNU roff
+installed on your system, the old crufty UNIX roff won't do.
+Note for Linux users: the makefile uses commands gpic, gtbl and groff,
+because other UNIX's have the roff tools and so the GNU version is
+prefixed with g, to avoid clashing with the originals. Some Linux
+distributions come with GNU roff installed as pic, tbl and roff only,
+so modify the makefile appropriate.
+However, an already formatted manual is there, just print it.
+
+Warning: this is work in progress, and the program might have bugs, save
+your maps often! Personally I have not lost any work with it yet, so I
+hope you won't either, but you never know.
+
+YOU CANNOT CONVERT A DOOM LEVEL INTO A HEXEN LEVEL JUST WITH
+SETTING THE MAP FORMAT TO THE ONE FOR THE OTHER GAME! IN FACT,
+IF YOU LOAD A HEXEN MAP AND SAVE IT AS DOOM MAP, INFORMATIONS
+WILL BE LOST! SO DON'T MESS WITH THE MAP FORMAT CONTROL!
+It is possible to set the game type and the map type to inconsistent
+settings, like Game = Doom2 and Map type = Extended. This will help
+to convert maps if one knows exactly what one is doing. Again, if
+you don't understand this stuff then don't mess with it, I'll not
+disable an interesting feature just to make this fool proof for
+Joe (Doom) Public.

@@ -1,0 +1,229 @@
+______   _____   _____  __    ___   DMPSMU   ___    __   ___   ______    ____
+| __  \ |  _  | |  _  | | \  /  | PostScript |  \  / |  / _ \  | ___ \  /  __|
+| | \ | | | | | | | | | || \/ . | %%  %%  !! | . \/ || / /_\ \ | |_/ / {  {_
+| | / | | \_/ | | \_/ | ||\  /| | %% %    !! | |\  /|| |  _  | |  __/   \__ \
+| |/ /   \   /   \   /  || \/ | |   % %%  !! | | \/ || | | | | | |     __  \ \
+| ' /     \_/     \_/   \|    | | %%  %%  !! | |    |/ \_| |_/ \_|     \ \_/ /
+|__/                          \_|  Utility.  |_/                        \___/
+                                     v2.6
+                     Frans P. de Vries <fpv@xymph.iaf.nl>
+                               August 28, 1995
+
+
+This is DMPSMU, the DOOM PostScript Maps Utility package. It provides DMPSMU,
+an interactive utility to generate PostScript maps of levels in DOOM, DOOM ][,
+Ultimate DOOM and Heretic, the 3D action games by id Software and Raven
+Software, and DMPSMAP, a command-line based sidekick.  They offer everything
+you ever wanted from a DOOM map generator, and more!  The following features
+are presented:
+
+* detailed control over layout and appearance of the page(s):
+  Supports European/American paper sizes, Portrait/Landscape orientation,
+  printing of a border, the level name (possibly user defined) and a legend
+  box, and auto scaling depending on the size and orientation of the map
+  versus the paper size as well as the map's shape versus the presence of
+  level name and/or legend box.
+
+* multi-page capability, printing on 2 or 4 normal pages:
+  Creates one PostScript file in A4/A3/A2 or Letter/Tabloid/double_Tabloid
+  size, from which individual A4/Letter size pages can be printed using
+  shell script utilities.
+
+* detailed control over which Things will be printed:
+  Distinguishes between starting points, teleport exits, small bonuses,
+  weapons, enhancements, enemies, barrels and decorations, as well as
+  their multi-player and difficulty-setting properties.
+
+* fading LineDefs that are secret or part of a secret Sector:
+  Prints grey lines for secret LineDefs or LineDefs belonging to a secret
+  Sector. For really seeing where the secrets are, the following feature
+  is even better though.
+
+* shading secret and damage Sector areas, but not their inner Sectors:
+  Prints grey areas for secret and damage Sectors but excludes any inner
+  Sectors like massive pillars. Truly visualizes where you must have been
+  to get a 100% Secret score, and which areas you'd rather avoid.
+
+* linking teleporters and their exits by faint lines:
+  Shows where you're teleported by linking the midpoint of a teleporting
+  LineDef to the corresponding teleport exit. Now you never have to feel
+  tele-lost again!
+
+* support for DOOM, DOOM ][, Ultimate DOOM & Heretic WAD files:
+  Recognizes all level numbering schemes, level names, things, monsters and
+  monster-only teleporters.
+
+You have extensive control over which features are used when printing your
+maps by setting and clearing one or more of 16 print flags, boosting a
+staggering 48K (no, not 64K ;) possibilities in outputting your maps!  Which
+is a meaningless number as in practice you will need to use only a few flags,
+because most flags are set to defaults which you'll like to use all the time.
+
+In addition, since the interactive utility DMPSMU is derived from DEU, the
+Doom Editor Utility, and retains from this tool all functions that have a
+read-only effect on the DOOM/Heretic WAD files, it offers examination but not
+modification of these files under Unix and has a new function to display a
+level's vital statistics.
+
+--
+Frans P. de Vries (FPV) | Snail: de Wilmskamp 83, 7552 GW Hengelo, Netherlands
+Email: fpv@xymph.iaf.nl | Voice: +31 (74) 916 034 | DOOM][+GUS1M == ImMeRsIoN!
+
+
+
+INSTALLATION
+============
+
+Installation of the package is straight-forward. Unzip the package (which
+you have probably done already to read this file ;)  preferably recursively
+(default in Info-UNZIP, requires '-d' option to PKUNZIP). Go into the source
+directory and check the Makefile for the C compiler and its flag and include
+definitions. Set CC to your ANSI C compiler, CFLAGS & LDFLAGS as desired and
+if necessary, INCLUDES to your directory with ANSI C header files. If you're
+on a big endian system, leave DEFINES as is, otherwise select the empty one.
+Then type 'make'.
+
+Find a way to copy your DOOM{1,2}.WAD/HERETIC{1}.WAD file to your Unix system
+and copy the shell scripts 'all*.sh' and 'dmps*.sh' as well as the just 'made'
+executables into the same directory for easy access to the WAD file.  And
+presto, you're all set to _truly_ paper the wall with DOOM/Heretic PostScript
+Maps! :-)
+
+
+MAP ORIENTATION
+===============
+
+The following DOOM levels are best printed in Portrait:
+  E1M8, E2M2, E2M6, E2M8, E3M1, E3M2, E3M6, E3M7, E3M8, E3M9
+The remaining DOOM levels are best printed in Landscape:
+  E1M1, E1M2, E1M3, E1M4, E1M5, E1M6, E1M7, E1M9,
+  E2M1, E2M3, E2M4, E2M5, E2M7, E2M9, E3M3, E3M4, E3M5
+The scripts 'allmap.sh/bat' print these maps accordingly.
+
+The following Ultimate DOOM levels are best printed in Portrait:
+  E4M2, E4M7, E4M8, E4M9
+The remaining Ultimate DOOM levels are best printed in Landscape:
+  E4M1, E4M3, E4M4, E4M5, E4M6
+The scripts 'allmapu.sh/bat' print these maps accordingly.
+
+The following DOOM ][ levels are best printed in Portrait:
+  MAP01, MAP02, MAP10, MAP12, MAP13, MAP15, MAP16, MAP17, MAP19,
+  MAP20, MAP23, MAP25, MAP27, MAP28, MAP30, MAP32
+The remaining DOOM ][ levels are best printed in Landscape:
+  MAP03, MAP04, MAP05, MAP06, MAP07, MAP08, MAP09, MAP11, MAP14,
+  MAP18, MAP21, MAP22, MAP24, MAP26, MAP29, MAP31
+The scripts 'allmap2.sh/bat' print these maps accordingly.
+
+The following Heretic levels are best printed in Portrait:
+  E1M3, E1M5, E1M7, E1M8, E1M9, E2M3, E2M5, E2M6, E2M7, E2M9,
+  E3M1, E3M2, E3M3, E3M5, E3M6, E3M7, E3M8, E3M9
+The remaining Heretic levels are best printed in Landscape:
+  E1M1, E1M2, E1M4, E1M6, E2M1, E2M2, E2M4, E2M8, E3M4, E4M1
+The scripts 'allmaph.sh/bat' print these maps accordingly.
+
+
+RANDOM NOTES
+============
+
+Anyone know the proper name for double_Tabloid?  Please email me.
+Anyone know a more complete list of big/little endian systems? Ditto.
+The same goes for ideas for new features and other improvements.
+
+If you want different default settings for the print flags, then change them
+in 'source/print.c' and remake.
+
+Best results are of course produced by printing the PostScript files on a
+better than 300 dpi printer <duh;>
+
+
+KNOWN PROBLEMS
+==============
+
+- secret sectors enclosed by damage sectors, or vice versa, may or may not
+  have their inner sector shaded correctly, depending on the order of the
+  sectors in the sector list, eg. DOOM ][ MAP24 sectors 62 & 63
+
+
+TODO
+====
+
+- better thing icons, or thing labelling
+- maybe some way to link trigger linedefs (switches, etc.) to the sectors
+  they operate on, without cluttering up the map?
+- merging command-line operation (dmpsmap) into the main utility (dmpsmu)
+
+
+CREDITS
+=======
+
+My thanks go to the following people for their work:
+
+- the folks at id Software for creating such a fabulous game!
+
+- Brendon J. Wyber <b.wyber@csc.canterbury.ac.nz> and Raphaël Quinet
+  <quinet@montefiore.ulg.ac.be> (and everyone working with them) for
+  creating the DEU editor and Per Allansson <c91peral@und.ida.liu.se> and
+  Per Kofod <per@ollie.dnk.hp.com> for porting it to a sane C compiler ;)
+  And: if they hadn't released the source with it, this utility wouldn't
+  exist (or at least not in the same form :-)
+
+- Matt Fell <msfell@aol.com> for the indispensable DOOM Specs, especially
+  for the v1.666 preview!
+
+- James Bonfield <jkb@mrc-lmb.cam.ac.uk> for showing (in his early v1.1 hack
+  at this PostScript thingy) how to solve the big/little endian problem.
+
+- for supplying compilation info for the Makefile:
+  Hans Peter Verne <h.p.verne@kjemi.uio.no> on Ultrix4.3/DECstation
+  Michael J. Salay <salay_mike@ae.ge.com> on HP-UX 9.0/HP710 station
+  Uwe Girlich <girlich@aix520.informatik.uni-leipzig.de> for DJGPP/GO32 help
+
+
+RESTRICTIONS
+============
+
+  The source in the DMPSMU package should not be used to create a utility
+  that can modify the main WAD files; you're better off with DEU v5.21 GCC
+  anyway. It is illegal to use the source in this package to modify the
+  shareware versions of DOOM and Heretic.
+
+  If you derive another utility from this package, name it something else
+  and give some credit to the original author(s).
+
+  If you distribute the DMPSMU package, please distribute the original ZIP
+  file unmodified and under the same name.
+
+
+TRADEMARKS
+==========
+
+  DOOM, DOOM ][ and Ultimate DOOM are trademarks of id Software Incorporated.
+  Heretic is a trademark of Raven Software Incorporated.
+  PostScript is a trademark of Adobe Systems Incorporated.
+
+  DEU is copyrighted by Brendon J. Wyber and Raphaël Quinet.
+
+  DJGPP/GO32 is Copyright (c) DJ Delorie, 24 Kirsten Ave,
+                              Rochester NH 03867-2954
+
+
+COPYLEFT
+========
+
+  DooM PostScript Maps Utility (DMPSMU & DMPSMAP)
+  Copyright (C) 1994,1995  Frans P. de Vries, Hengelo, The Netherlands
+
+  This program is free software; you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation; either version 2 of the License, or
+  (at your option) any later version.
+
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+
+  You should have received a copy of the GNU General Public License
+  along with this program; if not, write to the Free Software
+  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+

@@ -1,0 +1,82 @@
+.TH swantbls 6 "13 January 2000"
+
+.SH NAME
+swantbls \- create lumps for customized switches and animated textures and flats for inclusion in PWAD files
+
+.SH SYNOPSIS
+.B swantbls
+.I infile
+
+.SH DISCLAIMER
+This program is furnished on an AS IS basis for the fun of it.
+id Software does not support this program.
+
+.SH DESCRIPTION
+The program takes a text input file and creates binary lump files
+switches.lmp and animated.lmp for inclusion in PWAD files. This
+allows PWAD authors to customize switches and animations for some extended
+Doom engines.
+
+.SH "INPUT FORMAT"
+The input file syntax is as follows:
+.LP
+.I Switches section:
+.nf
+[SWITCHES]
+<episode>   <texture1>   <texture2>
+\|.\|.\|.
+.fi
+.LP
+.I Episode
+is a number 1 \- 3 for the IWAD file, in which this switch can be used,
+1 = Shareware Doom, 2 = registered Doom, 3 = Doom][.
+.LP
+.I Texture1
+is the name for the texture used, if the switch wasn't activated,
+.I texture2
+is the name for the texture used, after the switch was activated.
+.LP
+.I Animated flats section:
+.nf
+[FLATS]
+<number>   <last>   <first>
+\|.\|.\|.
+.fi
+.LP
+.I Number
+is the number of frames between changes, \fIlast\fR is the name of the
+last texture used for the animation, \fIfirst\fR is the name of the
+first texture used for the animation.
+.LP
+.I Animated textures section:
+.nf
+[TEXTURES]
+<number>   <last>   <first>
+\|.\|.\|.
+.fi
+.LP
+The meaning of the fields is the same as in the flats section.
+.LP
+An example file with the definitions for the original Doom games
+is included in the WAD tool collection.
+
+.SH "SUPPORTED GAMES"
+This data lumps can be generated for any WAD file based engine, but
+the engine has to use this data. Engines like \fBBoom\fR, \fBXDoom\fR
+and \fBZDoom\fR have support for customized switches and animations.
+
+.SH "SEE ALSO"
+.BR mkwad "(6), "
+.BR wadgc "(6), "
+.BR xwadtools (6)
+
+.SH BUGS/ERRORS
+None.
+
+.SH AUTHOR
+.B Swantbls
+originally was written by Jim Flynn (72713.3334@compuserve.com) for
+the Boom engine by TeamTNT.
+.LP
+Ported to UNIX and fixed to support big endian systems by Udo Munk
+(um@compuserve.com).

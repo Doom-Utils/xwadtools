@@ -1,0 +1,35 @@
+.TH pal2c 6 "12 January 2000"
+
+.SH NAME
+pal2c \- extract a color palette from a WAD file and write it out as C array
+
+.SH SYNOPSIS
+.B pal2c
+.I wadfile palnum prefix
+
+.SH DISCLAIMER
+This program is furnished on an AS IS basis for the fun of it.
+id Software, Raven Software and Activision do not support this program.
+
+.SH DESCRIPTION
+This program reads color palette \fIpalnum\fR from the PLAYPAL resource
+in \fIwadfile\fR. The data is written to stdout in form of a C array,
+with the arrary name \fIprefix\fR_rgb.
+
+.SH SUPPORTED GAMES
+Color palettes can be extracted from any IWAD file with a PLAYPAL resource
+with this program.
+
+.SH SEE ALSO
+The Unofficial Doom Specs by Matthew S Fell.
+.br
+.BR xwadtools (6)
+
+.SH BUGS/ERRORS
+No test is made if the palette \fIpalnum\fR exists in the PLAYPAL resource.
+If the argument is out of bounds the resulting data is junk or the program
+will crash.
+
+.SH AUTHOR
+.B pal2c
+was written by Udo Munk (um@compuserve.com).

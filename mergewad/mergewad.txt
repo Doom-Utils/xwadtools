@@ -1,0 +1,73 @@
+To: doom-editing@[...]
+Subject: Level merge/scale/translate/rotate/shear in Perl
+
+I don't know whether any of the other editors can do any of the things
+that this script can, but I was recently using a version of DEU that
+couldn't.
+
+This script takes a number of PWAD's and produces a PWAD (named
+`tmpm.wad') with a single level which is the superposition of all the
+input levels.  Things, vertices, linedefs, sidedefs, sectors and
+special sector tags (below 100) are renumbered.
+
+The script doesn't handle graphics and sound resources, nodes trees,
+&c, only map data.  It includes empty REJECT, BLOCKMAP &c resources in
+the output because otherwise DEU won't load the resulting level; sound
+and graphics resources will be discarded (with a warning message).
+
+It also doesn't do anything like merging vertices, linedefs, &c that
+happen to coincide.
+
+However, it can do arbitrary linear transformations on the horizontal
+and vertical coordinate spaces, and can rotate all the Things by a
+particular amount.
+
+Any texture alignment you do is likely to be screwed up by scaling,
+and will almost certainly be mangled by shear.  Translation, rotation
+and simple vertical shifts should be fine for this.
+
+The level number of the output WAD is the same as that for the last
+level in the last input WAD.  (I haven't tested it with input WADs
+with multiple levels, but it should work.)
+
+If there is demand there are a number of other things it could be made
+to do quite easily; possibilities are global `search-and-replace' on
+textures and preprogrammed modifications to Things.
+
+The scaling/translation/rotation/shear to be applied is be specified
+by using the -t<abc><xyz><number> option, where <abc> is `a', `b' or
+`c' for which coefficient of the transformation equations is to be
+changed, <xyx> is `x', `y' or `z' for which coordinate's equation is
+to be changed and <number> is the new coefficient.  The equations are
+  x' = ax*x + bx*y + cx
+  y' = ay*x + by*y + cy
+  z' = az*z + cz
+where x',y',z' are the new coordinates, x,y,z the old and ax and so on
+the coefficients.  bz isn't used, as the vertical Z transformation is
+independent of the horizontal X,Y transformation.  The default values
+are ax=by=az=1.0 and all the rest zero - this is the identity
+transformation.
+
+I couldn't be bothered to write code to turn series of requests like
+`rotate clockwise by 90 degrees' and `translate by (1000,-500)' into
+the coefficients, so you'll just have to do that yourself.  If you
+can't figure out how go and attend a maths class :-).
+
+Thing rotation is done separately: you just say -r<degrees>.
+(According to the Doom specs the angles will be rounded to the nearest
+90 degrees, so rotating Things by small amounts is unlikely to be
+useful unless they are already at odd angles.)
+
+You can mix settings of the translation/thing rotation options with
+WAD files; each WAD will be processed using the options specified up
+to that point.  So, for example, you can do
+ $ mergewads.pl -tax0.75 -tby0.75 part1.wad -tax1 -tby1 -tcx4000 part2.wad
+to merge part1 and part2 with part 1 scaled down by a quarter and
+part2 translated by 4000 units in the X direction (so that it doesn't
+overlap part1).
+
+This script may not work well on DOS versions of Perl, because it
+loads all the data into memory and processes it there.  Use Un*x - you
+know it makes sense :-).
+
+Ian.

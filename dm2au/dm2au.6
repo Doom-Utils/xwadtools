@@ -1,0 +1,54 @@
+.TH dm2au 6 "12 January 2000"
+
+.SH NAME
+dm2au \- extract sfx sound data from a WAD file in Sun Ulaw format
+
+.SH SYNOPSIS
+.BR dm2au " [" "\-f \fIwadfile\fR" "] " \fIsndname\fR
+
+.SH DISCLAIMER
+This program is furnished on an AS IS basis for the fun of it.
+id Software, Raven Software and Activision do not support this program.
+
+.SH DESCRIPTION
+.B dm2au
+extracts sound data from IWAD and PWAD files as Sun Ulaw audio data,
+suitable for output to /dev/audio directly. The output is written into
+a file with the filename build from the sfx resource name with
+extension .au appended.
+
+.SH OPTIONS
+.TP
+.BR \-f " \fIwadfile\fR"
+By default
+.B dm2au
+extracts the sfx data from /usr/local/games/xdoom/doom2.wad. This
+option allows to extract sfx data from any other IWAD or PWAD file.
+.TP
+.I sndname
+The resource name of the sfx data entry in a WAD file. Sfx data
+resource names start with DS, e.g. DSPISTOL would be the name for the
+pistol sound. The resulting output file with Sun Ulaw data would
+be DSPISTOL.au for this example.
+
+.SH "SUPPORTED GAMES"
+Doom, Ultimate Doom, Doom][, Final Doom, Heretic, Hexen, Strife.
+
+.SH "SEE ALSO"
+The Unofficial Doom Specs by Matthew S Fell.
+.br
+OSS sound driver documentation by 4Front.
+.br
+.BR xwadtools (6)
+
+.SH BUGS/ERRORS
+Won't work on big endian system.
+.LP
+The output should be pipeable.
+
+.SH AUTHOR
+.B dm2au
+was written by Sam Lantinga (slouken@cs.ucdavis.edu).
+.LP
+The conversion routine for Sun Ulaw audio format was written
+by Rich Gopstein and Harris Corporation.

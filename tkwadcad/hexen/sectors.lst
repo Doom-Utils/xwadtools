@@ -1,0 +1,43 @@
+# List of sector types for Hexen.
+# The list doesn't need to be in any particulat order, tkwadcad
+# will sort it alphabetical by the description texts.
+
+  0 : Default: Normal
+
+  1 : Light: Phased
+  2 : Light: Sequence Start
+  3 : Light: Sequence Special 1
+  4 : Light: Sequence Special 2
+
+ 26 : Stairs: Special 1
+ 27 : Stairs: Special 2
+
+199 : Light: Indoor Lightning 1
+198 : Light: Indoor Lightning 2
+
+200 : Sky: use alternate sky specified in mapinfo
+
+201 : Floor: Scroll North Slow
+202 : Floor: Scroll North Medium
+203 : Floor: Scroll North Fast
+204 : Floor: Scroll East Slow
+205 : Floor: Scroll East Medium
+206 : Floor: Scroll East Fast
+207 : Floor: Scroll South Slow
+208 : Floor: Scroll South Medium
+209 : Floor: Scroll South Fast
+210 : Floor: Scroll West Slow
+211 : Floor: Scroll West Medium
+212 : Floor: Scroll West Fast
+213 : Floor: Scroll NorthWest Fast
+214 : Floor: Scroll NorthWest Medium
+215 : Floor: Scroll NorthWest Fast
+216 : Floor: Scroll NorthEast Slow
+217 : Floor: Scroll NorthEast Medium
+218 : Floor: Scroll NorthEast Fast
+219 : Floor: Scroll SouthEast Slow
+220 : Floor: Scroll SouthEast Medium
+221 : Floor: Scroll SouthEast Fast
+222 : Floor: Scroll SouthWest Slow
+223 : Floor: Scroll SouthWest Medium
+224 : Floor: Scroll SouthWest Fast

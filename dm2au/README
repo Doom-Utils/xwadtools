@@ -1,0 +1,7 @@
+/* This is a simple utility I wrote to extract sounds from DOOM wads
+   and convert them to Sun Ulaw format (suitable for cat >/dev/audio)
+
+Usage: dm2au [-f pwad] sndname
+
+	-Sam Lantinga		(slouken@cs.ucdavis.edu)
+*/

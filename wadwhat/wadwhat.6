@@ -1,0 +1,97 @@
+.TH wadwhat 6 "12 January 2000"
+
+.SH NAME
+wadwhat \- calculates statistics for Doom levels
+
+.SH SYNOPSIS
+.BR wadwhat " [" \-B "\fIn\fR[" M ]]
+.I wadfile
+
+.SH DISCLAIMER
+This program is furnished on an AS IS basis for the fun of it.
+id Software does not support this program.
+
+.SH DESCRIPTION
+.B wadwhat
+prints which maps are included in a WAD file, it tells whether a map can be
+used single-player or in a cooperative or deathmatch network game. It lists
+things present in each map at each skill level, like the monsters, weapons
+and powerups. The program calculates a difficulty rating for each map based
+on the ratio of monsters to ammunition. Also an average brightness for the
+maps is calculated and it prints the numbers of secrets, triggers and
+sectors with nukage floors.
+.LP
+Without any options
+.B wadwhat
+displays a detailed table of all this things described above, the output
+should be self explanatory. If a map has an average brightness of 128
+or less it's poorly lit, above 220 it's very well lit. The difficulty
+ratio is an attempt to provide some indication of how challenging a map
+is, based on the number of monsters and the amount of ammunition
+in the map. Total monster hp is the damage required to kill all the
+monsters in the map. Max ammunition damage is the amount of damage that
+could be done by using up all the ammunition in the map. This assumes
+that every pellet from a shotgun hits and all rockets always hit
+directly. The higher the ratio is, the more difficult the map.
+.LP
+If the brief option for the output is used, the header line uses the
+following shortcuts for displaying the informations:
+.TP
+.B St
+Starting positions. 'c' is the number of cooperative players and 'd'
+is the number of deathmatch players in hexadecimal.
+.TP
+.B Bosses
+The number of barons, cyberdemons and spiderdemons.
+.TP
+.B Monsters
+The number of troopers, sergeants, imps, demons, spectres, lost souls
+and cacodemons. '++' will be printed if more then 99 of a monster are
+present.
+.TP
+.B Weapons
+Which weapons can be found in the level: C=chainsaw, P=pistol, S=shotgun,
+2=double shotgun, C=chaingun, R=rocket launcher, P=plasma rifle,
+B=BFG 9000.
+.TP
+.B Equip
+Which equipment is present: B=backpack, V=invulnerability, S=berserk,
+I=invisibility, R=radiation suit, A=computer map (allmap),
+L=light amplification goggles.
+.TP
+.B RATIO
+The difficulty ratio of the map at the specified skill level.
+
+.SH OPTIONS
+.TP
+.RB [ \-B "\fIn\fR[" M ]]
+Display brief statistics for skill level \fIn\fR, where \fIn\fR can be 1 \- 5.
+If the option is followed by \fBM\fR the statistics are calculated for
+the multiplayer things in the level.
+.TP
+.I wadfile
+The wadfile to analyze.
+
+.SH SUPPORTED GAMES
+Doom, Ultimate Doom, Doom][, Final Doom.
+
+.SH SEE ALSO
+.BR xwadtools (6)
+
+.SH BUGS/ERRORS
+If Doom option -respawn is used, the effective number of monsters in the map
+will increase because they keep coming back to life.
+.LP
+The ratio ignores damage that may be done by exploding rockets, barrels,
+BFG 9000 blasts and monsters killing each other. It also doesn't take into
+account damage done by the chainsaw or fists.
+.LP
+Doesn't work on big endian systems.
+
+.SH AUTHOR
+.B wadwhat
+originally was written by Randall R. Spangler.
+.LP
+Later it was modified for Doom][ by Gregory Kwok
+.LP
+This version was ported to UNIX and improved then by Udo Munk.

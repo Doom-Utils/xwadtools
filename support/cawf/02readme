@@ -1,0 +1,10 @@
+This sources are modified to make it working under Windows 9x/NT
+with the Cygwin tools.
+
+The library path is modified to c:\lib\cawflib and the TERM environment
+variable is not used anymore, to figure which device type to use. There
+is support for dumb.dev included only anyway and under Cygwin bash $TERM
+is set to cygwin. Instead of hacking new device files we just use the
+provided dumb one, good enough.
+
+Udo Munk	(um@compuserve.com)

@@ -1,0 +1,29 @@
+A small Hexen level, used to test out the capabilities of xwadtools for
+building Hexen levels. Don't expect much from this level yet, it is tiny
+and not great fun to play. But it shows how to use ACS scripts and linedef
+specials for building traps and it has a working Polyobj door. Textures
+might not be properly aligned, I'll keep working on it as time permits.
+Feel free to mess with this level in any way you wish, I release it in the
+hope that it shows how to make Hexen levels with xwadtools.
+
+nowhere.map	- The level map created with tkwadcad.
+
+nowhere.res	- Response file for mkwad which non graphical resources
+		  to include.
+
+nowhere.acs	- The ACS script sources for the map.
+wvars.acs	- World global variable declarations for this level project.
+
+mapinfo.txt	- The MAPINFO lump with sky to use, sound track, etc.
+
+Are the bats bothering you? Hammer at the wall at the cave they come from,
+that will spook the little buggers. Then again, spooking some harmless bats
+might not be that a great idea...
+
+The story so far...
+The other day you annoyed a very powerful mage too much and he used a
+teleportation spell on you. He teleported you to some place on the planet
+NOWHERE you'd ever been before. Your goal is to find the way back to the
+action and maybe take revenge.
+Better don't assume he teleported you to a nice place, he was real pissed
+when he casted the spell...

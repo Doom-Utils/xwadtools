@@ -1,0 +1,9 @@
+#!/bin/sh
+
+#
+# convenient script to make a single program after modification
+# under UNIX with debugging support
+# use the native compilers for that
+#
+
+cd $1; CFLAGS="-g -DUNIX" CPPFLAGS="-g -DUNIX" CC=cc CPP=CC make

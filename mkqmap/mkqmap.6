@@ -1,0 +1,37 @@
+.TH mkqmap 6 "13 January 2000"
+
+.SH NAME
+mkqmap \- make a color quantization map from WAD color palettes for usage with ppmquant
+
+.SH SYNOPSIS
+.BR mkqmap " [" "\-c \fIpalette\fP" ]
+
+.SH DISCLAIMER
+This program is furnished on an AS IS basis for the fun of it.
+id Software, Raven Software and Activision do not support this program.
+
+.SH DESCRIPTION
+The program writes a color map to stdout, which can be used as a
+quantization map for \fBppmqant\fR.
+
+.SH OPTIONS
+.TP
+\fB\-c\fR \fIpalette\fR
+By default the program generates Doom color map. With this option another
+palette can be used, \fIpalette\fR can be \fIdoom\fR, \fIheretic\fR,
+\fIhexen\fR or \fIstrife\fR.
+
+.SH SUPPORTED GAMES
+Doom, Ultimate Doom, Doom][, Final Doom, Heretic, Hexen, Strife.
+
+.SH SEE ALSO
+.BR ppmquant "(1), "
+.BR wadgc "(6), "
+.BR xwadtools (6)
+
+.SH BUGS/ERRORS
+None.
+
+.SH AUTHOR
+.B mkqmap
+was written by Udo Munk (um@compuserve.com).

@@ -1,0 +1,70 @@
+#
+#	Makefile for the maintainer of Xwadtools
+#	Requires GNU make.
+#	AYM 2000-01-09
+#
+
+META1    = doc/xwadtools_head.6 doc/xwadtools_body.6 doc/xwadtools_foot.6
+META2    = doc/xwadtools.6
+MANPAGES = $(filter-out $(META1) $(META2), $(wildcard */*.6))
+TMPF     = /tmp/xwadtools.$$$$
+
+all: $(META2)
+
+$(META2): $(META1) Makefile.mnt
+	echo '.\"  -----------------------------------------------------' >$@
+	echo '.\"  |                                                   |' >>$@
+	echo '.\"  |                   DO NOT EDIT                     |' >>$@
+	echo '.\"  |      This is an automatically generated file      |' >>$@
+	echo '.\"  |                                                   |' >>$@
+	echo '.\"  -----------------------------------------------------' >>$@
+	echo '.\"' >>$@
+	cat $(META1) >>$@
+
+# Generate the body of the xwadtools(6) man page. The first awk
+# script extracts the contents of the NAME sections of all the
+# existing man pages. The second awk script just prepends and
+# appends some troff stuff to that. The sort in between is
+# needed because the files in $(MANPAGES) are naturally sorted
+# by directory name first and we want them sorted by basename.
+#
+# Descriptions are truncated so that lines don't wrap when
+# viewed with a vanilla man pager in a 80-column tty. I felt
+# that neatness was more important than accuray. You may
+# disagree. I chose a limit of 64 characters because I vaguely
+# remembered reading that the POSIX standard recommends that
+# descriptions be no longer than that. Coincidentally, that
+# length has the nice property, when formatting with nroff, to
+# cause the final result to be truncated to exactly 80
+# characters per line. Que demande le peuple ?
+#
+# The space between the name and the tabulation is necessary for
+# long names not to be stuck against the description.
+
+doc/xwadtools_body.6: $(MANPAGES)
+	awk\
+	  '\
+	    BEGIN         { FS = " [\\\\]- "; }\
+	    /^\.SH NAME/  { got_header = 1; next; }\
+	    got_header    { print "\\fB" $$1 "\\fP \t" substr ($$2, 0, 64); }\
+	                  { got_header = 0; }\
+	  '\
+	  $^\
+	| sort\
+	| awk\
+	    '\
+	      BEGIN {\
+	        print ".\\\" We do not want lines to wrap, since that would";\
+	        print ".\\\" make the man page considerably less readable.";\
+	        print ".nf ";\
+	        print ".ta 10";\
+              }\
+	      {\
+	        print;\
+	      }\
+	      END {\
+	        print ".\\\" Return to normal.";\
+	        print ".fi";\
+	      }\
+	    '\
+	    >$@

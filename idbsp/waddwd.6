@@ -1,0 +1,41 @@
+.TH waddwd 6 "23 June 2000"
+
+.SH NAME
+waddwd \- a WAD to DWD converter for WAD files
+
+.SH SYNOPSIS
+.B waddwd
+.IR infile.wad " [" outfile.dwd ]
+
+.SH DISCLAIMER
+This program is furnished on an AS IS basis for the fun of it.
+id Software, Raven Software and Activision do not support this program.
+
+.SH DESCRIPTION
+This program takes an IWAD or PWAD input file and decompiles the included
+level maps into a DWD text file (Doom WorldServer version 4), which can
+be used as input file by the node builder \fBidbsp\fR.
+The program also extracts all other resources from the input WAD file and
+writes the lumps as binary data files with file names build from the lump
+names included in the WAD file, with the extension .lmp appended.
+
+.SH SUPPORTED GAMES
+Doom, Ultimate Doom, Doom][, Final Doom, Heretic.
+
+.SH SEE ALSO
+.BR idbsp "(6), "
+.BR xwadtools (6)
+
+.SH BUGS/ERRORS
+The program will not handle WAD files with markers in the lump directory
+correct, it will dump core on lumps with size 0, as used for markers.
+
+.SH AUTHOR
+.B Waddwd
+was written by Ron Rossbach <ej070@cleveland.freenet.edu> and
+modified by Antony Suter <antony@werple.apana.org.au>.
+.LP
+Some bug fixes and support for Doom][ WAD's was done by
+Udo Munk <um@compuserve.com>.
+.LP
+Big endian support added by Oliver Kraus (olikraus@yahoo.com).

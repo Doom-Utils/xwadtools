@@ -1,0 +1,83 @@
+//**************************************************************************
+//**
+//** test.acs
+//**
+//**************************************************************************
+
+#include "common.acs"
+
+script 2 OPEN
+{
+	delay(const: 35);
+	setlinetexture(11, SIDE_FRONT, TEXTURE_MIDDLE, "castle07");
+	delay(const: 35);
+	setlinetexture(11, SIDE_FRONT, TEXTURE_MIDDLE, "ice01");
+
+	restart;
+}
+
+#define DIR_UP 1
+#define DIR_DOWN 0
+
+script 5 (void)
+{
+	int i;
+	int tag;
+	int direction;
+	str gameTypeString;
+	int startTime;
+
+	delay(const: 2*35);
+	switch(gametype())
+	{
+		case GAME_SINGLE_PLAYER:
+			gameTypeString = "SINGLE PLAYER";
+			break;
+		case GAME_NET_COOPERATIVE:
+			gameTypeString = "COOPERATIVE";
+			break;
+		case GAME_NET_DEATHMATCH:
+			gameTypeString = "DEATHMATCH";
+			break;
+	}
+	print(s: gameTypeString, s: ", SKILL LEVEL ", d: gameskill());
+	delay(const: 2*35);
+
+	print(s: "NUMBER OF PLAYERS: ", d: playercount());
+	delay(const: 2*35);
+
+	startTime = timer();
+	do
+	{
+		print(s: "TIMER IS: ", d: timer());
+		delay(const: 8);
+		ambientsound("FighterGrunt", 127);
+	} until(timer() > startTime+5*35);
+	delay(const: 3*35);
+
+	while(i < 10)
+	{
+		print(s: "WILL HAPPEN IN ", d: 10-i++, s: " SECONDS ...");
+		ambientsound("PickupItem", 127);
+		delay(const: 35);
+	}
+
+	while(TRUE)
+	{
+		i = 200;
+		while(i < 216)
+		{
+			direction = random(const: 0, 1);
+			if(direction == DIR_UP)
+			{
+				Floor_RaiseByValue(i, 50, 4);
+			}
+			else
+			{
+				Floor_LowerByValue(i, 50, 4);
+			}
+			i++;
+		}
+		delay(const: 16);
+	}
+}

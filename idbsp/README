@@ -1,0 +1,61 @@
+First, the sources say this programs come with a README, the archive I got
+included sources only and no README or any other documentation, so this was
+written completely by me (Udo Munk).
+
+Then the programs had some bugs, an integer is not a long and printf()/scanf()
+aren't happy if one uses format %d and then passes a long, fixed.
+There were plenty of warnings, unused variables, comments inside comments and
+stuff like this, fixed.
+
+Then both programs only were usable for Doom WAD files, I added support for
+Doom][ WAD files.
+
+Then idbsp aligned things on a 16 pixel grid, which made it almost useless.
+I modified that, so that it matches the other tools in this collection,
+things can be positioned anywhere with tkwadcad and don't need to be on a
+grid. As far as I know every WAD editor allows to position things anywhere.
+
+If one runs idbsp it refers to the included README for terms of use and
+distribution. As explained above, there was no README in the archive.
+The source file idbsp.c says that the programs use and distribution is
+permitted according to the terms of the GNU General Public License. I have
+downloaded the original id Software Objective-C code and compared it with
+this stuff. Without doubt the same algorithms are used, idbsp is a port
+from Objective-C to ANSI C of the original id sources. The sources
+released by id didn't include any copyright or other terms of usage and
+distribution. I'm not certain, that sources for this idbsp port really
+are under GPL, because it seems to be id's property, algorithm wise. So,
+if in doubt consult a legal eagle or ask id, whatever.
+
+I guess the program waddwd was written from scratch, the source file
+says use and distribution of the code is permitted to the terms of the
+GNU General Public License, included in the doc directory.
+
+September 1998, Udo Munk (um@compuserve.com)
+
+More work done July/August 1999, Udo Munk (um@compuserve.com):
+
+	- the sources looked like anyone rolled an armadillo over a keyboard,
+	  the poor thing got awful sick from that and puked all over the
+	  sources. I do not enjoy reading code like that, reformatted so that
+	  a C programmer who read one or both of the bibles will recognize this
+	  as C source code.
+	- deleted the Objective-C fragments left from those who ported it to
+	  ANSI C. The Objective-C code was not very helpful for understanding
+	  the code, and in case anyone wishes to reference it, the original
+	  sources released by id still are available on their Internet server.
+	- hum, if programs run into errors the main function does not return
+	  0, it returs a value different from 0. That is so, so that one can
+	  catch errors in shell scripts running programs, fixed.
+	- endian support was commented out by others before, sigh. Fixed so
+	  that idbsp should be usable on big endian systems too. Removed the
+	  local endian support routines and used the ones from the lib.
+	- added support so that idbsp can read map file in Doom format
+	  directely.
+	- added support for map files in extended Hexen format.
+        - added support for Hexen BEHAVIOR resource.
+	- added option to suppress splitting of lines.
+	- added quiet option.
+	- raised version number to 2.0.0, to many modifications done for
+	  still calling it 1.something.
+	- renamed wad_dwd to waddwd, more comfortable to type.

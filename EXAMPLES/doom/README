@@ -1,0 +1,10 @@
+Besides the examples in this directory you might want to have a look at XDoom
+too, if you are using a UNIX system. The XDoom engine has some new features
+implemented over the sources id released and the distribution includes example
+PWAD's, which demonstrate this features. This examples include all the sources
+to rebuild the PWADs self with xwadtools, so even if you favor another Doom
+engine and are not interested in the XDoom features, you might be able to learn
+something from the examples included there.
+
+XDoom is available at ftp://ftp.cdrom.com/pub/doom/source/xdoom* and mirrors
+like http://www.doomworld.com.

@@ -1,0 +1,47 @@
+.TH listacs 6 "12 January 2000"
+
+.SH NAME
+listacs \- Action Code Script disassembler for WAD files
+
+.SH SYNOPSIS
+.B listac
+.I wadfile map
+.RB [ script ]
+.br
+   or
+.br
+.B listacs
+.I objectfile
+.RB [ script ]
+
+.SH DISCLAIMER
+This program is furnished on an AS IS basis for the fun of it.
+id Software, Raven Software and Activision do not support this program.
+
+.SH DESCRIPTION
+.B listacs
+disassembles ACS P code in existing WAD and object files.
+If \fIscript\fR is not given as argument, the program lists all scripts
+and strings included in the object file or the map in a WAD file.
+
+.SH SUPPORTED GAMES
+Hexen.
+.LP
+Extended Doom engines like XDoom and ZDoom include Hexen binary compatible
+P code interpreters and \fBlistacs\fR can be used to disassemble scripts
+written for this engines too.
+
+.SH SEE ALSO
+The Official Hexen Technical Specs by Ben Morris.
+.br
+.BR acc "(6), "
+.BR xwadtools (6)
+
+.SH BUGS/ERRORS
+Won't work on big endian systems.
+
+.SH AUTHOR
+.B listacs
+was written by Randy Heit (rheit@iastate.edu).
+.LP
+Ported to UNIX by Udo Munk (um@compuserve.com).

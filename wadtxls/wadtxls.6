@@ -1,0 +1,173 @@
+.TH wadtxls 6 "12 January 2000"
+
+.SH NAME
+wadtxls \- WAD TeXtures LiSter
+
+.SH SYNOPSIS
+.BR wadtxls " [" \-? ]
+.RB [ "\-w \fImain_WAD_file\fR" ]
+.RB [ "\-pw \fIpatch_WAD_file\fR" ]
+.RB [ "\-file \fIpatch_WAD_files ...\fR" ]
+.RB [ \-t "] [" \-f ]
+.RB [ +v [ l "]]"
+.RB [ "\-n \fIname\fR" ]
+.BR \-e " \fIepisode\fR"
+.BR \-m " \fImission\fR"
+.BR \-o " \fITextures_list_file\fR"
+
+.SH DISCLAIMER
+This program is furnished on an AS IS basis for the fun of it.
+id Software, Raven Software and Activision do not support this program.
+
+.SH DESCRIPTION
+.B wadtxls
+is a command-line utility to generate cross-reference lists of the wall
+textures and flats used in levels in
+.BR DOOM ,
+.BR "DOOM ][" ,
+.B Ultimate DOOM
+and
+.BR Heretic ,
+the 3D action games by id Software and Raven Software.  It's a handy little
+tool for PWAD developers, especially when applying custom textures.
+.LP
+Without verbose modes, just the texture names are listed alphabetically,
+preceded by the number of times each is used in the level.
+.LP
+In verbose mode the SideDef/Sector numbers are listed after each texture
+name, followed by letters indicating where exactly the texture is in use.
+For SideDef numbers: U = Upper, L = Lower and N = Normal (middle) texture.
+For Sector numbers: F = Floor and C = Ceiling texture.
+.LP
+In verbose-line mode the SideDef numbers are followed by their corresponding
+LineDef numbers and indication whether it is the 1st ("right") or 2nd ("left")
+SideDef for each LineDef.
+
+.SH OPTIONS
+Options are case-insensitive and filenames and level names are case-sensitive.
+Both the short and long forms of the options are listed.
+.TP
+.B -? -h -help
+Displays usage information.
+.TP
+.B -w -main
+Specifies the name of the main WAD file; default is doom.wad.
+Eg. to use the DOOM ][ main WAD file, specify:
+.B -w
+.I doom2.wad .
+.TP
+.B -pw -pwad
+Specifies the name of a patch WAD file.
+Eg. to merge a single patch WAD file, specify:
+.B -pw
+.I <file>.wad .
+.TP
+.B -file
+Specifies a list of names of patch WAD files.
+Eg. to merge several patch WAD files, specify:
+.B -file
+.I <file1>.wad <file2>.wad <file3>.wad .
+.TP
+.B -t -texts
+Turns off listing of wall textures (default on).
+.TP
+.B -f -flats
+Turns off listing of flats (default on).
+.TP
+.B +v +verbose
+Turns on verbose listing of SideDef/Sector numbers (default off).
+.TP
+.B +vl +verbline
+Turns on verbose-line listing of LineDef numbers (default off).
+.TP
+.B -n -name
+Specifies the user level name to be used when listing the level.
+Overrules the regular name for that episode/mission. Eg. to set the name
+for a patch WAD level, specify: -n
+.I <patch level name> .
+.TP
+.B -e -episode
+Specifies the episode number for DOOM/Heretic levels, or 0 (zero) for
+DOOM ][ levels. Eg. to set the episode for level Mt. Erebus, specify: -e
+.I 3 .
+.TP
+.B -m -mission
+Specifies the mission number for DOOM/Heretic levels, or the map number for
+DOOM ][ levels. Eg. to set the mission for level Mt. Erebus, specify: -m
+.I 6 .
+.TP
+.B -o -txfile
+Specifies the name of the output Textures list file. Eg. to define an output
+file for level Mt. Erebus, specify: -o
+.I E3M6.lst .
+.LP
+The options
+.BR t ,
+.BR f ,
+.B v
+and
+.B vl
+are actually booleans that can be preceded by
+.B +
+or
+.BR - .
+
+.SH EXAMPLE
+The command:
+.nf
+
+  wadtxls -file foobar.wad -name FooBar -e 1 -m 1 +V -o foobar.lst
+
+.fi
+illustrates how various forms of the options can be mixed and
+gives the following messages:
+.nf
+
+  WADTXLS: WAD TeXtures LiSter, ver 1.1
+   By Frans P. de Vries <fpv@xymph.iaf.nl>
+  [Derived from DEU v5.21 GCC by Brendon Wyber and Raphael Quinet]
+
+  Patch WAD file: foobar.wad.
+  User level name: FooBar.
+  Episode number: 1.
+  Mission number: 1.
+  Verbose lists.
+  Textures output file: foobar.lst.
+  Loading main WAD file: doom.wad...
+  Loading patch WAD file: foobar.wad...
+     [Updating level E1M1]
+
+  Outputting PostScript map of level E1M1 to "foobar.lst".
+
+.fi
+
+.SH SUPPORTED GAMES
+Doom, Ultimate Doom, Doom][, Heretic.
+
+.SH "SEE ALSO"
+DEU 5.21, by Raphael Quinet and Brendon J. Wyber, ported to GCC by
+Per Allansson and Per Kofod
+.br
+DOOM Specs v1.666, by Matt Fell
+.br
+.BR deutex "(6), "
+.BR xwadtools (6)
+
+.SH LIMITATIONS
+LineDef, SideDef and Sector numbers above 9999 disrupt the table layouts,
+but will not affect the program's operation.
+
+.SH DIAGNOSTICS
+.B wadtxls
+can terminate with error messages in the following format:
+.RS
+Program Error: *** <error message> ***
+.RE
+The messages are fairly self-explanatory and are therefore not repeated here.
+
+.SH AUTHOR
+Frans P. de Vries <fpv@xymph.iaf.nl>
+.LP
+Endian support modified by Udo Munk (um@compuserve.com).
+.LP
+More big endian fixes by Oliver Kraus (olikraus@yahoo.com).

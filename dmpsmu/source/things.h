@@ -1,0 +1,287 @@
+/*
+   DooM PostScript Maps Utility, by Frans P. de Vries.
+
+Derived from:
+
+   Doom Editor Utility, by Brendon Wyber and Raphaël Quinet.
+
+   You are allowed to use any parts of this code in another program, as
+   long as you give credits to the authors in the documentation and in
+   the program itself.  Read the file README for more information.
+
+   This program comes with absolutely no warranty.
+
+   THINGS.H - Thing type and class definitions.
+*/
+
+
+/* DOOM & Heretic common Things */
+
+/* Starting points */
+#define THING_PLAYER1		1
+#define THING_PLAYER2		2
+#define THING_PLAYER3		3
+#define THING_PLAYER4		4
+#define THING_DEATHMATCH	11
+#define THING_TELEPORT		14
+
+/* DOOM Things */
+
+/* Enhancements & bonuses */
+#define THING_BLUECARD		5
+#define THING_YELLOWCARD	6
+#define THING_REDCARD		13
+#define THING_BLUESKULLKEY	40
+#define THING_YELLOWSKULLKEY	39
+#define THING_REDSKULLKEY	38
+#define THING_ARMBONUS1		2015
+#define THING_GREENARMOR	2018
+#define THING_BLUEARMOR		2019
+#define THING_HLTBONUS1		2014
+#define THING_STIMPACK		2011
+#define THING_MEDIKIT		2012
+#define THING_SOULSPHERE	2013
+#define THING_MEGASPHERE	83	/* ][ */
+#define THING_RADSUIT		2025
+#define THING_COMPMAP		2026
+#define THING_BLURSPHERE	2024
+#define THING_BERSERK		2023
+#define THING_INVULN		2022
+#define THING_LITEAMP		2045
+
+/* Weapons & ammo */
+#define THING_CHAINSAW		2005
+#define THING_SHOTGUN		2001
+#define THING_COMBATGUN		82	/* ][ */
+#define THING_CHAINGUN		2002
+#define THING_LAUNCHER		2003
+#define THING_PLASMAGUN		2004
+#define THING_BFG9000		2006
+#define THING_AMMOCLIP		2007
+#define THING_AMMOBOX		2048
+#define THING_SHELLS		2008
+#define THING_SHELLBOX		2049
+#define THING_ROCKET		2010
+#define THING_ROCKETBOX		2046
+#define THING_ENERGYCELL	2047
+#define THING_ENERGYPACK	17
+#define THING_BACKPACK		8
+
+/* Enemies */
+#define THING_HUMAN		3004
+#define THING_SERGEANT		9
+#define THING_COMMANDO		65	/* ][ */
+#define THING_IMP		3001
+#define THING_DEMON		3002
+#define THING_SPECTRE		58
+#define THING_LOSTSOUL		3006
+#define THING_CACODEMON		3005
+#define THING_PAINELEM		71	/* ][ */
+#define THING_MANCUBUS		67	/* ][ */
+#define THING_REVENANT		66	/* ][ */
+#define THING_KNIGHT		69	/* ][ */
+#define THING_BARON		3003
+#define THING_ARACHNO		68	/* ][ */
+#define THING_ARCHVILE		64	/* ][ */
+#define THING_CYBERDEMON	16
+#define THING_SPIDERBOSS	7
+#define THING_WOLF3DSS		84	/* ][ */
+
+/* Specials */
+#define THING_BARREL		2035
+#define THING_BOSSBRAIN		88	/* ][ */
+#define THING_BOSSSHOOT		89	/* ][ */
+#define THING_SPAWNSPOT		87	/* ][ */
+#define THING_KEEN		72	/* ][ */
+
+/* Decorations */
+#define THING_TECHCOLUMN	48
+#define THING_TGREENPILLAR	30
+#define THING_TREDPILLAR	32
+#define THING_SGREENPILLAR	31
+#define THING_SREDPILLAR	33
+#define THING_PILLARHEART	36
+#define THING_PILLARSKULL	37
+#define THING_EYEINSYMBOL	41
+#define THING_GREYTREE		43
+#define THING_BROWNSTUB		47
+#define THING_BROWNTREE		54
+
+/* Decorations 2 */
+#define THING_LAMP		2028
+#define THING_TALLLAMP		85	/* ][ */
+#define THING_SHORTLAMP		86	/* ][ */
+#define THING_CANDLE		34
+#define THING_CANDELABRA	35
+#define THING_TBLUETORCH	44
+#define THING_TGREENTORCH	45
+#define THING_TREDTORCH		46
+#define THING_SBLUETORCH	55
+#define THING_SGREENTORCH	56
+#define THING_SREDTORCH		57
+#define THING_FLAMECAN		70	/* ][ */
+
+/* Decorations 3 */
+#define THING_DEADPLAYER	15
+#define THING_DEADHUMAN		18
+#define THING_DEADSERGEANT	19
+#define THING_DEADIMP		20
+#define THING_DEADDEMON		21
+#define THING_DEADCACODEMON	22
+#define THING_DEADLOSTSOUL	23
+#define THING_BONES		10
+#define THING_BONES2		12
+#define THING_POOLOFBLOOD	24
+#define THING_POOLOFBLOOD2	79	/* ][ */
+#define THING_POOLOFBLOOD3	80	/* ][ */
+#define THING_POOLOFBRAINS	81	/* ][ */
+#define THING_SKULLTOPPOLE	27
+#define THING_HEADSKEWER	28
+#define THING_PILEOFSKULLS	29
+#define THING_IMPALEDBODY	25
+#define THING_IMPALEDBODY2	26
+#define THING_SKULLSINFLAMES	42
+
+/* Decorations 4 */
+#define THING_HANGINGSWAYING	49
+#define THING_HANGINGSWAYING2	63
+#define THING_HANGINGARMSOUT	50
+#define THING_HANGINGARMSOUT2	59
+#define THING_HANGINGONELEG	51
+#define THING_HANGINGONELEG2	61
+#define THING_HANGINGTORSO	52
+#define THING_HANGINGTORSO2	60
+#define THING_HANGINGLEG	53
+#define THING_HANGINGLEG2	62
+#define THING_HANGINGNOGUTS	73	/* ][ */
+#define THING_HANGINGNOGUTS2	74	/* ][ */
+#define THING_HANGINGLOOKDN	75	/* ][ */
+#define THING_HANGINGLOOKUP	77	/* ][ */
+#define THING_HANGINGTORSO3	76	/* ][ */
+#define THING_HANGINGTORSO4	78	/* ][ */
+
+
+/* Heretic Things */
+
+/* Enhancements & bonuses */
+#define THING_BLUEKEY		79
+#define THING_GREENKEY		73
+#define THING_YELLOWKEY		80
+#define THING_VIAL		81
+#define THING_FLASK		82
+#define THING_MYSTICURN		32
+#define THING_SILVSHIELD	85
+#define THING_ENCHSHIELD	31
+#define THING_MAPSCROLL		35
+#define THING_TOMEPOWER		86
+#define THING_TIMEBOMB		34
+#define THING_CHAOSDEV		36
+#define THING_SHADOWSPHR	75
+#define THING_RINGINVULN	84
+#define THING_TORCH		33
+#define THING_WINGS		83
+#define THING_MORPHOVUM		30
+
+/* Weapons & ammo */
+#define THING_GAUNTLETS		2005
+#define THING_CROSSBOW		2001
+#define THING_DRAGONCLAW	53
+#define THING_HELLSTAFF		2004
+#define THING_PHOENIXROD	2003
+#define THING_MACE		2002
+#define THING_CRYSTAL		12
+#define THING_CRGEODE		10
+#define THING_ARROWS		18
+#define THING_ARQUIVER		19
+#define THING_CLAWORB		54
+#define THING_ENERGYORB		55
+#define THING_RUNESSML		21
+#define THING_RUNESLRG		20
+#define THING_FLAMEORBSML	23
+#define THING_FLAMEORBLRG	22
+#define THING_MACESPHSML	16
+#define THING_MACESPHLRG	13
+#define THING_BAGHOLDING	8
+
+/* Enemies */
+#define THING_GARGOYLE		66
+#define THING_FRGARGOYLE	5
+#define THING_GOLEM		68
+#define THING_GOLEMGH		69
+#define THING_NTGOLEM		45
+#define THING_NTGOLEMGH		46
+#define THING_WARRIOR		64
+#define THING_WARRIORGH		65
+#define THING_DISCIPLE		15
+#define THING_SABRECLAW		90
+#define THING_WEREDRAGON	70
+#define THING_OPHIDIAN		92
+#define THING_IRONLICH		6
+#define THING_MAULOTAUR		9
+#define THING_DSPARIL		7
+
+/* Specials */
+#define THING_DSPARILSPOT	56
+#define THING_GLITTELEPORT	74
+#define THING_GLITTELEEXIT	52
+#define THING_POD		2035
+#define THING_PODGENERATOR	43
+#define THING_VOLCANO		87
+
+/* Decorations */
+#define THING_BROWNBARREL	44
+#define THING_TBROWNPILLAR	47
+#define THING_SGREYPILLAR	29
+#define THING_BLUESPHERE	94
+#define THING_GREENSPHERE	95
+#define THING_YELLOWSPHERE	96
+
+/* Decorations 2 */
+#define THING_WALLTORCH		50
+#define THING_SERPENTTORCH	27
+#define THING_CHANDELIER	28
+#define THING_FIREBRAZIER	76
+
+/* Decorations 3 */
+#define THING_MOSS1STR		49
+#define THING_MOSS3STR		48
+#define THING_STALACTSMALL	39
+#define THING_STALACTLARGE	40
+#define THING_STALAGMSMALL	37
+#define THING_STALAGMLARGE	38
+
+/* Decorations 4 */
+#define THING_HANGINGCORPSE	51
+#define THING_HANGINGSKULL1	26
+#define THING_HANGINGSKULL2	25
+#define THING_HANGINGSKULL3	24
+#define THING_HANGINGSKULL4	17
+
+/* Sounds */
+#define THING_SNDBELSS		1205
+#define THING_SNDDROPS		1202
+#define THING_SNDFASTFOOT	1209
+#define THING_SNDSLOWFOOT	1203
+#define THING_SNDHEARTBEAT	1204
+#define THING_SNDGROWL		1206
+#define THING_SNDLAUGHTER	1208
+#define THING_SNDMAGIC		1207
+#define THING_SNDSCREAM		1200
+#define THING_SNDSQUISH		1201
+#define THING_SNDWIND		42
+#define THING_SNDWATERFALL	41
+
+
+/* Classes */
+
+#define CLASS_START	0
+#define CLASS_ENHANCE	1
+#define CLASS_BONUS	2
+#define CLASS_WEAPON	3
+#define CLASS_ENEMY	4
+#define CLASS_DECOR	5
+#define CLASS_BARREL	6
+#define CLASS_TELEPORT	7
+#define CLASS_UNKNOWN	8
+
+/* end of file */

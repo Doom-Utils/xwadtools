@@ -1,0 +1,136 @@
+#
+# Makefile to compile under DOS with the DJGPP GNU compiler
+#
+
+# define for big endian machine like Sun Sparc, the x86 stuff is little endian
+# solaris on sparcs:              ENDIAN = -DBIGEND
+# linux/solaris on x86 systems:   ENDIAN = 
+ENDIAN =
+
+# Define the Operating System here, possible choices are:
+#	-DUNIX
+#	-DMSDOS
+OS = -DMSDOS
+
+# we use DJGPP GNU C
+CC = gcc
+CFLAGS = '-O2 -Wall $(ENDIAN) $(OS)'
+#CFLAGS = '-g -Wall $(ENDIAN) $(OS)'
+
+# hm, no g++ compiler driver in DJGPP, so we use gcc too
+CPP = gcc
+CPPFLAGS = '-x c++ -O -Wall $(ENDIAN) $(OS)'
+
+# additional libs needed to link C++ programs
+CPPLIB = -liostr
+
+# that better is a GNU make!
+MAKE = make
+
+# your installation directories
+BINDIR = c:/bin
+LIBDIR = c:/lib
+
+#-----------------------------------------------------------------------------
+
+all:
+	cd lib; $(MAKE) CC=$(CC) CFLAGS=$(CFLAGS); cd ..
+	cd mkwad; $(MAKE) CC=$(CC) CFLAGS=$(CFLAGS); cd ..
+	cd lswad; $(MAKE) CC=$(CC) CFLAGS=$(CFLAGS); cd ..
+	cd mktran; $(MAKE) CC=$(CC) CFLAGS=$(CFLAGS); cd ..
+	cd wadps; $(MAKE) CC=$(CC) CFLAGS=$(CFLAGS); cd ..
+	cd wadwhat; $(MAKE) CC=$(CC) CFLAGS=$(CFLAGS); cd ..
+	cd qmus2mid; $(MAKE) CC=$(CC) CFLAGS=$(CFLAGS); cd ..
+	cd wadtxls; $(MAKE) CC=$(CC) CFLAGS=$(CFLAGS); cd ..
+	cd bsp; $(MAKE) CC=$(CC) CFLAGS=$(CFLAGS); cd ..
+	cd idbsp; $(MAKE) CC=$(CC) CFLAGS=$(CFLAGS); cd ..
+	cd wadlc; $(MAKE) CC=$(CC) CFLAGS=$(CFLAGS); cd ..
+	stubedit wadlc/wadlc.exe minstack=512K
+	cd wadldc; $(MAKE) CC=$(CC) CFLAGS=$(CFLAGS); cd ..
+	cd wadgc; $(MAKE) CC=$(CC) CFLAGS=$(CFLAGS); cd ..
+	cd wadext; $(MAKE) CC=$(CC) CFLAGS=$(CFLAGS); cd ..
+	cd wadtex; $(MAKE) CC=$(CC) CFLAGS=$(CFLAGS); cd ..
+	cd wadflat; $(MAKE) CC=$(CC) CFLAGS=$(CFLAGS); cd ..
+	cd wadsprit; $(MAKE) CC=$(CC) CFLAGS=$(CFLAGS); cd ..
+	cd wadpat; $(MAKE) CC=$(CC) CFLAGS=$(CFLAGS); cd ..
+	cd wadcat; $(MAKE) CC=$(CC) CFLAGS=$(CFLAGS); cd ..
+	cd multigen; $(MAKE) CC=$(CC) CFLAGS=$(CFLAGS); cd ..
+	cd raw2ppm; $(MAKE) CC=$(CC) CFLAGS=$(CFLAGS); cd ..
+	cd raw2sfx; $(MAKE) CC=$(CC) CFLAGS=$(CFLAGS); cd ..
+	cd reject; $(MAKE) CPP=$(CPP) CPPFLAGS=$(CPPFLAGS) CPPLIB=$(CPPLIB); cd ..
+	cd warm; $(MAKE) CC=$(CC) CFLAGS=$(CFLAGS); cd ..
+	cd slige; $(MAKE) CC=$(CC) CFLAGS=$(CFLAGS); cd ..
+	cd dmpsmu/source; $(MAKE) CC=$(CC) CFLAGS=$(CFLAGS); cd ..
+	cd swantbls; $(MAKE) CC=$(CC) CFLAGS=$(CFLAGS); cd ..
+	cd acc; $(MAKE) CC=$(CC) CFLAGS=$(CFLAGS) LIBDIR=$(LIBDIR); cd ..
+	cd deutex; $(MAKE) CC=$(CC) CFLAGS=$(CFLAGS)
+
+install:
+	-mkdir -p $(LIBDIR)
+	-mkdir -p $(BINDIR)
+	cp mkwad/mkwad.exe $(BINDIR)
+	cp lswad/lswad.exe $(BINDIR)
+	cp mktran/mktran.exe $(BINDIR)
+	cp wadps/wadps.exe $(BINDIR)
+	cp wadwhat/wadwhat.exe $(BINDIR)
+	cp qmus2mid/qmus2mid.exe $(BINDIR)
+	cp wadtxls/wadtxls.exe $(BINDIR)
+	cp bsp/bsp.exe $(BINDIR)
+	cp idbsp/idbsp.exe $(BINDIR)
+	cp idbsp/waddwd.exe $(BINDIR)
+	cp wadlc/wadlc.exe $(BINDIR)
+	cp wadldc/wadldc.exe $(BINDIR)
+	cp wadgc/wadgc.exe $(BINDIR)
+	cp wadext/wadext.exe $(BINDIR)
+	cp wadtex/wadtex.exe $(BINDIR)
+	cp wadflat/wadflat.exe $(BINDIR)
+	cp wadpat/wadpat.exe $(BINDIR)
+	cp wadsprit/wadsprit.exe $(BINDIR)
+	cp wadcat/wadcat.exe $(BINDIR)
+	cp multigen/multigen.exe $(BINDIR)
+	cp raw2ppm/raw2ppm.exe $(BINDIR)
+	cp raw2sfx/raw2sfx.exe $(BINDIR)
+	cp reject/wreject.exe $(BINDIR)
+	cp warm/warm.exe $(BINDIR)
+	cp slige/slige.exe $(BINDIR)
+	cp dmpsmu/source/dmpsmu.exe $(BINDIR)
+	cp dmpsmu/source/dmpsmap.exe $(BINDIR)
+	cp swantbls/swantbls.exe $(BINDIR)
+	cp acc/acc.exe $(BINDIR)
+	-mkdir -p $(LIBDIR)/acc/hexen
+	cp acc/common.acs $(LIBDIR)/acc/hexen
+	cp acc/defs.acs $(LIBDIR)/acc/hexen
+	cp acc/specials.acs $(LIBDIR)/acc/hexen
+	cp deutex/deutex.exe $(BINDIR)
+	cp deutex/deusf.exe $(BINDIR)
+
+clean:
+	cd lib; $(MAKE) clean; cd ..
+	cd mkwad; $(MAKE) clean; cd ..
+	cd lswad; $(MAKE) clean; cd ..
+	cd mktran; $(MAKE) clean; cd ..
+	cd wadps; $(MAKE) clean; cd ..
+	cd wadwhat; $(MAKE) clean; cd ..
+	cd qmus2mid; $(MAKE) clean; cd ..
+	cd wadtxls; $(MAKE) clean; cd ..
+	cd bsp; $(MAKE) clean; cd ..
+	cd idbsp; $(MAKE) clean; cd ..
+	cd wadlc; $(MAKE) clean; cd ..
+	cd wadldc; $(MAKE) clean; cd ..
+	cd wadgc; $(MAKE) clean; cd ..
+	cd wadext; $(MAKE) clean; cd ..
+	cd wadtex; $(MAKE) clean; cd ..
+	cd wadflat; $(MAKE) clean; cd ..
+	cd wadsprit; $(MAKE) clean; cd ..
+	cd wadpat; $(MAKE) clean; cd ..
+	cd wadcat; $(MAKE) clean; cd ..
+	cd multigen; $(MAKE) clean; cd ..
+	cd raw2ppm; $(MAKE) clean; cd ..
+	cd raw2sfx; $(MAKE) clean; cd ..
+	cd reject; $(MAKE) clean; cd ..
+	cd warm; $(MAKE) clean; cd ..
+	cd slige; $(MAKE) clean; cd ..
+	cd dmpsmu/source; $(MAKE) clean; cd ..
+	cd swantbls; $(MAKE) clean; cd ..
+	cd acc; $(MAKE) clean; cd ..
+	cd deutex; $(MAKE) clean; cd ..

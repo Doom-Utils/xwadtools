@@ -1,0 +1,121 @@
+.TH idbsp 6 "12 January 2000"
+
+.SH NAME
+idbsp \- node builder for WAD files
+
+.SH SYNOPSIS
+.BR idbsp " [" \-qs ]
+.RB [ "\-b \fIbehavior\fR"]
+.BR \fIinfile\fR " [" \fIoutfile.wad\fR ]
+
+.SH DISCLAIMER
+This program is furnished on an AS IS basis for the fun of it.
+id Software, Raven Software and Activision do not support this program.
+
+.SH DESCRIPTION
+.B Idbsp
+builds the node, blockmap and reject resources for a level map in
+a WAD file. Level maps created with level editors and level
+compilers won't run without the node and blockmap resources build by
+a node builder.
+.LP
+If the program is used without an output filename it will create a WAD
+file with the name tmp.wad.
+.LP
+The input file either may be a text file in DWD format (Doom WorldServer
+version 4), or in MAP format. If the MAP format is used, both, Doom and
+Hexen style maps may be processed.
+.br
+The DWD file format was used by id Software's tools for creating the Doom
+level maps.
+The tool \fBwaddwd\fR creates a DWD text file from an existing WAD file,
+.br
+The MAP file format is used by \fBtkwadcad\fR, and \fBwadlc\fR.
+The tool \fBwadldc\fR decompiles an existing WAD file into a MAP file.
+.br
+The input file must have either extension .dwd or .map, the extension is
+used to differ between the both supported input formats.
+.br
+The DWD format is considered obsolete, because it has serious deficits.
+As an example raising stairs require alternating sector tags for the sectors
+which build the stairs, because for DWD format \fBidbsp\fR has to build
+unique sectors from the informations contained in the sidedefs. The
+MAP format contains a sectors section as it was build with an editor, so this
+sectors can be passed into the output WAD file as they are. The DWD format
+still is supported for historical reasons, it is \fBNOT\fR recommended
+to use it for anything productive.
+.LP
+\fBIdbsp\fR does some consistency checking on the input data. Warnings
+about zero length and overlaid lines are serious and this problems
+should be fixed in the map.
+.TP
+.B Doom BSP generation informations
+For some special effects, like deep water and invisible stairs the node
+building process could destroy the intended effect by splitting lines.
+A line can be marked as precious by giving it a line tag >= 900 and using
+\fBidbsp\fR with option \fB\-s\fR, this will prevent splitting of this
+lines.
+.TP
+.B Hexen BSP generation info
+Hexen WAD files can contain extended objects called polyobjects. These
+objects require that the area containing the polyobject not be split by
+any partition line created during the BSP generation. \fBIdbsp\fR
+currently has no mechanism to recognize these objects and build the
+BSP tree around them. So a sector containing polyobjects
+should be a simple convex sector (like a rectangle), so there is a good
+chance the node builder will use one subsector for the sector.
+.LP
+If the above sounds all greek to you, the Unofficial Doom Spec document
+explains the theory behind \fBB\fRinary \fBS\fRpace \fBP\fRartitions,
+or BSP for short.
+
+.SH OPTIONS
+.TP
+.B \-q
+Quiet operation, suppress printing of processing informations, only prints
+real errors if this option is used.
+.TP
+.B \-s
+If this option is used and a linedef has a tag >= 900, then it is treated
+as precious and will not be split.
+.TP
+.BI "\-b " behavior
+Insert contents of file \fIbehavior\fR into the BEHAVIOR resource in the
+generated WAD file. Without this option an empty BEHAVIOR resource will
+be created. This file must be compiled Action Code Scripts, see
+\fBacc\fR(6). Only Hexen style WAD's contain compiled Action Code Scripts,
+the BEHAVIOR resource will not be inserted into standard Doom WAD's.
+
+.SH SUPPORTED GAMES
+Doom, Ultimate Doom, Doom][, Final Doom, Heretic, Hexen.
+
+.SH SEE ALSO
+The Unofficial Doom Specs by Matthew S Fell.
+.br
+The Official Hexen Technical Specs by Ben Morris.
+.br
+.BR waddwd "(6), "
+.BR wadldc "(6), "
+.BR wadlc "(6), "
+.BR wreject "(6), "
+.BR bsp "(6), "
+.BR warm "(6), "
+.BR acc "(6), "
+.BR xwadtools (6)
+
+.SH BUGS/ERRORS
+You tell me.
+
+.SH AUTHOR
+.B Idbsp
+originally was written by id Software in Objective-C under Nextstep, hence the
+name of the program.
+.LP
+The sources released by id were ported from Objective C to ANSI C on MS-DOS
+by Ron Rossbach <ej070@cleveland.freenet.edu>. Further work on this port was
+done then by Antony Suter <antony@werple.apana.org.au>.
+.LP
+Some bug fixes, support for Doom][ and Hexen WAD's and support for MAP files
+done by Udo Munk <um@compuserve.com>.
+.LP
+Big endian bugfixes by Oliver Kraus (olikraus@yahoo.com).

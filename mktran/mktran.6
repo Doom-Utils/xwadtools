@@ -1,0 +1,64 @@
+.TH mktran 6 "12 January 2000"
+
+.SH NAME
+mktran \- create data file with translucency table for a WAD file
+
+.SH SYNOPSIS
+.BR mktran " [" "\-f \fInum\fR" ]
+.RB [ "\-b \fInum\fR" ]
+.RB [ \-v ]
+.I wadfile tranmapfile
+
+.SH DISCLAIMER
+This program is furnished on an AS IS basis for the fun of it.
+id Software, Raven Software and Activision do not support this program.
+
+.SH OPTIONS
+.TP
+\fB\-f\fR \fInum\fR
+Set the filter percent for the translucency effect between 0 (very translucent,
+invisible) and 100 (not translucent). Without this option
+.B mktran
+calculates a table with 50% translucency.
+.TP
+\fB\-b\fR \fInum\fR
+Use a brightness correction factor for the translucency filter. The more
+translucent objects become, the darker their color will be. This problem
+can be corrected with brighting the colors up again with a brightness
+factor > 1.0. Sensible values for this option are in the range of 1.0 \- 1.5,
+for 50% translucency a 1.2 brightness factor will result in nearly the original
+brightness of the translucent rendered objects. Without this option a default
+of 1.0 will be used, means the colors won't be brightened, which results to
+the same tables as with release 1.0 of this program.
+.TP
+.B \-v
+Verbose output of processing, without this option
+.B mktran
+works silent.
+.TP
+.I wadfile
+The WAD file needs to be one of the IWAD files distributed by id Software,
+the shareware version is OK. The color tables from the IWAD file are needed
+to calculate the translucency table from.
+.TP
+.I tranmapfile
+This is the output file into which the calculated translucency table
+will be written.
+
+.SH SEE ALSO
+.BR xwadtools (6)
+
+.SH SUPPORTED GAMES
+A translucency table can be generated for any WAD file based engine, but
+the engine has to use it for sprites and textures, whatever. Engines like
+\fBXDoom\fR and \fBBoom\fR have builtin support for this.
+
+.SH BUGS/ERRORS
+None.
+
+.SH AUTHOR
+.B mktran
+was written by Udo Munk (um@compuserve.com). The algorithm for
+calculation of the translucency table was taken from Boom, another
+Doom compatible engine for DOS, by TeamTNT. The algorithm was modified
+minimally for the brightness correction.

@@ -1,0 +1,191 @@
+ew (Examine Wad) v1.08 by Tormod Tjaberg (tormod@sn.no)
+
+Copyright (C) 1996 Tormod Tjaberg
+
+ew is free software, distributed under the terms of the
+GNU General Public License.  ew comes with no warranty at
+all. For details see the file COPYING.
+
+ew
+==
+
+ew is a program which allows you to view images and export sound effects
+(wav), music (mus) and images (pcx) from Doom, Doom II, Heretic, Hexen or any
+other wad/pwad in the "Doom" format.  ew is an interactive program and runs
+under DOS or UNIX (little endian machines only).
+
+See the file unix.txt for a description of using ew under Unix.  The
+XForms version has some features not found in other version, such as
+build-in palettes (you will usually not need the palette file
+discussed below).
+
+synopsis
+========
+
+Using ew is easy, all you require is a "palette" file and a wad to examine.
+The "palette" file is only required if you want to look at a wad which
+contains images.  It is not required if the wad only contains sound effects
+and/or music files.
+
+The palette file must be a 256 colour pcx file.  The image size does not
+matter, all I need is the palette.  A palette file must be used since not all
+wad's contain palette entries and in some cases the palette entries have
+"holes" in them.  For example the "doom -devparm" parameter and F1 will
+generate a pcx file but it will not display all wad images correctly.  I've
+included a set of palette files suitable for Doom, Doom2, Heretic and Hexen.
+If you want to make your own palette file I recommend the excellent PcxDump
+by Jesper Frandsen.  It is available from most SimTel mirrors.
+
+export
+======
+ew allows you to export the following wad entry types:
+
+     Sound effects are exported as WAV files.
+     Music entries are exported as MUS files.
+     All image entries are exported as PCX files.
+
+ew also allows you to listen to sound effects, music and to view images with
+your favourite image viewer.  This is accomplished by using an ini file.  The
+ini file specifies which program should be called for each export type.
+I.e. when you're standing on a sound effect entry and hit Enter (and you have
+a WAV entry in you ini file) ew will generate a WAV file and call the program
+which is specified in the ini file.  This makes ew very platform independent
+just specify you platform's utility for playing a WAV file, MUS file or
+viewing a PCX file.
+
+ini file
+========
+
+The ini file is called "ew.ini" and it is searched for using the following
+rules.  First ew looks in the current directory, then the execution
+directory, along the PATH.  If we're on a UNIX box ew just look's in HOME.
+
+The ini file has the following layout:
+
+; This is a comment
+WAV command %s
+MUS command %s
+PCX command %s.
+
+"command" is the program to call for each entry type and "%s" is where ew
+will insert the filename when invoking the "command".  The ini file may also
+include comments.  All lines which start with a ';' are regarded as comments.
+See the example ini file for examples of usage.
+
+using ew
+========
+
+Start ew by something like the following:
+
+c:\src\ew>ew -p doom_g1.pcx \games\doom2\doom2.wad 
+
+Graphics adapter found...
+Ini file "./ew.ini" found
+WAV : "plany %s"
+MUS : "musplay %s"
+PCX : "picem %s."
+Palette file 'doom_g1.pcx' loaded successfully
+Number of wad entries: 2919
+Wad directory offset: 0xde4260
+Building wad directory ........................................
+MUS   entries: 35
+SFX   entries: 103
+FLAT  entries: 140
+FULL  entries: 0
+IMAGE entries: 2113
+HIRES entries: 0
+
+Use the cursor keys or keypad to navigate throught the wad.  Hit escape to
+quit, 'e' to export entry, enter to spawn external program.  Hit space to
+toggle graphics mode.
+
+WALL40_1 (image)  268
+...
+
+The three colums are as follows:
+
+1:   The name of the wad entry. This is used as a basis when exporting files.
+2:   The type of entry:
+          flat  : A wall texture 64*64 pixels
+          full  : A 320*200 raw image
+          hires : A 640*480 16 colour splash screen
+          image : An image in the Doom "post" format
+          mus   : A music entry
+          sfx   : A sound effect entry
+3:   The index number of this entry in the wad file.
+
+While positioned on an entry you may hit 'e' to export this entry.  This will
+create a file in the current directory with the appropriate extension.
+I.e. if your're standing on the following entry and hit 'e':
+
+WALL40_1 (image)  268
+
+You will get a file called "WALL40_1.pcx" in your current directory.
+
+Note: 
+By cursor keys I mean up, down, home, end, page up and page down, but you may
+also use the following keys (the keypad or the normal ones):
+
+1 - End
+2 - Down
+3 - Page Down
+7 - Home
+8 - Up
+9 - Page Up
+
+You may only view images directly in the DOS version.  To view an image you
+must hit space while positioned on an image entry.  While in "viewing" mode
+you may scroll up and down the available images using the cursor keys.  You
+may also export an image while viewing it ('e').
+
+A note on images
+================
+
+ew does not assume anything at all about the wad file.  It tries to determine
+the type of entry by analysis.  Therefore certain wad entries might appear as
+weird images.  In the doom2.wad a REJECT entry has the same size as a flat.
+Naturally the image looks slightly garbled.
+
+compiling ew
+============
+
+If you make any changes to ew or port it to a different platform.  I would be
+very grateful if you could email me the new source with a few comments.
+Maybe I'll include your changes into the next version...
+
+ew will automatically default to MS_DOS compilation.
+
+For MS_DOS, you only need the source file ew.c, and ew.h.  The sources 
+in this distribution has Unix-style linefeeds, you must probably fix 
+this before compiling on MS_DOS.
+
+ew has been tested with the following DOS compilers:
+
+Zortech C/C++ (3.02 & 3.10), Symantec C/C++ (7.2), Borland C (3.0)
+
+Here are the results of the different DOS compilers:
+
+BCC      3.00   LARGE MODEL   Spawn works, Graphics mode Work
+Zortech  3.10r2 LARGE MODEL   Spawn works, Graphics mode Work
+Zortech  3.10r2 DOS EXTENDER  Spawn works, Graphics mode Work
+Zortech  3.02   DOS EXTENDER  Spawn FAILS, Graphics mode Work
+Symantec 7.22   DOS EXTENDER  Spawn works, Graphics mode Work
+
+Note:
+Under DOS you have to compile under the large model or use a DOS Extender.
+The graphics code in ew.c is specifically tailored for use with the DOSX
+extender it does NOT work with other DOS Extenders like Pharlap (You are more
+than welcome to port it to GCC or DOS4GW).  Under the large model you are
+only allowed to view images that are less than 64K in size.
+
+I've compiled ew with the DOS Extender in Zortech C/C++ ver 3.10r2:
+     ztc -mxi -3 ew.c
+
+
+Credits
+=======
+. ID Software for creating DOOM
+. Matt Fell for the undocumented DOOM specs
+. Hans Peter Verne for the UNIX stuff
+. Annette for being what she is...
+

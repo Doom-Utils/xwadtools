@@ -1,0 +1,39 @@
+# Project:   include
+
+
+# Final targets:
+
+# User-editable dependencies:
+diffs:        @.diffs.cmdlib \
+              @.diffs.sysdep \
+              @.diffs.lump_copy \
+              @.diffs.lump_dir \
+              @.diffs.scriplib \
+              @.diffs.strfunc \
+              @.diffs.unixlike \
+              @.diffs.wadfile
+clean:
+        X wipe @.o.* ~C~VF
+        X Wipe @.diffs.* ~C~VF
+
+
+# Static dependencies:
+
+@.diffs.cmdlib: @.h.cmdlib
+        -diff $(diffflags) @.h-orig.cmdlib @.h.cmdlib > @.diffs.cmdlib
+@.diffs.sysdep: @.h.sysdep
+        -diff $(diffflags) @.h-orig.sysdep @.h.sysdep > @.diffs.sysdep
+@.diffs.lump_copy: @.h.lump_copy
+        -diff $(diffflags) @.h-orig.lump_copy @.h.lump_copy > @.diffs.lump_copy
+@.diffs.lump_dir: @.h.lump_dir
+        -diff $(diffflags) @.h-orig.lump_dir @.h.lump_dir > @.diffs.lump_dir
+@.diffs.scriplib: @.h.scriplib
+        -diff $(diffflags) @.h-orig.scriplib @.h.scriplib > @.diffs.scriplib
+@.diffs.strfunc: @.h.strfunc
+        -diff $(diffflags) @.h-orig.strfunc @.h.strfunc > @.diffs.strfunc
+@.diffs.unixlike: @.h.unixlike
+        -diff $(diffflags) @.h-orig.unixlike @.h.unixlike > @.diffs.unixlike
+@.diffs.wadfile: @.h.wadfile
+        -diff $(diffflags) @.h-orig.wadfile @.h.wadfile > @.diffs.wadfile
+
+# Dynamic dependencies:

@@ -1,0 +1,61 @@
+.TH wadcat 6 "12 January 2000"
+
+.SH NAME
+wadcat \- concatenate multiple WAD files into a new one
+
+.SH SYNOPSIS
+.BR wadcat " [" \-ipv "] " -o
+.I outfile infile1 infile2 ...
+
+.SH DISCLAIMER
+This program is furnished on an AS IS basis for the fun of it.
+id Software, Raven Software and Activision do not support this program.
+
+.SH DESCRIPTION
+.B Wadcat
+is used to build new IWAD and PWAD files from concatenating single PWAD
+files, containing game resources like level maps, textures, sound, music.
+The data lumps are copied in the order they appear
+in the input WAD files and the input WAD files will be processed in the
+order, as they are given as arguments. No further processing on the input
+data is done, just all data lumps, markers and labels are copied into
+the output file. The order of the input files might be important, depending
+on their contents. The details will not be explained in this manual page,
+read the documentation \'The Unofficial Doom Specs\' for details about
+WAD file contents and structure.
+
+.SH OPTIONS
+.TP
+.B \-i
+Build an IWAD file.
+.TP
+.B \-p
+Build a PWAD file, this is the default.
+.TP
+.B \-v
+Verbose output of processing, without this option
+.B wadcat
+works silent.
+.TP
+\fB\-o\fR \fIoutfile\fR
+The outfile which will contain the concatenated data. This option must be
+used and the output file may not exist already, the program will abort if
+the file exists.
+.LP
+A minimum of two input files must be given as arguments, this is a
+concatenation and not a copy program.
+
+.SH SUPPORTED GAMES
+Doom, Ultimate Doom, Doom][, Final Doom, Heretic, Hexen, Strife.
+
+.SH SEE ALSO
+The Unofficial Doom Specs by Matthew S Fell.
+.br
+.BR xwadtools (6)
+
+.SH BUGS/ERRORS
+None.
+
+.SH AUTHOR
+.B Wadcat
+was written by Udo Munk (um@compuserve.com).

@@ -1,0 +1,25 @@
+DMTXLS: DooM TeXtures LiSter v1.1
+=================================
+
+DESCRIPTION:
+        DMTXLS is a command-line utility on Unix and DOS (source code
+included) to generate cross-reference lists of the wall textures and flats
+used in levels in DOOM, DOOM ][, Ultimate DOOM & Heretic.  The lists
+include the number of times each texture is used, in verbose mode the
+SideDef/Sector numbers where they are used, and in verbose-line mode the
+LineDefs corresponding to those SideDefs as well.  It's a handy little
+tool for PWAD developers, especially when applying custom textures.
+
+It is derived from DMPSMU/DMPSMAP, which is in turn derived from DEU,
+the Doom Editor Utility.
+
+CHANGES FROM v1.0:
+        This release adds Ultimate DOOM support.
+
+CREATED BY:
+        Frans P. de Vries <fpv@xymph.iaf.nl>
+
+AVAILABLE AT:
+        Site (1): utils/graphics_edit/dmtxls11.zip
+
+        (1) = ftp://ftp.cdrom.com/pub/idgames/ and its mirrors

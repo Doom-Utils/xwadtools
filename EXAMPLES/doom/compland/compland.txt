@@ -1,0 +1,89 @@
+Title                  : Computer Land
+
+Filename               : compland.wad
+
+Author                 : Udo Munk
+
+Email Address          : um@compuserve.com
+
+Description            : A test level which shows what I can do with xwadtools.
+			 Scenery is a hightech environment and there are some
+			 fun fights (maybe). Ammo and weapons are not laying
+			 on the streets to be picked up by kids and play with,
+			 you need to look for it and get it from your enemy too.
+			 Also health is spare, better avoid getting shot too
+			 much and don't run around without Kevlar vest, there
+			 are some ugly creatures outside of the lab.
+			 All secrets are marked and can be found if you look
+			 arround, if you race the map you might miss some.
+			 Proceed carefully and watch your step, as always, and
+			 usually it's better to run than to die.
+
+Additional Credits to  : id Software, anyone who programmed and contributed to
+			 the tools included in xwadtools, anyone who
+			 contributed to XDoom, my engine of choice of course,
+			 Kurt Kesler for the animated computer textures,
+			 Joe Zona for the plant sprites.
+
+================================================================
+
+* Play Information *
+
+Game                    : DOOM II
+Level #                 : MAP 01
+Single Player           : Yes
+Cooperative 2-4 Player  : Yes
+Deathmatch 2-4 Player   : Deathmatch starts are provided but not tested
+Difficulty Settings     : Yes
+
+New Sounds              : No
+
+New Graphics            : The rock textures in Doom IWAD files are not
+			  very good, Hexen has some better looking ones.
+			  The rock textures were extracted from the Hexen
+			  IWAD and color quantized for Doom with tools
+			  included in xwadtools and netpbm, mkqmap(6) and
+			  ppmquant(1).
+			  The animated computer textures were borrowed from
+			  Kurt Kesler's ZDoom WAD KZDoom1, have a look at
+			  http://www.fidnet.com/~kesler.
+			  I threw out the yuckie Doom plants and decorated
+			  the level with some nice and realistic looking
+			  plants borrowed from Joe Zona's Doom2 REAL
+			  Conversion.
+			  The marble texture and flat was rendered with
+			  Povray3.
+
+New Music               : Marilyn Manson, Sweet Dreams
+
+Demos Replaced          : No
+
+* Construction *
+
+Base                    : New level from scratch
+
+Editor(s) used          : tkwadcad and vi, wadlc, the level was build under
+			  UNIX. I prefer to use IDBSP as the node builder,
+			  what was good enough for id sure will do for me.
+			  I have tested it with BSP too and it works OK.
+			  A build with Warm 1.6 also works OK now, the known
+			  problem in versions before is fixed.
+
+Build time              : A while.
+                          
+Known Bugs              : There are 2 minor misaligned textures you probably
+			  won't notice.
+			  This PWAD won't play with Doom][ or Doom95 as is
+			  because it includes flats and sprites. To make it
+			  playable with the original game engines merging
+			  with the IWAD is required with DeuSF or DeuTEX.
+			  Not necessary to do this for playing with bug fixed
+			  engines like Boom, XDoom or ZDoom.
+ 
+* Copyright / Permissions *
+
+You may do whatever you want with the level map. Some graphics were taken
+from other WAD projects, their authors allow to do this if credit is given.
+The rock textures are converted textures from the Hexen WAD and belong Raven
+Software. Maybe I'm violating a copyright here, but I'm to lazy to draw such
+nice rock textures my self ;-)

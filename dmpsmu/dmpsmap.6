@@ -1,0 +1,131 @@
+.TH dmpsmap 6 "12 January 2000"
+
+.SH NAME
+dmpsmap \- DooM PostScript Map sidekick
+
+.SH SYNOPSIS
+.BR dmpsmap " [" \-? "] [" "\-w \fImain_WAD_file\fR" ]
+.RB [ "\-pw \fIpatch_WAD_file\fR]"
+.RB [ "\-file \fIpatch_WAD_files .\|.\|.\fR]
+.RB [ "+\-f<>" ]
+.RB [ "\-n \fIname\fR" ]
+.BR "\-e \fIepisode\fR"
+.BR "\-m \fImission\fR"
+.BR "\-p \fIPostScript_file\fR"
+
+.SH DISCLAIMER
+This program is furnished on an AS IS basis for the fun of it.
+id Software, Raven Software and Activision do not support this program.
+
+.SH DESCRIPTION
+.B dmpsmap
+is a command-line based sidekick to
+.IR dmpsmu (6),
+for quick generation of PostScript maps of levels in
+.BR DOOM ,
+.BR "DOOM ][" ,
+.B Ultimate DOOM
+and
+.BR Heretic ,
+the 3D action games by id Software and Raven Software.
+
+.SH OPTIONS
+Options are case-insensitive and filenames and level names are case-sensitive.
+Both the short and long forms of the options are listed.
+.TP
+.B \-? \-h \-help
+Displays usage information.
+.TP
+.B \-w \-main
+Specifies the name of the main WAD file; default is doom.wad.
+Eg. to use the shareware main WAD file, specify:
+.B \-w
+\fIdoom1.wad\fR.
+.TP
+.B \-pw \-pwad
+Specifies the name of a patch WAD file.
+Eg. to merge a single patch WAD file, specify:
+.B \-pw
+\I<file>.wad\fR.
+.TP
+.B \-file
+Specifies a list of names of patch WAD files.
+Eg. to merge several patch WAD files, specify:
+.B \-file
+\fI<file1>.wad <file2>.wad <file3>.wad\fR.
+.TP
+.B +\-f<>
+Sets (+) or resets (\-) a print flag, where <> is one character from
+<24ABDEFGLMNPSTUZ>. See
+.IR dmpsmu (6)
+for an explanation of print flags and their default setting.
+.TP
+.B \-n \-name
+Specifies the user level name to be used when printing the level.
+Overrules the regular name for that episode/mission. Eg. to set the name
+for a patch WAD level, specify: \-n
+\fI<patch_level_name>\fR.
+.TP
+.B \-e \-episode
+Specifies the episode number for DOOM/Heretic levels, or 0 (zero) for
+DOOM ][ levels. Eg. to set the episode for level Mt. Erebus, specify: \-e
+\fI3\fR.
+.TP
+.B \-m \-mission
+Specifies the mission number for DOOM/Heretic levels, or the map number for
+DOOM ][ levels. Eg. to set the mission for level Mt. Erebus, specify: \-m
+\fI6\fR.
+.TP
+.B \-p \-psfile
+Specifies the name of the output PostScript file. Eg. to define an output
+file for level Mt. Erebus, specify: \-p
+\fIE3M6.ps\fR.
+
+.SH EXAMPLE
+The command:
+.nf
+
+  dmpsmap \-file foobar.wad \-name FooBar \-e 1 \-m 1 \-FP +FM \-p foobar.ps
+
+.fi
+illustrates how various forms of the options can be mixed and
+gives the following messages:
+.nf
+
+  DMPSMAP: DooM PostScript Map sidekick, ver 2.6
+   By Frans P. de Vries <fpv@xymph.iaf.nl>
+  [Derived from DEU v5.21 GCC by Brendon Wyber and Raphael Quinet]
+
+  Patch WAD file: foobar.wad.
+  User level name: FooBar.
+  Episode number: 1.
+  Mission number: 1.
+  Use Landscape.
+  Print multi things.
+  PostScript file: foobar.ps.
+  Loading main WAD file: doom.wad...
+  Loading patch WAD file: foobar.wad...
+     [Updating level E1M1]
+
+  Outputting PostScript map of level E1M1 to "foobar.ps".
+
+.fi
+
+.SH "SEE ALSO"
+.BR dmpsmu "(6), "
+.BR wadps "(6), "
+.BR xwadtools (6)
+
+.SH LIMITATIONS
+When shading secret & damage Sectors, those with more than 250 LineDefs are skipped.
+
+.SH DIAGNOSTICS
+.B dmpsmap
+can terminate with error messages in the following format:
+.RS
+Program Error: *** <error message> ***
+.RE
+The messages are fairly self-explanatory and are therefore not repeated here.
+
+.SH AUTHOR
+Frans P. de Vries <fpv@xymph.iaf.nl>

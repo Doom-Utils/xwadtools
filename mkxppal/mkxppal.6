@@ -1,0 +1,38 @@
+.TH mkxppal 6 "12 January 2000"
+
+.SH NAME
+mkxppal \- make xpaint palette for WAD file graphic resources
+
+.SH SYNOPSIS
+.BR mkxppal " [" "\-c \fIpalette\fP" ]
+
+.SH DISCLAIMER
+This program is furnished on an AS IS basis for the fun of it.
+id Software, Raven Software and Activision do not support this program.
+
+.SH DESCRIPTION
+The program writes a color palette suitable for the image processing
+program xpaint to stdout. This palettes should be used for processing
+images for WAD files with xpaint, to make sure the used colors are correct.
+
+.SH OPTIONS
+.TP
+\fB\-c\fR \fIpalette\fR
+By default the program generates a Doom palette. With this option another
+palette can be used, \fIpalette\fR can be \fIdoom\fR, \fIheretic\fR,
+\fIhexen\fR or \fIstrife\fR.
+
+.SH SUPPORTED GAMES
+Doom, Ultimate Doom, Doom][, Final Doom, Heretic, Hexen, Strife.
+
+.SH SEE ALSO
+.BR xpaint "(1), "
+.BR wadgc "(6), "
+.BR xwadtools (6)
+
+.SH BUGS/ERRORS
+None.
+
+.SH AUTHOR
+.B mkxppal
+was written by Udo Munk (um@compuserve.com).

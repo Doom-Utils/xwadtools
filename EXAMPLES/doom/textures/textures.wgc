@@ -1,0 +1,10 @@
+P_START
+  RSKY1 umsky1.ppm @ 0 0 W 256 H 128
+  RSKY2 umsky2.ppm @ 0 0 W 256 H 128
+  UMGR1 umgr1.ppm @ 0 0 W 256 H 128
+P_END
+
+TEXTURE1_START
+  UMGR1 256 128 1
+    UMGR1 0 0
+TEXTURE1_END

@@ -1,0 +1,265 @@
+#
+# Makefile to compile under SCO OpenServer5, with GNU C, EGCS, old OS5
+# development system or UDK.
+#
+
+# define for big endian machine like Sun Sparc, the x86 stuff is little endian
+# solaris on sparcs:              ENDIAN = -DBIGEND
+# linux/solaris on x86 systems:   ENDIAN = 
+ENDIAN =
+
+# Define the Operating System here, possible choices are:
+#	-DUNIX
+#	-DMSDOS
+OS = -DUNIX
+
+# use this for the SCO C compiler
+##CC = cc
+##CFLAGS = '-O -b elf -K alloca $(ENDIAN) $(OS)'
+
+# and use this for the SCO cfront C++ compiler
+# note: still not working, GNU C++ required
+#CPP = CC
+#CPPFLAGS = '-W $(ENDIAN) $(OS) -Dbool=int -Dfalse=0 -Dtrue=1'
+
+# use this for some sort of GNU C, depending on what you got -b elf
+# might be a good idea too, RTFM
+CC = gcc
+CFLAGS = '-O2 -Wall $(ENDIAN) $(OS)'
+
+# use this for some sort of GNU C++ compiler, depending on what you got
+# -b elf might be a good idea too, RTFM
+CPP = g++
+CPPFLAGS = '-O -Wall $(ENDIAN) $(OS)'
+
+# SCO make does not work, use GNU make
+MAKE = gmake
+
+# your local include files and libs, like for xforms
+# leave these directories empty for solaris
+# the definition of LINCDIR = -I/usr/include will NOT work with gcc
+# please specify the full option for example -I/usr/local/include
+LINCDIR = -I/u/local/include
+LLIBDIR = -L/u/local/lib
+
+# Uncomment the next line to use xforms
+USE_XFORMS = xforms
+
+# If USE_XFORMS is uncommented set up correct X11 path
+#
+# X11 include directory and X11 directory
+# For older solaris systems (< solaris 2.6) this is 
+# XINCDIR = -I/usr/openwin/include
+# XLIBDIR = -L/usr/openwin/lib
+# Since solaris 2.6 X11 is also in /usr/lib and /usr/include.
+# Both directories should be 
+# buildin defaults for the compiler and there should be no need
+# to define the dirs here
+# XINCDIR = -I/usr/include
+# XLIBDIR = -L/usr/lib
+# Indeed the solaris gnu compiler will NOT compile if -I/usr/include
+# is defined together with -I/usr/ucbinclude
+#
+# Solaris < 2.6: use this:
+# XINCDIR = -I/usr/openwin/include
+# XLIBDIR = -I/usr/openwin/lib
+# Solaris >= 2.6: do not define XINCDIR and XLIBDIR
+# For linux use the X11R6 directory
+XINCDIR = -I/usr/include/X11
+XLIBDIR = -L/usr/lib/X11
+
+# the X11 library. This should be -lX11 for all systems
+X11LIB = -lX11
+
+# need socket library to link X11 apps?
+SOLIB = -lsocket
+
+# Uncomment the next line to use curses. 
+# USE_CURSES = curses
+
+# Uncomment the next line to use ncurses. 
+# USE_NCURSES = ncurses
+
+# If USE_CURSES or USE_NCURSES is uncommented, specify the locations for 
+# curses
+#
+# where to find curses and/or ncurses
+CSINCDIR =
+CSLIBDIR =
+
+# your installation directories
+PREDIR = /u/local
+BINDIR = $(PREDIR)/bin
+LIBDIR = $(PREDIR)/lib
+MANDIR = $(PREDIR)/man/man.6
+
+#-----------------------------------------------------------------------------
+
+CCOPT = '$(LINCDIR) $(XINCDIR) $(CSINCDIR)'
+LIBOPT = '$(LLIBDIR) $(XLIBDIR) $(CSLIBDIR) $(X11LIB) $(SOLIB)'
+
+all:
+	cd lib; $(MAKE) CC=$(CC) CFLAGS=$(CFLAGS)
+	cd mkwad; $(MAKE) CC=$(CC) CFLAGS=$(CFLAGS)
+	cd lswad; $(MAKE) CC=$(CC) CFLAGS=$(CFLAGS)
+	cd mktran; $(MAKE) CC=$(CC) CFLAGS=$(CFLAGS)
+	cd wadps; $(MAKE) CC=$(CC) CFLAGS=$(CFLAGS)
+	cd wadwhat; $(MAKE) CC=$(CC) CFLAGS=$(CFLAGS)
+	cd qmus2mid; $(MAKE) CC=$(CC) CFLAGS=$(CFLAGS)
+	cd wadtxls; $(MAKE) CC=$(CC) CFLAGS=$(CFLAGS)
+	cd bsp; $(MAKE) CC=$(CC) CFLAGS=$(CFLAGS)
+	cd idbsp; $(MAKE) CC=$(CC) CFLAGS=$(CFLAGS)
+	cd wadlc; $(MAKE) CC=$(CC) CFLAGS=$(CFLAGS)
+	cd wadldc; $(MAKE) CC=$(CC) CFLAGS=$(CFLAGS)
+	cd wadgc; $(MAKE) CC=$(CC) CFLAGS=$(CFLAGS)
+	cd wadext; $(MAKE) CC=$(CC) CFLAGS=$(CFLAGS)
+	cd wadtex; $(MAKE) CC=$(CC) CFLAGS=$(CFLAGS)
+	cd wadflat; $(MAKE) CC=$(CC) CFLAGS=$(CFLAGS)
+	cd wadsprit; $(MAKE) CC=$(CC) CFLAGS=$(CFLAGS)
+	cd wadpat; $(MAKE) CC=$(CC) CFLAGS=$(CFLAGS)
+	cd wadcat; $(MAKE) CC=$(CC) CFLAGS=$(CFLAGS)
+	cd multigen; $(MAKE) CC=$(CC) CFLAGS=$(CFLAGS)
+	cd raw2ppm; $(MAKE) CC=$(CC) CFLAGS=$(CFLAGS)
+	cd raw2sfx; $(MAKE) CC=$(CC) CFLAGS=$(CFLAGS)
+	cd reject; $(MAKE) CPP=$(CPP) CPPFLAGS=$(CPPFLAGS)
+	cd warm; $(MAKE) CC=$(CC) CFLAGS=$(CFLAGS)
+	cd slige; $(MAKE) CC=$(CC) CFLAGS=$(CFLAGS)
+	cd pal2c; $(MAKE) CC=$(CC) CFLAGS=$(CFLAGS)
+	cd mkxppal; $(MAKE) CC=$(CC) CFLAGS=$(CFLAGS)
+	cd mkgipal; $(MAKE) CC=$(CC) CFLAGS=$(CFLAGS)
+	cd mkpopal; $(MAKE) CC=$(CC) CFLAGS=$(CFLAGS)
+	cd mkqmap; $(MAKE) CC=$(CC) CFLAGS=$(CFLAGS)
+	cd dmpsmu/source; $(MAKE) CC=$(CC) CFLAGS=$(CFLAGS)
+	cd swantbls; $(MAKE) CC=$(CC) CFLAGS=$(CFLAGS)
+	cd acc; $(MAKE) CC=$(CC) CFLAGS=$(CFLAGS) LIBDIR=$(LIBDIR)
+	cd xew; $(MAKE) CC=$(CC) CFLAGS=$(CFLAGS) CCOPT=$(CCOPT) LIBOPT=$(LIBOPT) $(USE_NCURSES) $(USE_CURSES) $(USE_XFORMS)
+	cd deutex; $(MAKE) CC=$(CC) CFLAGS=$(CFLAGS)
+	cd listacs; $(MAKE) CPP=$(CPP) CPPFLAGS=$(CPPFLAGS)
+	cd dm2au; $(MAKE) CC=$(CC) CFLAGS=$(CFLAGS)
+	cd trigcalc; $(MAKE) CC=$(CC) CFLAGS=$(CFLAGS)
+
+install:
+	cp mkwad/mkwad $(BINDIR)
+	cp mkwad/mkwad.6 $(MANDIR)
+	cp lswad/lswad $(BINDIR)
+	cp lswad/lswad.6 $(MANDIR)
+	cp mktran/mktran $(BINDIR)
+	cp mktran/mktran.6 $(MANDIR)
+	cp wadps/wadps $(BINDIR)
+	cp wadps/wadps.6 $(MANDIR)
+	cp wadwhat/wadwhat $(BINDIR)
+	cp wadwhat/wadwhat.6 $(MANDIR)
+	cp qmus2mid/qmus2mid $(BINDIR)
+	cp qmus2mid/qmus2mid.6 $(MANDIR)
+	cp wadtxls/wadtxls $(BINDIR)
+	cp wadtxls/wadtxls.6 $(MANDIR)
+	cp bsp/bsp $(BINDIR)
+	cp bsp/bsp.6 $(MANDIR)
+	cp idbsp/idbsp $(BINDIR)
+	cp idbsp/idbsp.6 $(MANDIR)
+	cp idbsp/waddwd $(BINDIR)
+	cp idbsp/waddwd.6 $(MANDIR)
+	cp wadlc/wadlc $(BINDIR)
+	cp wadlc/wadlc.6 $(MANDIR)
+	cp wadldc/wadldc $(BINDIR)
+	cp wadldc/wadldc.6 $(MANDIR)
+	cp wadgc/wadgc $(BINDIR)
+	cp wadgc/wadgc.6 $(MANDIR)
+	cp wadext/wadext $(BINDIR)
+	cp wadext/wadext.6 $(MANDIR)
+	cp wadtex/wadtex $(BINDIR)
+	cp wadtex/wadtex.6 $(MANDIR)
+	cp wadflat/wadflat $(BINDIR)
+	cp wadflat/wadflat.6 $(MANDIR)
+	cp wadsprit/wadsprit $(BINDIR)
+	cp wadsprit/wadsprit.6 $(MANDIR)
+	cp wadpat/wadpat $(BINDIR)
+	cp wadpat/wadpat.6 $(MANDIR)
+	cp wadcat/wadcat $(BINDIR)
+	cp wadcat/wadcat.6 $(MANDIR)
+	cp multigen/multigen $(BINDIR)
+	cp raw2ppm/raw2ppm $(BINDIR)
+	cp raw2ppm/raw2ppm.6 $(MANDIR)
+	cp raw2sfx/raw2sfx $(BINDIR)
+	cp raw2sfx/raw2sfx.6 $(MANDIR)
+	cp reject/wreject $(BINDIR)
+	cp reject/wreject.6 $(MANDIR)
+	cp warm/warm $(BINDIR)
+	cp warm/warm.6 $(MANDIR)
+	cp slige/slige $(BINDIR)
+	cp slige/slige.6 $(MANDIR)
+	cp pal2c/pal2c $(BINDIR)
+	cp pal2c/pal2c.6 $(MANDIR)
+	cp mkxppal/mkxppal $(BINDIR)
+	cp mkxppal/mkxppal.6 $(MANDIR)
+	cp mkgipal/mkgipal $(BINDIR)
+	cp mkgipal/mkgipal.6 $(MANDIR)
+	cp mkpopal/mkpopal $(BINDIR)
+	cp mkpopal/mkpopal.6 $(MANDIR)
+	cp mkqmap/mkqmap $(BINDIR)
+	cp mkqmap/mkqmap.6 $(MANDIR)
+	cp dmpsmu/source/dmpsmu $(BINDIR)
+	cp dmpsmu/dmpsmu.6 $(MANDIR)
+	cp dmpsmu/source/dmpsmap $(BINDIR)
+	cp dmpsmu/dmpsmap.6 $(MANDIR)
+	cp swantbls/swantbls $(BINDIR)
+	cp swantbls/swantbls.6 $(MANDIR)
+	cp acc/acc $(BINDIR)
+	cp acc/acc.6 $(MANDIR)
+	-mkdir -p $(LIBDIR)/acc/hexen
+	cp acc/common.acs $(LIBDIR)/acc/hexen
+	cp acc/defs.acs $(LIBDIR)/acc/hexen
+	cp acc/specials.acs $(LIBDIR)/acc/hexen
+	cp xew/*ew $(BINDIR)
+	cp xew/xew.6 $(MANDIR)
+	cp deutex/deutex $(BINDIR)
+	cp deutex/deusf $(BINDIR)
+	cp deutex/deutex.6 $(MANDIR)
+	cp listacs/listacs $(BINDIR)
+	cp listacs/listacs.6 $(MANDIR)
+	cp dm2au/dm2au $(BINDIR)
+	cp dm2au/dm2au.6 $(MANDIR)
+	cp trigcalc/trigcalc $(BINDIR)
+	cp trigcalc/trigcalc.6 $(MANDIR)
+	cp doc/xwadtools.6 $(MANDIR)
+	cp tkwadcad/tkwadcad.6 $(MANDIR)
+
+clean:
+	cd lib; $(MAKE) clean
+	cd mkwad; $(MAKE) clean
+	cd lswad; $(MAKE) clean
+	cd mktran; $(MAKE) clean
+	cd wadps; $(MAKE) clean
+	cd wadwhat; $(MAKE) clean
+	cd qmus2mid; $(MAKE) clean
+	cd wadtxls; $(MAKE) clean
+	cd bsp; $(MAKE) clean
+	cd idbsp; $(MAKE) clean
+	cd wadlc; $(MAKE) clean
+	cd wadldc; $(MAKE) clean
+	cd wadgc; $(MAKE) clean
+	cd wadext; $(MAKE) clean
+	cd wadtex; $(MAKE) clean
+	cd wadflat; $(MAKE) clean
+	cd wadsprit; $(MAKE) clean
+	cd wadpat; $(MAKE) clean
+	cd wadcat; $(MAKE) clean
+	cd multigen; $(MAKE) clean
+	cd raw2ppm; $(MAKE) clean
+	cd raw2sfx; $(MAKE) clean
+	cd reject; $(MAKE) clean
+	cd warm; $(MAKE) clean
+	cd slige; $(MAKE) clean
+	cd pal2c; $(MAKE) clean
+	cd mkxppal; $(MAKE) clean
+	cd mkgipal; $(MAKE) clean
+	cd mkpopal; $(MAKE) clean
+	cd mkqmap; $(MAKE) clean
+	cd dmpsmu/source; $(MAKE) clean
+	cd swantbls; $(MAKE) clean
+	cd acc; $(MAKE) clean
+	cd xew; $(MAKE) clean
+	cd deutex; $(MAKE) clean
+	cd listacs; $(MAKE) clean
+	cd dm2au; $(MAKE) clean
+	cd trigcalc; $(MAKE) clean

@@ -1,0 +1,127 @@
+#!/bin/sh
+
+#
+# A UNIX like 'man' substitute for Windows 9x/NT with Cygwin tools
+#
+# Copyright (C) 1999 by Udo Munk (um@compuserve.com)
+#
+# Permission to use, copy, modify, and distribute this software
+# and its documentation for any purpose and without fee is
+# hereby granted, provided that the above copyright notice
+# appears in all copies and that both that copyright notice and
+# this permission notice appear in supporting documentation.
+# The author and contibutors make no representations about the
+# suitability of this software for any purpose. It is provided
+# "as is" without express or implied warranty.
+#
+
+#set -x
+
+BINDIR="//c/bin"
+MANDIR="//c/man"
+
+MANFORMATTER=${ROFF-$BINDIR/awf}
+MANFILTER="$BINDIR/bsfilt -"
+MANPAGER=${PAGER-less}
+
+PATHONLY=FALSE
+SHOWALL=FALSE
+USEFILTER=FALSE
+
+usage() {
+	echo "usage: man [-w] [-a] [-c] [-p pager] [-r roff] [section] title"
+	exit 1
+}
+
+notfound() {
+	echo "man: manual page '$1' not found."
+	exit 1
+}
+
+format() {
+	if [ $USEFILTER = TRUE ]
+	then
+		$MANFORMATTER -man $1 | $MANFILTER | $MANPAGER
+	else
+		$MANFORMATTER -man $1 | $MANPAGER
+	fi
+}
+
+showpath() {
+	echo "man: located $1"
+}
+
+PROCESSOPTIONS=TRUE
+while [ $PROCESSOPTIONS = TRUE ]
+do
+	case $1 in
+		-a)	SHOWALL=TRUE
+			shift
+			;;
+		-w)	PATHONLY=TRUE
+			shift
+			;;
+		-c)	USEFILTER=TRUE
+			shift
+			;;
+		-p)	shift
+			MANPAGER=$1
+			shift
+			;;
+		-r)	shift
+			MANFORMATTER=$1
+			shift
+			;;
+		-*)	usage
+			;;
+		*)	PROCESSOPTIONS=FALSE
+			;;
+	esac
+done
+
+if [ $# -gt 2 -o $# -lt 1 ]
+then
+	usage
+fi
+
+if [ $# -eq 1 ]
+then
+	FOUNDONE=FALSE
+	for SECTION in 1 2 3 4 5 6 7 8 9 n
+	do
+		MANPAGE=$MANDIR/man$SECTION/$1.$SECTION
+		if [ -f $MANPAGE ]
+		then
+			if [ $PATHONLY = FALSE ]
+			then
+				format $MANPAGE
+			else
+				showpath $MANPAGE
+			fi
+			FOUNDONE=TRUE
+			if [ $SHOWALL = FALSE ]
+			then
+				break
+			fi
+		fi
+	done
+	if [ $FOUNDONE = FALSE ]
+	then
+		notfound $1
+	fi
+else
+	MANPAGE=$MANDIR/man$1/$2.$1
+	if [ -f $MANPAGE ]
+	then
+		if [ $PATHONLY = FALSE ]
+		then
+			format $MANPAGE
+		else
+			showpath $MANPAGE
+		fi
+	else
+		notfound $2
+	fi
+fi
+
+exit 0

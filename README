@@ -1,0 +1,87 @@
+This is my collection of portable WAD tools for id Software and Raven
+Software games based on the Doom and Hexen game engines. Originally I
+build the collection for usage together with my XDoom port for UNIX
+systems, that's where the name comes from. However, this tools are not
+specific to any of the many Doom engine ports and can be used with all
+of them and the tools work with Strife, Heretic and Hexen too. So this
+tools are distributed and maintained on their own, to encourage WAD
+authors to use them and tool developers to contribute to them.
+
+The collection includes WAD level compiler, ACS script compiler, graphics
+resources compiler, graphics extract utilities, node builders, tools to
+extract and import raw data into WAD files, even a GUI map editor is included
+and much more. The archive includes sources only and no binaries for any
+platform, so you have to compile your self or find someone who does that for
+you.
+
+The level map editor is written in Tcl/Tk, a portable scripting language for
+GUI programming. Tcl/Tk is available for any UNIX, Windows 9x/NT and MacOS,
+probably ports have been done for Plan9, QNX, BeOS, OS/2 and who knows what
+else.
+The editor is used on various UNIX's and Windows 9x and NT 4.0, so it is
+tested on this OS's. To some degree it probably will work on MacOS too,
+but this is not tested due to lack of a MacOS system. No idea about other
+OS's, if anyone tries it out please let me know.
+
+The tools written in C/C++ can be compiled on UNIX systems, on Windows 9x/NT,
+DOS and some of them under RISC OS. It is up to you to support more platforms,
+my major interest are UNIX systems.
+
+Also included are PWAD project examples, for Doom/Doom2 and Hexen so far,
+which were build with this tools and are free to mess with. All resources
+used to create the PWAD's are included, so that one can rebuild them self,
+modify them, play with them, whatever.
+
+From time to time I'm asked if I couldn't make archives with binary
+executables available for download too. The usual excuse is: I'm no
+programmer and so I cannot install this tools. I think you don't need
+any programming capabilities for installing this tools, because you open
+a text window (DOS box under Windows or xterm under UNIX) and type in
+two commands like:
+
+	make -f Makefile.win
+	make -f Makefile.win install
+
+The included scripts will do all the nasty work and you don't have to
+understand them. Typing in that two commands can be done by everyone
+me thinks. Of course you need a C compiler on your system, so that the
+scripts can compile the tools written in this language. For that free
+compilers exist, which don't cost money besides simply downloading them
+from the Internet, the documentation inside mentions the URL's.
+I don't wish to use my precious time for compiling this programs for others,
+there are enough other, more interesting things for me to do, sorry.
+If anyone has spare time left for creating binary archives and upload them to
+some ftp server, fine with me, go ahead.
+
+New in this release:
+====================
+
+- Bug fixes in idbsp, slige, reject and wadgc.
+- Wad editor tkwadcad got many improvements and support for many new
+  XDoom features.
+- added trigcal by Jim Flynn, used to calculate linedef numbers for
+  Boom generalized linedefs.
+
+Trademarks, Legalize:
+=====================
+
+Doom, Ultimate Doom, Doom][ and Final Doom are registered trademarks of
+id Software and so acknowledged.
+
+Heretic and Hexen are registered trademarks of Raven Software and so
+acknowledged.
+
+The software in this archive won't be supported by id Software, Raven
+Software or Activision, even not with some of their sources included.
+This software is provided on AS IS basis just for the fun of it and it
+comes without any warranty. In case of problems don't bother anyone at
+the game vendors, you got all sources, use them. If you can't fix a problem
+your self feel free to email me at um@compuserve.com, I might look into
+it. If you can fix a problem your self, please email a patch.
+
+Some of the tools included have restictions on usage, like: may not be used
+for profit. Consult the included documentation for all tools about details,
+not everything included is under GPL or similar license conditions!
+
+Enjoy,
+Udo Munk <um@compuserve.com>

@@ -1,0 +1,154 @@
+.TH wadlc 6 "12 January 2000"
+
+.SH NAME
+wadlc \- a WAD level map compiler
+
+.SH SYNOPSIS
+.B wadlc
+.I infile outfile
+
+.SH DISCLAIMER
+This program is furnished on an AS IS basis for the fun of it.
+id Software, Raven Software and Activision do not support this program.
+
+.SH DESCRIPTION
+The program takes a text input file, and creates a WAD file
+containing data for a new level map. The output WAD needs to be run
+through a node builder like
+.B bsp.
+.LP
+The input file should consist of four sections: vertices, sectors,
+linedefs and things. Vertices and sectors are defined once and
+referenced by name in the linedef section. Things are just listed
+with type, coordinates and attributes.
+.LP
+The current version supports only one level per input file.
+
+.SH "OPTIONS AND PARAMETERS"
+.TP
+.I infile
+The name of the input file. The special name "\fB\-\fP" means stdin.
+.TP
+.I outfile
+The name of the output file. The special name "\fB\-\fP" means stdout.
+Writing output on stdout won't give good results on platforms such
+as DOS where stdio treats text files differently from binary files.
+On platforms where there is no difference (such as Unix), it's OK.
+
+.SH "INPUT FORMAT"
+The input file syntax is as follows:
+.LP
+.I Level specification:
+.nf
+LEVEL_START <episode> <level> <type> <game>
+ ...
+LEVEL_END
+.fi
+.LP
+If episode is 0 a Doom][ level will be generated, else a
+(Ultimate) Doom level will be generated.
+.LP
+If type is 0 the map is in Doom, Doom][ or Heretic format. For Hexen format
+map files this field must be 1.
+.LP
+The field game is the WAD engine this level map was written for. It can
+be one of \fBDoom\fR, \fBDoom2\fR, \fBXDoom\fR, \fBXDoomPlus\fR or \fBHexen\fR.
+The compiler ignores this information, it is needed in map editors only.
+.LP
+Between LEVEL_START and LEVEL_END there should be four sections:
+.LP
+.I The vertices section:
+.nf
+VERTEXES_START
+ <symbolic name> : <x-coordinate> <y-coordinate>
+ ...
+VERTEXES_END
+.fi
+.LP
+The correct spelling "VERTICES_START" and "VERTICES_END" is allowed. ;\-)
+.LP
+.I The sectors section:
+.nf
+SECTORS_START
+ <symbolic name> : <floorheight> <ceilingheight> <floortexture> \\
+                   <ceilingtexture> <brightness> <special> <tag>
+ ...
+SECTORS_END
+.fi
+.LP
+.I The linedefs section in Doom format:
+.nf
+LINEDEFS_START
+ <from> <to> : <attrs> <type> <tag>
+  <sector> <x-offset> <y-offset> \\
+  <uppertexture> <lowertexture> <normaltexture>
+  <left sidedef exactly like above, or "-" if no second sidedef>
+ <from> <to> : <attrs> <type> <tag>
+   <right sidedef>
+   <left sidedef or "-">
+ ...
+LINEDEFS_END
+.fi
+.LP
+.I The linedefs section in Hexen format:
+.nf
+LINEDEFS_START
+ <from> <to> : <attrs> <type> <arg1> <arg2> <arg3> <arg4> <arg5>
+  <sector> <x-offset> <y-offset> \\
+  <uppertexture> <lowertexture> <normaltexture>
+  <left sidedef exactly like above, or "-" if no second sidedef>
+ <from> <to> : <attrs> <type> <arg1> <arg2> <arg3> <arg4> <arg5>
+  <right sidedef>
+  <left sidedef or "-">
+ ... 
+LINEDEFS_END
+.fi
+.LP
+.I The things section in Doom format:
+.nf
+THINGS_START
+ <type> : <x> <y> <angle> <attributes>
+ ...
+THINGS_END
+.fi
+.LP
+.I The things section in Hexen format:
+.nf
+THINGS_START
+ <type> : <tid> <x> <y> <z> <angle> <attrs> <spec> \\
+ <arg1> <arg2> <arg3> <arg4> <arg5>
+ ...
+THINGS_END
+.fi
+.LP
+Examples are included in the WAD tool collection.
+.LP
+If the map format is in extended Hexen format \fBwadlc\fR will write
+an empty BEHAVIOR lump into the output file, so that node builders
+can handle the WAD file as a Hexen format one.
+
+.SH "SUPPORTED GAMES"
+Doom, Ultimate Doom, Doom][, Final Doom, Heretic, Hexen.
+
+.SH SEE ALSO
+The Unofficial Doom Specs by Matthew S Fell.
+.br
+The Official Hexen Technical Specs by Ben Morris.
+.br
+.BR acc "(6), "
+.BR bsp "(6), "
+.BR idbsp "(6), "
+.BR warm "(6), "
+.BR wreject "(6), "
+.BR xwadtools (6)
+
+.SH BUGS/ERRORS
+Writing output to stdout does not work properly on the DOS platform.
+
+.SH AUTHOR
+Stefan Gustavson (stefang@isy.liu.se)
+.LP
+Endian support modified and Hexen support implemented by
+Udo Munk (um@compuserve.com).
+.LP
+Made pipeable by Andre Majorel (amajorel@teaser.fr).

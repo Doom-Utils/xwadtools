@@ -1,0 +1,1 @@
+MAPINFO mapinfo.txt

@@ -1,0 +1,19 @@
+This directory contains example PWAD's for the WAD based games, which were
+build with this tools collection. This examples are an addendum to the
+documentation for the tools. It is a good idea to study the makefiles in
+the directories and explore, how the tools are used to assemble PWAD's
+from various different resources.
+
+To build the PWAD's your self you enter the directory with the example
+and you type 'make'. If you try this under Windows 9x/NT you need to do
+this from a Cygwin shell, not from a MS DOS box. With 'make clean' you
+clean up the directory from all temporary generated files, just leaving
+the sources needed to build the PWAD and the playable PWAD it self.
+After that you could start modifying the resources for an example to your
+taste and re-build it with make like described above.
+
+Right now there are just a few examples and they are for Doom/Doom2 and
+Hexen only. I do not have the registered versions of Heretic and Strife,
+so there are no examples for those games yet.
+
+Udo Munk	(um@compuserve.com)

@@ -1,0 +1,109 @@
+# Project:   libwad
+
+
+# Toolflags:
+CCflags = -c -depend !Depend -I^.include.,C: -throwback -DRISCOS
+C++flags = -c -depend !Depend -IC: -throwback
+Linkflags = -aif -c++ -o $@
+ObjAsmflags = -throwback -NoCache -depend !Depend
+CMHGflags = 
+LibFileflags = -c -o $@
+Squeezeflags = -o $@
+PCflags = -c -depend !Depend -throwback -IP:
+JFPatchflags = -depend !Depend -throwback -out $@
+Bas2Txtflags = -j -b -o $@ -i 
+Basic2Cflags = -t -o $@ -4 -i 
+MakeDllflags = -o $@
+DiffFlags = -NCw
+LinkDllflags = $(linkflags)
+
+
+# Final targets:
+@.o.libwad:   @.o.cmdlib @.o.palettes @.o.sysdep @.o.lump_cpy @.o.lump_dir \
+        @.o.scriplib @.o.strfunc @.o.wadfile @.o.unixlike 
+        libfile $(libfileflags) @.o.cmdlib @.o.palettes @.o.sysdep \
+        @.o.lump_cpy @.o.lump_dir @.o.scriplib @.o.strfunc @.o.wadfile @.o.unixlike 
+
+# User-editable dependencies:
+diffs:        @.diffs.cmdlib \
+              @.diffs.palettes \
+              @.diffs.sysdep \
+              @.diffs.lump_cpy \
+              @.diffs.lump_dir \
+              @.diffs.scriplib \
+              @.diffs.strfunc \
+              @.diffs.unixlike \
+              @.diffs.wadfile
+clean:
+        X wipe @.o.* ~C~VF
+        X Wipe @.diffs.* ~C~VF
+
+
+# Static dependencies:
+@.o.cmdlib:   @.c.cmdlib
+        cc $(ccflags) -o @.o.cmdlib @.c.cmdlib 
+@.o.palettes:   @.c.palettes
+        cc $(ccflags) -o @.o.palettes @.c.palettes 
+@.o.sysdep:   @.c.sysdep
+        cc $(ccflags) -o @.o.sysdep @.c.sysdep 
+@.o.lump_cpy:   @.c.lump_cpy
+        cc $(ccflags) -o @.o.lump_cpy @.c.lump_cpy 
+@.o.lump_dir:   @.c.lump_dir
+        cc $(ccflags) -o @.o.lump_dir @.c.lump_dir 
+@.o.scriplib:   @.c.scriplib
+        cc $(ccflags) -o @.o.scriplib @.c.scriplib 
+@.o.strfunc:   @.c.strfunc
+        cc $(ccflags) -o @.o.strfunc @.c.strfunc 
+@.o.wadfile:   @.c.wadfile
+        cc $(ccflags) -o @.o.wadfile @.c.wadfile 
+@.o.unixlike:   @.c.unixlike
+        cc $(ccflags) -o @.o.unixlike @.c.unixlike 
+
+# -diffs
+@.diffs.cmdlib: @.c.cmdlib
+        -diff $(diffflags) @.c-orig.cmdlib @.c.cmdlib > @.diffs.cmdlib
+@.diffs.palettes: @.c.palettes
+        -diff $(diffflags) @.c-orig.palettes @.c.palettes > @.diffs.palettes
+@.diffs.sysdep: @.c.sysdep
+        -diff $(diffflags) @.c-orig.sysdep @.c.sysdep > @.diffs.sysdep
+@.diffs.lump_cpy: @.c.lump_cpy
+        -diff $(diffflags) @.c-orig.lump_cpy @.c.lump_cpy > @.diffs.lump_cpy
+@.diffs.lump_dir: @.c.lump_dir
+        -diff $(diffflags) @.c-orig.lump_dir @.c.lump_dir > @.diffs.lump_dir
+@.diffs.scriplib: @.c.scriplib
+        -diff $(diffflags) @.c-orig.scriplib @.c.scriplib > @.diffs.scriplib
+@.diffs.strfunc: @.c.strfunc
+        -diff $(diffflags) @.c-orig.strfunc @.c.strfunc > @.diffs.strfunc
+@.diffs.unixlike: @.c.unixlike
+        -diff $(diffflags) @.c-orig.unixlike @.c.unixlike > @.diffs.unixlike
+@.diffs.wadfile: @.c.wadfile
+        -diff $(diffflags) @.c-orig.wadfile @.c.wadfile > @.diffs.wadfile
+
+# Dynamic dependencies:
+o.cmdlib:	c.cmdlib
+o.cmdlib:	^.include.h.cmdlib
+o.cmdlib:	^.include.h.strfunc
+o.cmdlib:	^.include.h.unixlike
+o.palettes:	c.palettes
+o.sysdep:	c.sysdep
+o.lump_cpy:	c.lump_cpy
+o.lump_cpy:	^.include.h.unixlike
+o.lump_cpy:	^.include.h.lump_cpy
+o.lump_dir:	c.lump_dir
+o.lump_dir:	^.include.h.wad
+o.lump_dir:	^.include.h.lump_dir
+o.scriplib:	c.scriplib
+o.scriplib:	^.include.h.cmdlib
+o.scriplib:	^.include.h.scriplib
+o.strfunc:	c.strfunc
+o.strfunc:	^.include.h.strfunc
+o.wadfile:	c.wadfile
+o.wadfile:	^.include.h.sysdep
+o.wadfile:	^.include.h.wad
+o.wadfile:	^.include.h.lump_dir
+o.wadfile:	^.include.h.wadfile
+o.unixlike:	c.unixlike
+o.unixlike:	C:h.swis
+o.unixlike:	C:h.kernel
+o.unixlike:	C:h.kernel
+o.unixlike:	^.include.h.unixlike

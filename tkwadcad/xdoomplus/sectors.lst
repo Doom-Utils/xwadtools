@@ -1,0 +1,5 @@
+# List of sector types for XDoomPlus.
+# The list doesn't need to be in any particulat order, tkwadcad
+# will sort it alphabetical by the description texts.
+
+  0 : Default: Normal

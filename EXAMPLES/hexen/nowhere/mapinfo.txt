@@ -1,0 +1,8 @@
+map 1 "NOWHERE"
+warptrans 1
+next 2
+cluster 1
+sky1 SKYWALL 0
+sky2 SKY4 50
+doublesky
+cdtrack 2

@@ -1,0 +1,27 @@
+
+Xew - X Examine WAD version 1.08
+================================
+
+Xew is a program to examine and extract the images and sounds of a
+DOOM-like WAD-file (doom, doom2, heretic, hexen, strife; IWADs or PWADs).
+This is a Unix version with an X/Forms interface of the original DOS
+program ew.  The DOS version as well as text-only (n)curses version can
+also be compiled.  Xew is no WAD editor, it is simply an easy way to
+examine and grab the sounds and images for use as icons, xmailbox fanfares
+etc.
+
+An i386-Linux/ELF statically linked executable is included.  Recompiling is
+recomended all the same, for speed and size.  To compile, the XForms
+library is needed, see http://bragg.phys.uwm.edu/xforms/.
+
+Written by 
+  Tormod Tjaberg (tormod@sn.no) - original DOS version.
+  Hans Peter Verne (hpv@kjemi.uio.no) - Unix version.
+
+See the file ew.txt for a more detailed description of ew, and
+unix.txt for compiling and using ew/xew on Unix (Linux) systems.
+The file manifest contains a short description about the various files.
+
+This is free software, distributed under the terms of the
+GNU General Public License. For details see the file COPYING
+

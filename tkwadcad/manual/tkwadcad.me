@@ -1,0 +1,814 @@
+.hy 14
+.nr sp 16
+.nr pp 12
+.pn 0
+
+.bl 10
+.sz 20
+.(c
+TkWadCad Users Manual
+.)c
+.bl 2
+.sz 16
+.(c
+Copyright \(co 1998\-2000 by Udo Munk
+.)c
+.(c
+(um@compuserve.com)
+.)c
+.bl 5
+.sz 12
+.(c
+Document Revision: Sep 24 2000
+.)c
+
+.fo ''- % -''
+
+.he '\*(td'TkWadCad User Manual'Introduction'
+.pa
+.sh 1 Introduction
+.(x contents
+Introduction
+.)x
+.lp
+\fBTkWadCad\fR is a 2D GUI CAD editor for \fBWAD\fR level maps.
+This editor was developed from scratch with several design goals in mind,
+which make this program unique compared to other \fBWAD\fR editors:
+.bu
+Learning to design level maps for \fBWAD\fR game engines is a major
+effort which requires a lot of learning time. It is common nowadays to
+work in LAN's with client and server systems running different
+operating systems with a different GUI look and feel. Using the
+same editor on all systems in such an environment saves a significant
+amount of time needed, to become familiar with various different
+programs otherwise. This goal was accomplished with the decision to
+use \fBTcl/Tk\fR as the programming language with native GUI look and feel.
+A similar result could be reached with \fBJava\fR, some reasons why
+\fBTcl/Tk\fR was favored are:
+.ba +10
+.bu
+Less restrictive source code license than Java and easier to port to
+other platforms.
+.bu
+Native look and feel of the GUI on all platforms. Java uses its own look
+and feel, which also differs between the major releases of the AWT and Swing
+widget classes, besides all the third party widget classes available for GUI
+design.
+.bu
+There is only one Tcl/Tk implementation, while there are various Java
+implementations from Sun, IBM, Microsoft, Freeware and so on. Of course
+this different implementations are not 100% compatible to each other,
+besides that the latest releases from Sun are available for Solaris
+and Windows only.
+.ba -10
+.bu
+After id Software and Raven Software distributed the sources of their
+game engines to the public for personal usage, we have a lot of ports
+and extended game engines at hand for our pleasure. Another major design
+goal was the wish to edit level maps for all and any \fBWAD\fR based
+game engine, without much new coding effort to support another one.
+This has been accomplished by using simple structured text files which
+define the capabilities of the game engine and hardcoding as less as
+possible dependent on the game. The end user of the program is enabled
+to add support for another game engine without any programming capabilities.
+Besides that the editor is designed in a way that it also works without
+complete definition files for some particular game engine. All objects
+can be entered by number taken from the engine specification, using
+selection dialogs just makes the process more comfortable without the
+need to look up this numbers in some documentation all the time.
+.bu
+\fBTkWadCad\fR is a level map editor only and nothing else. Most other
+editors include a lot of functionality besides designing level maps
+with it. \fBTkWadCad\fR is distributed as part of a tool collection
+called \fIxwadtools\fR (ftp://ftp.cdrom.com/pub/doom/source) and this
+tools allow to work with all the different resources contained in \fBWAD\fR
+files. It is designed around this tools and makes usage of them in
+various ways. This design philosophy is known as \fBKISS\fR
+(\fBK\fReep \fBI\fRt \fBS\fRimple, \fBS\fRtupid). Programming
+small tools which do one job well and bug fixing them is easier to
+handle, than maintaining one huge program which tries to do everything,
+including the kitchen sink.
+.bu
+Unlike most editors this one doesn't work on binary \fBWAD\fR files
+directly. Same as id Software's editor for the NextStep operating system
+this one uses plain text files which describe the level maps. This design
+has various advantages over editing binary files:
+.ba +10
+.bu
+If the editor it self has a bug or is limiting you in some way, just use
+any text editor of your choice to modify the level map! If you prefer to
+use a word processor like Winword or WordPerfect be sure to save the
+file as plain ASCII text.
+.bu
+The editor never will fail on a WAD because it includes some not map
+related resources in an unexpected way. Instead one uses a decompiler
+to decompile a level map included in a WAD into a text file and then
+one edits this text file with \fBTkWadCad\fR. After the editing process
+the text file is compiled into a PWAD with a compiling tool and then
+other, not map related resources can be added with other tools.
+This is a typical application for the \fImake\fR utility, the editor
+supports building the final PWAD with a makefile.
+.bu
+Because text files are used to describe the map, the author is enabled
+to use any tool of her choice to manipulate the contents in some way.
+As an example substituting a texture posted on some walls with another,
+maybe new developed one, can easily be done with the replace function
+included in any text editor. Relatively complex substitutions like
+change texture MYWALL1 on all lines building sector 27 to MYWALL2
+can be done with text manipulation tools of your choice, be it \fIsed\fR,
+\fIawk\fR, or a simple Basic program.
+.bu
+Geometrical operations not supported by the editor yet also can be done
+easily with other tools of your choice. Need to shift a map under development
+100 units to the right? Just use script tools like \fIawk\fR, \fIPerl\fR,
+\fITcl\fR to add 100 to the X coordinate of every vertex.
+.ba -10
+.bu
+Many other WAD editors are modal editors, means a different mode is used
+to manipulate the basic map building objects, like moving them around or
+modifying their properties. If one wants to edit a thing the editor must be
+switched into "thing mode" with a hotkey or from some menu. If one wants
+to edit a line after this, a switch into "line mode" is necessary first.
+\fBTkWadCad\fR doesn't use modes, just edit any object displayed by clicking
+on it, this saves time while working on a map.
+.bu
+Other editors allow to modify one single property for a line e.g. After
+the property was modified the dialog for this property closes and one
+has to select the next property from a menu or with another hotkey.
+\fBTkWadCad\fR uses complete dialogs for all and any object properties.
+Every single property for an object can be modified as much and as often
+one wishes. A final commit or discard selection modifies all object properties
+or discards any changes made. Then the dialog for this object will
+be closed. Also this saves a lot of time for editing properties of all
+the objects, which make the level map.
+.bu
+\fBTkWadCad\fR allows a relatively fast edit, compile, test cycle. All
+supported BSP node builders can be executed directly from the editor,
+to build a playable PWAD from the map under development. For PWAD's
+including other resources, like new textures and sprites and sound, building
+the PWAD running \fImake\fR directly from the editor is supported too.
+The PWAD building process is logged in a text window, so that one
+becomes aware about problems, the compiler, node builder and other tools
+might have with creating the playable PWAD.
+Also any game engine can be started with the level under development
+right from the editor, to test out the map.. \fBTkWadCad\fR uses Bourne
+shell wrapper scripts to run this external programs, which makes it easy
+for the user to configure them, without the need to modify any editor code.
+.uh "Please note:"
+The current release of the manual is incomplete and it won't enable
+the reader to fully learn WAD level design from this manual alone.
+So until this manual is more complete it is strongly suggested to
+read some other documentation about the basics of \fBWAD\fR design.
+A good starting point to find such documentations on the Internet is
+http://www.doomworld.com.
+
+.he '\*(td'TkWadCad User Manual'Basic Objects'
+.pa
+.sh 1 "Basic Objects which build a Level Map"
+.(x contents
+Basic Objects
+.)x
+
+.he '\*(td'TkWadCad User Manual'Vertices'
+.pa
+.sh 2 Vertices
+.(x contents
+Vertices
+.)x
+.lp
+Vertices are the endpoints which define a line in a map. Vertices
+have no visual appearance in the game engines, they just glue the structures
+together which will be displayed as rooms or hallways and so on.
+\fBTkWadCad\fR displays vertices as red squares in the drawing canvas for
+the map.
+
+.sh 3 "Displaying Vertex Informations"
+.lp
+To display informations about a vertex move the pointer over it
+and informations will be displayed in the object information fields at the
+bottom of the window.
+
+.sh 3 "Moving a Vertex"
+.lp
+To move a vertex move the pointer over it, press mouse button 1 and drag the
+vertex to its new position. You'll notice that all lines which use this
+vertex as an endpoint will be redrawn appropriate, so that the new shape
+of the structure becomes visible immediately. Also the coordinates of the
+vertex are updated while its dragged over the map in the object information
+fields at the bottom of the window. Use this informations to place the vertex
+at exact coordinates. Then release mouse button 1 to drop the vertex on the
+map, where you want it\**.
+.(f
+\** If the option "snap on grid" is active, the vertex will be moved to
+the next closest grid coordinate.
+.)f
+
+.sh 3 "Adding a new Vertex"
+.lp
+To add a new Vertex move the pointer on the backdrop of the drawing canvas
+somewhere and enter CTRL\-V. A new vertex will be added at this position in
+the map.
+
+.sh 3 "Removing Vertices from a map"
+.lp
+Move the pointer over the vertex you wish to destroy and then click mouse
+button 3 or press the Delete key, this will remove it. If the vertex is
+connected to two lines, the lines will be merged into one. If the vertex
+is connected to more or less than two lines, it cannot be deleted, remove
+a line before.
+
+.sh 3 "Unreferenced Vertices in decompiled maps"
+.lp
+If one decompiles a level map from an existing \fBWAD\fR file with
+\fBwadldc\fR and loads it into \fBTkWadCad\fR, one sees a lot of
+Vertices in the map, which are not referenced at all. Those familiar
+with other editors might never have seen this before, because most
+other editors simply don't draw this unreferenced Vertices. This
+Vertices are put into the \fBWAD\fR file by the BSP node builder
+at the locations, where the node builder splited a sector. This
+information is very valuable for debugging maps, special if your Poly Objects
+in Hexen maps don't work correct, which might be caused by splitting non
+convex sectors containing Poly Objects. So to enable one to use this debugging
+aid neither \fBwadldc\fR nor \fBTkWadCad\fR remove this unreferenced Vertices
+automatically. However, \fBTkWadCad\fR has a menu entry 'Vertices', which
+allows to remove the unreferenced Vertices from the map for further editing
+it. Use it if you don't need to see this unreferenced Vertices after
+loading a decompiled map. Also use it before saving the map for
+processing with a node builder. A mix of previously added Vertices
+and newly added ones will not be a great help for locating problems
+caused by sector splits.
+
+.he '\*(td'TkWadCad User Manual'Lines'
+.pa
+.sh 2 Lines
+.(x contents
+Lines
+.)x
+.lp
+A line is a connection between exactly two vertices. Lines are used to build
+sectors and lines are not necessarily walls in a map. It depends on the
+textures on the sidedefs of a line, if it's visible at all. As an example
+a line without any texture could have the purpose to trigger some event.
+.lp
+A line has two sides and both sides might have different properties, like
+different textures displayed. Some documentation talk about a "first" and
+a "second" sidedef, which is rather confusing. Because a line always has
+a start and end point somewhere, it is a vector. If one looks
+along the line in the direction from the start point to the end point,
+this line clearly has two sides, a left one and a right one. So in this
+documentation I'll always talk about left and right sidedefs. Keep in
+mind that the term "first sidedef" used in other documentations probably
+means the right side of the line. The following illustration should 
+clarify this and \fBTkWadCad\fR draws lines with arrow head to help you
+figure the sides correct\**:
+.(f
+\** Drawing lines with arrow heads is an option which can be turned off.
+.)f
+.lp
+.(x figures
+Definition of Line Sides
+.)x
+.PS
+box width 3.5 height 2.0
+box width 0.1 height 0.1 at last box.nw + 0.25,-0.5;
+	arrow "left side" "right side" 3.0; box width 0.1 height 0.1
+box width 0.1 height 0.1 at last box.nw + 0.05,-1.0; left;
+	arrow "right side" "left side" 3.0 at last box.nw + (-0.025,-0.05)
+	box width 0.1 height 0.1
+.PE
+.lp
+Each line must have a right sidedef, the left sidedef is optional. A line with
+only a right sidedef defined is drawn white on the map, lines with both
+sidedefs defined are drawn yellow. Lines with special and tag are drawn
+magenta, this probably are lines which trigger an action somewhere in the map.
+Lines with a special only and tag 0 are drawn green, this lines could be local
+doors or end switches, which don't require a tag to work.
+.lp
+It is essential to understand that lines may not overlap or intersect
+each other. In worst case this crashes the game engine, at least the display
+will not look like it is intended. \fBTkWadCad\fR will \fBNOT\fR stop one
+in any way to make lines overlap or intersect. The necessary calculations
+with bounding boxes to recognize this situations is a time consuming process
+and is not acceptable for applications dealing with the level map in realtime,
+such as an editor or the game rendering engine it self. Instead consistency
+checking of the map data is done by the BSP node builder, this tool has to
+compute the bounding boxes anyway\**.
+.(f
+\** Only the node builder \fIidbsp\fR does this consistency checking yet.
+.)f
+The following illustration shows two lines intersecting, which is wrong
+and won't display correct in the game engines:
+.(x figures
+Example of two Lines intersecting illegally
+.)x
+.PS
+Box1: box width 2.0 height 2.0
+      box width 0.1 height 0.1 at Box1.nw + 1.0,-0.25; down
+	arrow 1.5 at last box.s; box width 0.1 height 0.1
+	move to Box1 left 0.75; box width 0.1 height 0.1
+	arrow from last box +0.05,0.0 right 1.5; box width 0.1 height 0.1
+.PE
+Intersections must use a vertex so that the lines don't intersect
+as shown in the following example:
+.(x figures
+Example of Line intersection using a Vertex correctly
+.)x
+.PS
+Box1: box width 2.0 height 2.0
+Box2: box width 0.1 height 0.1 at Box1.w + 0.25,0.0
+Box3: box width 0.1 height 0.1 at Box1.n + 0.0,-0.25
+Box4: box width 0.1 height 0.1 at Box1.e + -0.25,0.0
+Box5: box width 0.1 height 0.1 at Box1.s + 0.0,0.25
+Box6: box width 0.1 height 0.1 at Box1
+      arrow from Box2 + 0.05,0.0 to Box6 - 0.05,0.0
+      arrow from Box6 + 0.05,0.0 to Box4 - 0.05,0.0
+      arrow from Box3 + 0.0,-0.05 to Box6 + 0.0,0.05
+      arrow from Box6 + 0.0,-0.05 to Box5 + 0.0,0.05
+.PE
+
+.sh 3 "Displaying Line Informations"
+.lp
+To display informations about a line move the pointer over it
+and informations will be displayed in the object information fields at the
+bottom of the window.
+
+.sh 3 "Editing Line and Sidedef Properties"
+.lp
+To edit a line for modifying its properties, like selecting a wall texture
+which the engine should draw on a wall, set the pointer on a line, so that
+its informations will be shown in the object information fields at the
+bottom of the window. Then double-click with mouse button 1 or press the
+return key, to bring up the Lines/Sidedef editor dialog.
+
+.(b
+.sh 4 "The Linedef/Sidedef Edit Dialog"
+.lp
+.PSPIC le-doom.eps
+.(x figures
+Linedef/Sidedef Edit Dialog
+.)x
+.)b
+
+.(b
+.sh 4 "The Wall Texture Picker
+.lp
+.PSPIC tp.eps
+.(x figures
+Wall Texture Pick Dialog
+.)x
+.)b
+
+.sh 3 "Connecting two vertices with a new Line"
+.lp
+To connect two existing vertices with a new line, move the pointer over
+the first vertex, so that its informations are shown. Then press CTRL\-L
+to start creating a new line. Drag this red rubber band line around in the
+view and connect it to a second vertex. To abort this operation press ESC,
+to connect the line press mouse button 1. If the pointer is not close to a
+vertex when mouse button 1 is pressed, the operation will be aborted too.
+The linedef flag for the new line will be set to impassable and the default
+wall texture will be applied to the middle texture for the right sidedef.
+All other attributes of this new created lines must be changed manually,
+take care about the sector it faces, this is undefined yet! If you have
+problems to connect the line to the second vertex, increase the scaling of
+the drawing canvas or use the function from the Line menu. Also suppressing
+display of vertices and enabling again from the option menu might help.
+This changes order of displaying, vertices are drawn on top then, which makes
+it easier to connect to them.
+
+.sh 3 "Removing Lines from a map"
+.lp
+Move the pointer over the line you wish to destroy and then click mouse
+button 3 or press the Delete key, this will remove it.
+
+.sh 3 "Flipping Lines"
+.lp
+To flip a line into the opposite direction it faces, move the pointer
+over the line and enter CTRL\-F. If this is a two-sided line, its both
+linedefs will be flipped too, so that it still is connected to the same
+sectors on both sides.
+
+.sh 3 "Flipping Sidedefs"
+.lp
+Also the both sidedefs of a two sided line can be flipped, if necessary. Move
+the pointer over the line and enter CTRL\-D to flip the sidedefs.
+
+.sh 3 "Splitting Lines"
+.lp
+To split a line into two lines, move the pointer over the line at the
+coordinates, where you wish to split it. Then press mouse button 2
+or CTRL\-S to insert a new vertex at this coordinates. The line
+automatically will be splited into two lines, connected with this new
+vertex. The new inserted line gets its flag and both sidedefs copied
+from the original line, which was splited. The original lines type
+and tag are \fBnot\fR copied, because most often this is not what one
+wants and this could be confusing.
+
+.sh 3 "Merging Lines"
+.lp
+To merge two lines splited by a vertex remove this vertex. The line which
+uses the vertex as destination will be deleted too, the line which uses the
+vertex as source is linked to the source vertex of the deleted line.
+
+.sh 3 "Copy/Paste Line Properties"
+.lp
+After a line was added to a map and its properties are set with the
+Linedef/Sidedef editor, some properties of this line can be copied into
+a copy/paste buffer with the key CTRL\-C. Then create more lines and
+just paste the properties copied before with CTRL\-P.
+From the Lindef properties only the flags are copied, not type and tag
+and in case of Hexen style lines the special and arguments. This is to
+prevent creation of unwanted triggers.
+From the Sidedef properties the offsets and textures of both sidedefs
+are copied. The sectors remain so that the line still is connected to
+the correct sectors. If a line with two Sidedefs is copied to a line with
+one, only the properties of the right Sidedef are copied. Same if the
+line copied from has a right Sidedef only and the line copied to has
+two Sidedefs.
+
+.he '\*(td'TkWadCad User Manual'Things'
+.pa
+.sh 2 Things
+.(x contents
+Things
+.)x
+.lp
+Things are all sort of stuff in the world, like the monsters,
+weapons and power-ups laying around, some decoration too.
+.lp
+Very essential things are the player start positions, a map needs a player 1
+start position at least, else the game engine will crash, because it won't
+know where to start displaying the world.
+.lp
+If a map with only one player start is played as multiuser network game,
+the game engines for all other players than the first one will crash.
+Always include four player starts at least, even if the map never was
+tested in networking games. Same with the deathmatch starts, include four
+of them at least, even if deathmatch is untested, this prevents crashes
+for some players, which is quite un-nice behavior.
+.lp
+On the map things are shown as little circles.
+Player start positions and teleport exits are drawn grey, weapons golden,
+monsters brown and all other stuff is drawn green.
+
+.sh 3 "Displaying Thing Informations"
+.lp
+To display informations about a thing move the pointer over it
+and informations will be displayed in the object information fields at the
+bottom of the window. The number of the thing is used by the editor
+internally only, it's not essential for the layout of the map. More vital
+are the things coordinates and in which direction it's facing, when placed
+on the map. The facing of power-ups or weapons doesn't matter, the sprites
+look the same from all viewing directions. But the facing of player starts,
+teleport exits and monsters does matter a lot, monsters not facing the player
+are easy to kill, because they won't react before one attacks them.
+
+.sh 3 "Moving a Thing"
+.lp
+To move a thing move the pointer over it, press mouse button 1 and drag the
+thing to its new position.  The coordinates of the thing are updated while
+it's dragged over the map in the object information fields at the bottom of
+the window. Use this informations to place the thing at exact coordinates.
+Then release mouse button 1 to drop the thing on the map, where you want
+it\**.
+.(f
+\** If the option "snap on grid" is active, the thing will be moved to
+the next closest grid coordinate.
+.)f
+
+.sh 3 "Adding new Things to a map"
+.lp
+To add new things to the world you're going to build, position the pointer
+on the backdrop of the drawing canvas somewhere, then enter CTRL\-T. This
+will add a harmless thing to the map, probably you want to edit it after
+you created it, see below.
+
+.sh 3 "Removing Things from a map"
+.lp
+Move the pointer over the thing you wish to destroy and then click mouse
+button 3 or press the Delete key, this will remove it.
+
+.sh 3 "Editing Thing Properties"
+.lp
+To edit a things properties move the pointer over it and double-click with
+mouse button 1 on it, or press the return key. This will bring up the edit
+dialog for things.
+.br
+Rotating a thing may be done with the keys < and > without using the thing
+editor.
+.uh "Note:"
+In Hexen style maps it's \fBNOT\fR a good idea to rotate Poly Object related
+things with this keys. The Poly Objects are glued together by the angle value
+instead of using the thing ID, this is a design glitch in the Hexen engine.
+
+.(b
+.sh 4 "The Thing Edit Dialog"
+.lp
+.PSPIC te-doom.eps
+.(x figures
+Thing Edit Dialog
+.)x
+.)b
+
+.sh 3 "Copy/Paste Thing Properties"
+.lp
+After a thing was added to a map and its properties are set with the
+thing editor, the properties of this thing can be copied into a copy/paste
+buffer with the key CTRL\-C. Then create more things with CTRL\-T and
+just paste the properties copied before with CTRL\-P. All thing properties
+other than its coordinates and in case of Hexen style maps its thing id
+will be pasted from the buffer.
+
+.he '\*(td'TkWadCad User Manual'Appendix A'
+.pa
+.(x contents
+Appendix A: Tables with Key and Mouse Bindings
+.)x
+.sh 1 "Tables with Key and Mouse Bindings"
+
+.(b
+.sh 2 "Drawing canvas bindings"
+.lp
+To use this bindings the pointer should be placed on the backdrop of the
+drawing canvas. If the pointer is set on any object on the map, other
+bindings might apply, see the tables below. An indication that the pointer
+isn't set on any object are the empty object information fields at
+the bottom of the window.
+.(x tables
+Bindings for Drawing Canvas
+.)x
+.lp
+.TS
+center allbox tab(|);
+l | lw(30).
+Event | Binding
+_
+Button 2 |\
+T{
+Scroll the map view in the drawing canvas, without using the scrollbars
+T}
+Cursor Keys |\
+T{
+Scroll the map view in the drawing canvas, without using the scrollbars
+T}
++ |\
+T{
+Zoom map in
+T}
+- |\
+T{
+Zoom map out
+T}
+g |\
+T{
+Decrease grid step
+T}
+G |\
+T{
+Increase grid step
+T}
+CTRL\-V |\
+T{
+Create new Vertex at the current pointer location. If the
+checkbutton 'Snap on grid' is marked, the Vertex will be inserted
+at the closest grid coordinate.
+T}
+CTRL\-T |\
+T{
+Create new default Thing at the current pointer location. If the
+checkbutton 'Snap on grid' is marked, the Thing will be inserted at
+the closest grid coordinate.
+T}
+CTRL\-M |\
+T{
+Build WAD file with make
+T}
+CTRL\-B |\
+T{
+Build WAD file with node builder
+T}
+CTRL\-R |\
+T{
+Run WAD file with a WAD engine
+T}
+v |\
+T{
+Show/hide Vertices
+T}
+t |\
+T{
+Show/hide Things
+T}
+a |\
+T{
+Show/hide Line arrows
+T}
+F1 |\
+T{
+Help
+T}
+q |\
+T{
+Quit editor
+T}
+.TE
+.)b
+
+.(b
+.sh 2 "Bindings for Vertices"
+.lp
+The bindings in the first part of the table work, if the pointer is
+set on a vertex. Bindings in the second half of the table work, if the
+pointer is set on the canvas backdrop.
+.(x tables
+Bindings for Vertices
+.)x
+.lp
+.TS
+center allbox tab(|);
+l | lw(30).
+Event | Binding
+_
+Button 1 |\
+T{
+Drag Vertex on the map, release button to drop it at the current pointer
+location. If the checkbutton 'Snap on grid' is marked, the Vertex will
+be moved to the closest grid coordinate while dragging it.
+T}
+Button 3 |\
+T{
+Delete Vertex under pointer. If the Vertex is connected to two lines
+the lines will be merged into a single one.
+T}
+Delete |\
+T{
+Delete Vertex under pointer. If the Vertex is connected to two lines
+the lines will be merged into a single one.
+T}
+CTRL\-L |\
+T{
+Connect two Vertices with a new Line. Drag the Line to another Vertex
+and press button 1 to connect to it, press ESC to abort.
+T}
+_
+CTRL\-V |\
+T{
+Insert new Vertex at the current pointer location. Lines won't be
+splited with this function! If the checkbutton 'Snap on grid' is
+marked, the Vertex will be inserted at the closest grid coordinate.
+T}
+.TE
+.)b
+
+.(b
+.sh 2 "Bindings for Lines"
+.lp
+The bindings for lines only work, if the pointer is placed over a line.
+An indication that a line is marked are its informations
+displayed in the object information fields at the bottom of the window.
+.(x tables
+Bindings for Lines
+.)x
+.lp
+.TS
+center allbox tab(|);
+l | lw(30).
+Event | Binding
+_
+Button 1 Double-click |\
+T{
+Enter editor for Line under pointer
+T}
+Button 2 |\
+T{
+Split Line and insert new Vertex at pointer location. If the
+checkbutton 'Snap on grid' is marked, the Vertex will be inserted
+at the closest grid coordinate.
+T}
+Button 3 |\
+T{
+Delete Line under pointer
+T}
+Return |\
+T{
+Enter editor for Line under pointer
+T}
+Delete |\
+T{
+Delete Line under pointer
+T}
+CTRL\-F |\
+T{
+Flip Line under pointer
+T}
+CTRL\-D |\
+T{
+Flip Sidedefs of a two sided Line under pointer
+T}
+CTRL\-S |\
+T{
+Split Line and insert new Vertex at pointer location. If the
+checkbutton 'Snap on grid' is marked, the Vertex will be inserted
+at the closest grid coordinate.
+T}
+CTRL\-C |\
+T{
+Copy line properties into copy/paste buffer.
+T}
+CTRL\-P |\
+T{
+Paste line properties from copy/paste buffer.
+T}
+.TE
+.)b
+
+.(b
+.sh 2 "Binding for Things"
+.lp
+The bindings in the first part of the table work, if the pointer is
+set on a thing. Bindings in the second half of the table work, if the
+pointer is set on the canvas backdrop.
+.(x tables
+Binding for Things
+.)x
+.lp
+.TS
+center allbox tab(|);
+l | lw(30).
+Event | Binding
+_
+Button 1 |\
+T{
+Drag Thing on the map, release button to drop it at the current pointer
+location. If the checkbutton 'Snap on grid' is marked, the Thing will
+be moved to the closest grid coordinate while dragging it.
+T}
+Button 1 Double-click |\
+T{
+Enter editor for Thing under pointer
+T}
+Button 3 |\
+T{
+Delete Thing under pointer
+T}
+Return |\
+T{
+Enter editor for Thing under pointer
+T}
+Delete |\
+T{
+Delete Thing under pointer
+T}
+< |\
+T{
+Rotate thing left by 45 degrees
+T}
+> |\
+T{
+Rotate thing right by 45 degrees
+T}
+CTRL\-C |\
+T{
+Copy thing properties into copy/paste buffer
+T}
+CTRL\-P |\
+T{
+Paste thing properties from copy/paste buffer
+T}
+_
+CTRL\-T |\
+T{
+Create new default Thing at the current pointer location. If the
+checkbutton 'Snap on grid' is marked, the Thing will be inserted
+at the closest grid coordinate.
+T}
+.TE
+.)b
+
+.he '\*(td'TkWadCad User Manual'Appendix B'
+.pa
+.(x contents
+Appendix B: Map file format Specification
+.)x
+.sh 1 "Map file format Specification"
+.lp
+Map file are plain text files with various sections, embedded by a
+level specification.
+
+.sh 2 "Level Specification"
+.lp
+The syntax is as follows:
+
+.he '\*(td'TkWadCad User Manual'Contents'
+.pa
+.uh Contents
+.bl
+.xp contents
+.bl 2
+.uh Tables
+.bl
+.xp tables
+.bl 2
+.uh Figures
+.bl
+.xp figures

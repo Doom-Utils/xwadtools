@@ -1,0 +1,129 @@
+BEFORE YOU DO ANYTHING:
+-----------------------
+
+The program xew needs the XForms library, if you don't have it already
+go get it from http://bragg.phys.uwm.edu/xforms/
+The curses support in xew is broken, needs to be fixed, forget about
+it for now. If you don't wish to get XForms to be able to compile
+xew, then edit the system dependend Makefile you're going to use, else
+make will abort. Hint for Unixware7 users: when I got XForms there was
+no version for Unixware7, but one for Unixware2. If this still is the
+case..., I got the UW2 version and it works OK under UW7 too. This is
+for UNIX systems only, xew won't get compiled in the makefiles for Windows
+and DOS, no need to modify anything for this OS's.
+
+How to build and install the tools:
+----------------------------------------
+
+UNIX:
+
+You need GNU make, vanilla UNIX make won't do. GNU make can be
+downloaded from ftp.gnu.org.
+
+Some programs are written in C++ and require an ISO/ANSI C++
+compiler. Systems distributed with a cfront based C++ compiler,
+like SCO OpenServer5, will have problems. Get the EGCS compiler
+from http://www.cygnus.com/egcs/.
+
+
+Windows NT/9x:
+
+To compile this tools for a MS Windows system you need the development
+tools from Cygnus. This tools are free and distributed under the GPL,
+you can download them from http://sourceware.cygnus.com/cygwin/. You will
+need the full development system, I used release B20.1 for the port.
+This release also includes Tcl/Tk 8.0 and I have used it under Windows 9x
+and NT 4.0 to test the map editor tkwadcad.
+
+
+DOS:
+
+To compile this tools for some sort of DOS you need the DJGPP compiler
+and some UNIX tools. This tools are free and distributed under the GPL,
+you can download them from ftp://ftp.simtel.net/pub/simtelnet/gnu/djgpp.
+You'll need the V2 C and C++ compiler, all necessary libraries and header
+files, GNU make and the GNU fileutils at least. The Makefiles use UNIX
+commands like cp and rm to do their stuff, so get them.
+While you are there get GNU bash too, I don't do DOS .bat files, only
+UNIX shell, so if you want to run the slige scripts I wrote, you need
+bash or you have to write .bat files your self. If you do that, well,
+feel free to email them, I can include them in a future release.
+The tools are not tested under DOS thoroughly, they might run out of stack
+space. If that happens use stubedit to increase their stack size, as it
+is done in Makefile.dos for the wadlc program.
+
+
+There are top level Makefile for the various OS's, so if you
+are using Linux type 'make -f Makefile.lin' etc. If your OS
+isn't supported with a Makefile, well, use one as a template
+to write it and email it to me. System dependencies should
+be solved in the top level Makefiles _ONLY_, I don't want
+different Makefiles in all the tools directories!
+Right now this isn't the case for RISC OS, the tools which can be
+compiled under RISC OS have a Makefile.ro in their directory
+and I'm still waiting for a top level Makefile, to get rid of
+them.
+Check the top level Makefile you are using before you run make,
+you might want to change some defines maybe, like the local
+directories, into which the programs and manual pages will be
+installed. This isn't /usr/local/blah in each top level
+Makefile, watch it, special if you are using Windows or DOS!
+Anyway, to build and install the tools under Linux as an
+example do this:
+
+make -f Makefile.lin
+make -f Makefile.lin install
+make -f Makefile.lin clean
+
+Easy enough I guess. All tools come with UNIX manual pages, do read them!
+Yes, Windows and DOS don't have a UNIX man command and a roff formatter,
+but substitutes are included in the support directory. Under Windows 9x/NT
+they are installed by the makefile, after installation try out the command
+'man man' under a Cygwin bash shell. Probably this can be made working
+under DOS too, but I don't care, you are on your own with that.
+Some UNIX vendors dare to deliver their OS without a roff formatter.
+Installing GNU roff on this systems might be too much work, you can use
+awf or cawf from the support directory on such UNIX systems too.
+
+It might be a good idea to look for text files in the tools directories.
+Maybe I missed something essential while hacking the manual pages together,
+but the manual pages are decisive, I left the text files alone as they came
+from the authors.
+
+Testing... Playing...
+---------------------
+In the directory EXAMPLES there are Makefiles which uses the tools
+to build PWAD files and such. So to try out your installed tools, you
+could just type make in the directories and examine the results and
+try to play the PWAD files with some game engine. The command 'make clean'
+gets rid of all produced temporary files.
+
+If you're using UNIX and have XDoom installed, try the testbench in
+directory toolstest. All node builders and map compilers/de-compilers
+will be tested to some degree by this.
+
+Have a look at the slige directory too, there are shell scripts which
+create some random Doom PWAD's with slige and process them with all included
+node builders. This is pretty good to test out the tools some more.
+
+Notes:
+------
+This Perl program in the directory mergewad won't be installed
+by make install, I haven't used this tool so far, I just found
+it somewhere. It's included here because some WAD authors might
+find it useful, so go figure if you want it and install your
+self.
+
+Also the map file editor in tkwadcad to build WAD level maps won't be
+installed yet, because it's work in progress. The tkwadcad directory
+includes instructions how to install it by hand, it is not very
+difficult, so feel free to play with it. The editor works on any UNIX
+and Windows NT/9x, maybe MacOS too, depends on the quality of the
+Tcl/Tk 8.0 port used.
+
+WAD tool programmers who would like to work on this stuff should check
+the functions in the lib directory and header files in the include
+directory. If possible use them and if you find functions which are
+needed by various tools, then add them to the library. Probably
+the tools still include redundant functions which should be moved
+into the library.

@@ -1,0 +1,58 @@
+.TH qmus2mid 6 "12 January 2000"
+
+.SH NAME
+qmus2mid \- Quick MUS to MIDI converter
+
+.SH SYNOPSIS
+.BR qmus2mid " \fImus-file midi-file\fR"
+.RB [ options ]
+.SH DESCRIPTION
+\fBqmus2mid\fP reads the \fImus-file\fR, converts to MIDI and writes 
+the \fImidi-file\fR.  The \fImidi-file\fR is ruthlessly overwritten 
+unless the \fB\-noow\fR option is used.
+
+.SH DISCLAIMER
+This program is furnished on an AS IS basis for the fun of it.
+id Software, Raven Software and Activision do not support this program.
+
+.SH Options
+Note that the options must come \fBafter\fR the two filenames.
+.TP
+\fB\-noow\fR
+Do not overwrite the midi-file.
+.TP
+\fB\-nodisp\fR
+Display nothing  (except errors)
+.TP
+\fB\-nocomp\fR
+Don't compress!
+.TP
+\fB\-size\fR \fI###\fR
+Set the track buffer size to \fI###\fR (in KB). 
+.br
+Default = 64 KB
+.TP
+\fB\-t\fR \fI###\fR
+Ticks per quarter note. Default = 89
+
+.SH SUPPORTED GAMES
+Doom, Ultimate Doom, Doom][, Final Doom, Hexen, Heretic and Strife all use
+the MUS file format in their WAD files.
+
+.SH "SEE ALSO"
+.BR playmidi "(1), "
+.BR xwadtools (6)
+
+.SH NOTES
+This is a Unix version of the DOS program QMUS2MID. Some of the 
+functionality of the dos-version has been removed.
+
+.SH BUGS
+Doesn't work on big-endian machines. 
+
+.SH AUTHOR
+Sebastien Bacquet  (bacquet@iie.cnam.fr)
+.LP
+Unix port by Hans Peter Verne (hpv@kjemi.uio.no)
+.LP
+RISC OS port by Justin Fletcher (doom@thevillage.ndirect.co.uk)

@@ -1,0 +1,8 @@
+This directory contains some examples which show how to render textures
+with povray, color quantize them for Doom and include them in PWAD's.
+
+You are free to use this examples for your own PWAD's, modify and
+re-distribute them. Also feel free to use the povray scene files as a
+base for your own experiments.
+
+Udo Munk (um@compuserve.com)

@@ -1,0 +1,34 @@
+# List of linedef specials for XDoomPlus sorted into classes.
+# The list doesn't need to be in any particular order, tkwadcad will
+# present the list entries in the same order than in this file.
+#
+# No    Class   arg1    arg2    arg3    arg4    arg5    Description
+0	Default	-	-	-	-	-	: Default, no function
+
+# Ending level
+243	End	-	-	-	-	-	: Ends level and advances to following level
+
+# Scrolling
+100	Scroll	speed	-	-	-	-	: Scroll texture left
+101	Scroll	speed	-	-	-	-	: Scroll texture right
+102	Scroll	speed	-	-	-	-	: Scroll texture up
+103	Scroll	speed	-	-	-	-	: Scroll texture down
+
+# Scripts
+80	Script	script	map	s_arg1	s_arg2	s_arg3	: Execute ACS script
+81	Script	script	map	-	-	-	: Suspend ACS script
+82	Script	script	map	-	-	-	: Terminate ACS script
+83	Script	script	map	s_arg1	s_arg2	lock	: Execute locked ACS script
+
+# Special
+121	Special	id	-	-	-	-	: Set Line Identification to id
+208	Special	tag	val	-	-	-	: Make this or tagged 2s normal texture translucent
+
+# Thing Specials
+72	Thing	angle	dist	-	-	-	: Thrust thing
+73	Thing	damage	-	-	-	-	: Damage thing
+132	Thing	tid	-	-	-	-	: Remove thing
+133	Thing	tid	-	-	-	-	: Destroy thing
+
+# Force Fields
+145	Field	id	-	-	-	-	: Switch field off

@@ -1,0 +1,71 @@
+.TH wadpat 6 "14 January 2000"
+
+.SH NAME
+wadpat \- extract texture patches from WAD files into ppm graphic files
+
+.SH SYNOPSIS
+.BR wadpat " [" "\-c \fIpalette\fP" ]
+.RB [ "\-l \fIname\fP" "] [" \-p ]
+.I wadfile
+
+.SH DISCLAIMER
+This program is furnished on an AS IS basis for the fun of it.
+id Software, Raven Software and Activision do not support this program.
+
+.SH DESCRIPTION
+The program takes a WAD file (either IWAD or PWAD) as input, and decompiles
+all texture patches found in the PNAMES resource of the WAD file into ppm
+graphic files.
+.P
+A patch named \fBFRED\fP would be saved as \fB./patches/fred.ppm\fP.
+If the \fB./patches\fP directory does not already exist, it is created.
+
+.SH OPTIONS
+.TP
+.BI "\-c " palette
+By default the program uses the Doom palette for the color table lookup.
+With this option another palette can be used, \fIpalette\fR can be \fIdoom\fR,
+\fIheretic\fR, \fIhexen\fR or \fIstrife\fR.
+.TP
+.BI "\-l " name
+By default, the program extracts all patches listed in the \fBPNAMES\fP lump.
+With this option, the program extract only the patch contained in the lump
+named \fIname\fP.
+.IP ""
+Note that \fIname\fP doesn't have to be listed in \fBPNAMES\fP; in fact, when
+the \fB\-l\fP option is used, the program does not try to read \fBPNAMES\fP at
+all. Neither does the lump need to be between \fBP_START\fP and \fPP_END\fP;
+the program uses the first lump of the right name it finds.  The lump does not
+even have to be a patch, it only has to be a picture. So you can also use this
+option to extract sprites or graphics as well.
+.IP ""
+This option is useful when you need to extract something that you know to be a
+picture but for some reason is not considered as such by the tools you use.
+For example, when trying to extract patches from a \fBPNAMES\fPless pwad.
+.TP
+.B \-p
+Preserve case. Prevent the name of the graphic files to be forced to
+lower case. For example, a patch named \fBFRED\fP would be saved as
+.B ./patches/FRED.ppm
+
+.SH "SUPPORTED GAMES"
+Doom, Ultimate Doom, Doom][, Final Doom, Heretic, Hexen, Strife.
+
+.SH SEE ALSO
+The Unofficial Doom Specs by Matthew S Fell.
+.br
+.BR wadgc "(6), "
+.BR ppm "(5), "
+.BR xwadtools (6)
+
+.SH BUGS/ERRORS
+The program can't extract patches larger than 256k pixels.
+
+.SH AUTHOR
+.B wadpat
+was written by Udo Munk (um@compuserve.com).
+.LP
+Thanks to Jamie Guinan (guinan@bluebutton.com) for the bug report about
+using an uninitialized color palette.
+.LP
+Option \fB\-l\fP and misc. fixes by Andre Majorel (amajorel@teaser.fr).

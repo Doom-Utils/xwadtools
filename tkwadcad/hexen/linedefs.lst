@@ -1,0 +1,118 @@
+# List of linedef specials for Hexen sorted into classes.
+# The list doesn't need to be in any particular order, tkwadcad will
+# present the list entries in the same order than in this file.
+#
+# No	Class	arg1	arg2	arg3	arg4	arg5	Description
+0	Default	-	-	-	-	-	: Default, no function
+
+# Floors
+20	Floor	tag	speed	height	-	-	: Lower floor by value
+21	Floor	tag	speed	-	-	-	: Lower floor to lowest adjacent floor
+22	Floor	tag	speed	-	-	-	: Lower floor to nearest adjacent floor
+23	Floor	tag	speed	height	-	-	: Raise floor by value
+24	Floor	tag	speed	-	-	-	: Raise floor to highest adjacent floor
+25	Floor	tag	speed	-	-	-	: Raise floor to nearest adjacent floor
+28	Floor	tag	speed	damage	-	-	: Raise floor to ceiling and crush
+35	Floor	tag	speed	height	-	-	: Raise floor in increments of 8
+36	Floor	tag	speed	height	-	-	: Lower floor in increments of 8
+46	Floor	tag	-	-	-	-	: Stop a crushing floor
+66	Floor	tag	-	height	-	-	: Lower floor instantly by value
+67	Floor	tag	-	height	-	-	: Raise floor instantly by value
+68	Floor	tag	speed	height	bool	-	: Move floor to absolute height
+
+# Ceilings
+40	Ceil	tag	speed	height	-	-	: Lower ceiling by value
+41	Ceil	tag	speed	height	-	-	: Raise ceiling by value
+42	Ceil	tag	speed	damage	-	-	: Lower ceiling to crush and raise
+43	Ceil	tag	speed	damage	-	-	: Lower ceiling to floor and crush
+44	Ceil	tag	-	-	-	-	: Stop a crushing ceiling
+45	Ceil	tag	speed	damage	-	-	: Lower ceiling to crush, raise and stay
+69	Ceil	tag	speed	height	bool	-	: Move ceiling to absolute height
+95	Ceil	tag	speed	height	-	-	: Lower floor and ceiling by value
+96	Ceil	tag	speed	height	-	-	: Raise floor and ceiling by value
+
+# Platforms
+60	Plat	tag	speed	delay	-	-	: Continually raise and lower platform
+61	Plat	tag	-	-	-	-	: Stop platform
+62	Plat	tag	speed	delay	-	-	: Lower platform, then raise again
+63	Plat	tag	speed	delay	height	-	: Lower platform by value
+64	Plat	tag	speed	delay	-	-	: Raise platform, then lower again
+65	Plat	tag	speed	delay	height	-	: Raise platform by value
+
+# Pillars
+29	Pil	tag	speed	height	-	-	: Build Pillar, move floor
+30	Pil	tag	speed	f_heigh	c_heigh	-	: Open Pillar, move floor and ceiling
+94	Pil	tag	speed	height	damage	-	: Build Pillar and crush
+
+# Stairs
+26	Stairs	tag	speed	height	delay	reset	: Build stairs down
+27	Stairs	tag	speed	height	delay	reset	: Build stairs up
+31	Stairs	tag	speed	height	reset	-	: Build stairs down sync
+32	Stairs	tag	speed	height	reset	-	: Build stairs up sync
+
+# Doors
+10	Door	tag	speed	-	-	-	: Close Door
+11	Door	tag	speed	-	-	-	: Open Door
+12	Door	tag	speed	delay	-	-	: Raise door
+13	Door	tag	speed	delay	lock	-	: Raise locked door
+
+# Scripts
+80	Script	script	map	s_arg1	s_arg2	s_arg3	: Execute ACS script
+81	Script	script	map	-	-	-	: Suspend ACS script
+82	Script	script	map	-	-	-	: Terminate ACS script
+83	Script	script	map	s_arg1	s_arg2	lock	: Execute locked ACS script
+
+# Lighting
+110	Light	tag	value	-	-	-	: Raise light by value
+111	Light	tag	value	-	-	-	: Lower light by value
+112	Light	tag	value	-	-	-	: Set light to value
+113	Light	tag	value	tics	-	-	: Fade light
+114	Light	tag	upper	lower	tics	-	: Glowing light
+115	Light	tag	upper	lower	-	-	: Flickering light
+116	Light	tag	upper	lower	u-tics	l-tics	: Strobe light
+
+# Special
+121	Spec	id	-	-	-	-	: Set Line identification to id
+129	Spec	item	script	s_arg1	s_arg2	s_arg3	: Run script upon use of appropriate puzzle item
+140	Spec	tag	sound	-	-	-	: Play sound in sector
+120	Spec	intens	durat	damrad	tremrad	tid	: Earthquake
+
+# Scrolling
+100	Scroll	speed	-	-	-	-	: Scroll texture left
+101	Scroll	speed	-	-	-	-	: Scroll texture right
+102	Scroll	speed	-	-	-	-	: Scroll texture up
+103	Scroll	speed	-	-	-	-	: Scroll texture down
+
+# Ending level
+74	End	map	pos	-	-	-	: Teleports player to new map
+75	End	-	-	-	-	-	: Ends game, runs final script
+
+# Teleporting
+70	Tele	tid	-	-	-	-	: Teleport object to spot with tid
+71	Tele	tid	-	-	-	-	: Silent teleport object to spot with tid
+
+# Thing Specials
+72	Thing	angle	dist	-	-	-	: Thrust thing
+73	Thing	damage	-	-	-	-	: Damage thing
+130	Thing	tid	-	-	-	-	: Activate thing
+131	Thing	tid	-	-	-	-	: Deactivate thing
+132	Thing	tid	-	-	-	-	: Remove thing
+133	Thing	tid	-	-	-	-	: Destroy thing
+134	Thing	tid	type	angle	speed	vspeed	: Spawn a projectile
+136	Thing	tid	type	angle	speed	vspeed	: Spawn a projectile with gravity
+135	Thing	tid	type	angle	-	-	: Spawn a thing
+137	Thing	tid	type	angle	-	-	: Spawn a thing silent
+
+# Poly Object Specials
+1	Poly	po	mirror	sound	-	-	: Polyobj start line
+2	Poly	po	speed	angle	-	-	: Rotate Polyobj left
+3	Poly	po	speed	angle	-	-	: Rotate Polayobj right
+4	Poly	po	speed	angle	dist	-	: Move Polyobj
+5	Poly	po	order	mirror	sound	-	: Polyobj explicite line
+6	Poly	po	speed	angle	dist	-	: Move Polyobj in units of 8
+7	Poly	po	speed	angle	delay	-	: Polyobj door swing
+8	Poly	po	speed	angle	dist	delay	: Polyobj door slide
+90	Poly	po	speed	angle	-	-	: Polyobj override rotate left
+91	Poly	po	speed	angle	-	-	: Polyobj override rotate right
+92	Poly	po	speed	angle	dist	-	: Polyobj override move
+93	Poly	po	speed	angle	dist	-	: Polyobj override move in units of 8

@@ -1,0 +1,80 @@
+.TH tkwadcad 6 "24 September 2000"
+
+.SH NAME
+tkwadcad \- a Doom/Heretic/Hexen/Strife WAD map editor
+
+.SH SYNOPSIS
+.B tkwadcad
+.RI [ mapfile ]
+
+.SH DESCRIPTION
+tkwadcad is a 2D GUI CAD editor for WAD level maps. 
+Please see the provided documentation for details.
+
+.SH OPTIONS
+.TP
+.B \-debug
+Option for MS Windows to enable debugging. The option enables a
+console window into which debugging output goes. This is not
+necessary under UNIX/X, output there goes into the terminal
+the program was started from. No point in using this option
+for users of the program, only helpfull for programmers.
+
+.SH ENVIRONMENT
+None yet.
+
+.SH FILES
+.TP
+.I .textures
+Texture description file for a project, file needs to be
+in the project directory for the WAD under development.
+.TP
+.I /usr/local/lib/tkwadcad/engines.lst
+A definition file for the game engines which can be run from the editor,
+to test out a level map under development.
+.TP
+.I /usr/local/lib/tkwadcad/lib/*
+Some functionality of the program is implemented in Tcl packages outside
+of the main program. This packages need to be installed in this directory.
+.TP
+.I /usr/local/lib/tkwadcad/scripts/*
+Support scripts written in Bourne shell for running external programs,
+like game engines, node builders, etc., from the editor.
+.TP
+.I /usr/local/lib/tkwadcad/doom/*
+Game definition files for Doom and Ultimate Doom.
+.TP
+.I /usr/local/lib/tkwadcad/doom2/*
+Game definition files for Doom2 and Final Doom.
+.TP
+.I /usr/local/lib/tkwadcad/hexen/*
+Game definition files for Hexen.
+.TP
+.I /usr/local/lib/tkwadcad/xdoom/*
+Game definition files for XDoom (extended Doom2 with Boom features).
+Can also be used for other Boom compatible game engines like Lxdoom.
+.TP
+.I /usr/local/lib/tkwadcad/xdoomplus/*
+Game definition files for XDoomPlus (extended Doom2 with Hexen features).
+
+.SH EXIT VALUE
+Undefined, problems will be handled inside the GUI.
+
+.SH AUTHOR
+Udo Munk <um@compuserve.com>.
+.LP
+Thanks a lot to Andre Majorel (amajorel@teaser.fr) for the initial manual page.
+
+.SH SEE ALSO
+.BR xwadtools (6),
+.BR yadex (6).
+.IP LDE
+http://www-unix.oit.umass.edu/~tetron/lde/
+.IP PFME
+http://www.purplefrog.com/~thoth/purplefrog/editor.html
+.IP "Xwad (part of Dumb)"
+http://stekt.oulu.fi/~tosi/dumb/dumb.html
+.IP Xwadtools
+ftp://ftp.cdrom.com/pub/idgames/source/
+.IP Yadex
+http://www.teaser.fr/~amajorel/yadex/

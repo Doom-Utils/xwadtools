@@ -1,0 +1,135 @@
+# This is the list of things which can be placed in a XDoom map.
+# The list is sorted alphabetical by thing names, but it doesn't need to be
+# in any particluar order, because tkwadcad sorts it internaly.
+#
+# If the Height field has a 0 the height of the thing is not relevant,
+# because the player can walk through/under it. Some things have a 0
+# in the radius field, I don't know right now which size this things have,
+# needs to be fixed sometime.
+#
+#ID	Height	Radius	Sprite		Class	Description
+
+2007	16	20	CLIPA0		Ammo	: Ammo Clip
+2015	16	20	BON2D0		Armor	: Armor Helmet
+  68	64	64	BSPIA1D1	Monster	: Arachnotron
+  64	56	20	VILEA1D1	Monster	: Archvile
+   8	16	20	BPAKA0		Ammo	: Backpack
+3003	64	24	BOSSA1		Monster	: Baron of Hell
+2035	42	10	BAR1A0		Deco	: Barrel
+2023	16	20	PSTRA0		Health	: Berserk Sphere
+2006	0	20	BFUGA0		Weapon	: BFG 9000
+2019	16	20	ARM2A0		Armor	: Blue Armor
+   5	16	20	BKEYA0		Key	: Blue Keycard
+  40	16	20	BSKUA0		Key	: Blue Skull Key
+2048	16	20	AMMOA0		Ammo	: Box of Ammo
+2046	16	20	BROKA0		Ammo	: Box of Rockets
+2049	16	20	SBOXA0		Ammo	: Box of Shells
+  81	0	16	BRS1A0		Deco	: Brains
+  47	16	16	SMITA0		Deco	: Brown Stub
+3005	56	31	HEADA1		Monster	: Cacodemon
+  35	16	16	CBRAA0		Deco	: Candelabra
+  34	0	16	CANDA0		Deco	: Candle
+  17	16	20	CELPA0		Ammo	: Cell Charge Pack
+2002	0	20	MGUNA0		Weapon	: Chaingun
+  65	56	20	CPOSA1		Monster	: Chaingun Sargeant
+2005	0	20	CSAWA0		Weapon	: Chainsaw
+  72	72	16	KEENA0		Monster	: Commander Keen
+2026	16	20	PMAPA0		Item	: Computer Map
+  16	110	40	CYBRA1		Monster	: Cyberdemon
+  22	0	31	HEADL0		Deco	: Dead Cacodemon
+  21	0	30	SARGN0		Deco	: Dead Demon
+  20	0	20	TROOM0		Deco	: Dead Imp
+  15	0	16	PLAYN0		Deco	: Dead Marine
+  19	0	20	SPOSL0		Deco	: Dead Sargeant
+  18	0	20	POSSL0		Deco	: Dead Trooper
+  11	56	16	PLAYF1		Player	: Deathmatch Start
+3002	56	30	SARGA1		Monster	: Demon
+  87	32	16	-		Monster	: Demon Spawn Spot
+  89	32	16	-		Monster	: Demon Spawner
+2047	16	20	CELLA0		Ammo	: Energy Cell
+  41	16	16	CEYEA0		Deco	: Eye in Symbol
+  70	16	16	FCANA0		Deco	: Flaming Barrel
+  42	16	16	FSKUA0		Deco	: Flaming Skulls
+2018	16	20	ARM1A0		Armor	: Green Armor
+  43	16	16	TRE1A0		Deco	: Grey Tree
+  10	0	16	PLAYW0		Deco	: Guts and Bones
+  12	0	16	PLAYW0		Deco	: Guts and Bones 2
+  50	84	16	GOR2A0		Deco	: Hanging Arms Out
+  59	84	16	GOR2A0		Deco	: Hanging Arms Out 2
+  73	88	16	HDB1A0		Deco	: Hanging Body 1
+  74	88	16	HDB2A0		Deco	: Hanging Body 2
+  75	64	16	HDB3A0		Deco	: Hanging Body 3
+  76	64	16	HDB4A0		Deco	: Hanging Body 4
+  77	64	16	HDB5A0		Deco	: Hanging Body 5
+  78	64	16	HDB6A0		Deco	: Hanging Body 6
+  53	52	16	GOR5A0		Deco	: Hanging Leg
+  62	52	16	GOR5A0		Deco	: Hanging Leg 2
+  51	84	16	GOR3A0		Deco	: Hanging One-Legged Body
+  61	52	16	GOR3A0		Deco	: Hanging One-Legged Body 2
+  49	68	16	GOR1A0		Deco	: Hanging Swaying Body
+  63	68	16	GOR1A0		Deco	: Hanging Swaying Body 2
+  52	68	16	GOR4A0		Deco	: Hanging Torso
+  60	68	16	GOR4A0		Deco	: Hanging Torso 2
+2014	16	20	BON1A0		Health	: Health Potion
+  69	64	24	BOS2A1C1	Monster	: Hell Knight
+3001	56	20	TROOA1		Monster	: Imp
+  25	16	16	POL1A0		Deco	: Impaled Body
+2024	16	20	PINSA0		Item	: Invisibility
+2022	16	20	PINVA0		Item	: Invulnerability
+  54	16	32	TRE2A0		Deco	: Large Tree
+2045	16	20	PVISA0		Item	: Light Amplification Visor
+3006	56	16	SKULA1		Monster	: Lost Soul
+  67	64	48	FATTA1		Monster	: Mancubus
+2012	16	20	MEDIA0		Health	: Medical Kit
+  83	16	20	MEGAA0		Item	: Mega Sphere
+  71	56	31	PAINA1		Monster	: Pain Elemental
+  29	16	16	POL3A0		Deco	: Pile of Skulls
+  36	16	16	COL5A0		Deco	: Pillar with Heart
+  37	16	16	COL6A0		Deco	: Pillar with Skull
+2004	16	20	PLASA0		Weapon	: Plasma Gun
+   1	56	16	PLAYA1		Player	: Player 1 Start
+   2	56	16	PLAYA1		Player	: Player 2 Start
+   3	56	16	PLAYA1		Player	: Player 3 Start
+   4	56	16	PLAYA1		Player	: Player 4 Start
+  27	16	16	POL4A0		Deco	: Pole with Skull
+  24	0	16	POL5A0		Deco	: Pool of Blood
+  79	0	16	POB1A0		Deco	: Pool of Blood 1
+  80	0	16	POB2A0		Deco	: Pool of Blood 2
+2025	16	20	SUITA0		Item	: Radiation Suit
+  13	16	20	RKEYA0		Key	: Red Keycard
+  38	16	20	RSKUA0		Key	: Red Skull Key
+  66	56	20	SKELA1D1	Monster	: Revenant
+2010	16	20	ROCKA0		Ammo	: Rocket
+2003	16	20	LAUNA0		Weapon	: Rocket Launcher
+  88	16	16	BBRNA0		Monster	: Romero's Head
+   9	56	20	SPOSA1		Monster	: Sargeant
+2008	16	20	SHELA0		Ammo	: Shells
+  31	16	16	COL2A0		Deco	: Short Green Pillar
+2028	16	16	COLUA0		Deco	: Short Lamp
+  33	16	16	COL4A0		Deco	: Short Red Pillar
+2001	16	20	SHOTA0		Weapon	: Shotgun
+  28	16	16	POL2A0		Deco	: Skewered Heads
+  55	16	16	SMBTA0		Deco	: Small Blue Torch
+  56	16	16	SMGTA0		Deco	: Small Green Torch
+  57	16	16	SMRTA0		Deco	: Small Red Torch
+2013	16	20	SOULA0		Item	: Soul Sphere
+  58	56	30	SARGA1		Monster	: Spectre
+   7	100	128	SPIDA1D1	Monster	: Spider Mastermind
+2011	16	20	STIMA0		Health	: Stimpack
+  82	16	20	SGN2A0		Weapon	: Super Shotgun
+  44	16	16	TBLUA0		Deco	: Tall Blue Torch
+  30	16	16	COL1A0		Deco	: Tall Green Pillar
+  45	16	16	TGRNA0		Deco	: Tall Green Torch
+  85	16	16	TLMPA0		Deco	: Tall Lamp
+  86	16	16	TLP2A0		Deco	: Tall Lamp 2
+  32	16	16	COL3A0		Deco	: Tall Red Pillar
+  46	16	16	TREDA0		Deco	: Tall Red Torch
+  48	16	16	ELECA0		Deco	: Technical Column
+  14	0	0	TFOGC0		Player	: Teleport Exit
+3004	56	20	POSSA1		Monster	: Trooper
+  26	16	16	POL6A0		Deco	: Twitching Body
+5002	8	8	-		Wind	: Wind/Current push
+5001	8	8	-		Wind	: Wind/Current pull
+  84	56	20	SSWVA1		Monster	: Wolfenstein SS
+   6	16	20	YKEYA0		Key	: Yellow Keycard
+  39	16	20	YSKUA0		Key	: Yellow Skull Key

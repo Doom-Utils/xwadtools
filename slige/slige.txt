@@ -1,0 +1,919 @@
+
+  S L I G E
+
+  An automatic level generator
+  for DOOM and DOOM II
+
+  User Manual
+  presented as a set of questions and answers
+  because it was easier
+
+| Version of 2000/02/01
+| Covering SLIGE build 485 or so
+  Recent documentation changes are marked in the left margin
+  See the bottom for recent program changes
+
+  Dave Chess
+  dmchess@aol.com
+  http://users.aol.com/dmchess/nickdoom.html
+  http://www.doomworld.com/slige/
+
+  -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+  Q. What is SLIGE?
+
+  A. SLIGE is an automatic level generator for DOOM and DOOM II.
+     When you run SLIGE, you get a file that (after passing it
+     through a blockmap generator like BSP) you can feed to DOOM
+     (or DOOM II) to get a brand-new level that no one's ever
+     played before.  It runs in Windows95 and (I expect) Windows 98
+     and Windows NT, and I'm told it'll also run in Windows 3.1 with
+     WIN32 installed, whatever that means.  The source is also available,
+     and it has been successfully compiled for DOS and Linux.
+
+  Q. How do I use it?
+
+  A. Simple!  Just stick SLIGE.EXE somewhere on your hard disk, and:
+
+        slige
+        bsp slige.out slige.wad
+        doom -file slige.wad
+
+     or, for DOOM II:
+
+        slige -doom2
+        bsp slige.out slige.wad
+        doom2 -file slige.wad
+
+     where you can substitute your own favorite blockmap builder for
+     BSP, and put things in other directories or whatever if you like.
+
+     (If you don't have a blockmap builder, look on cdrom.com, in:
+     "ftp://ftp.cdrom.com/pub/idgames/utils/level_edit/node_builders/".
+     I use BSP myself; that's bsp23x.zip in that directory, as of this
+     writing.  SLIGE's output files *ought* to be perfectly vanilla,
+     and compatible with any good blockmap builder, but I've had
+     some trouble reports from IDBSP and ZenNode users.  Dunno why.
+     If you have any interesting experiences using other blockmap
+     builders with SLIGE, let me know!  The -nulls switch (see below)
+     may help with some of these; if it does for you, let me know
+     that also, and I'll document it.)
+
+     Note that you get a different level every time you run the
+     program (it does a cheesy random-number seeding from the
+     clock), so if you like the level and want to save it, rename
+     the WAD file before running SLIGE again!
+
+     The SLIGE.EXE file doesn't have to be in the DOOM directory or
+     anything.  If you want to change the textures and flats that
+     SLIGE uses, you'll need to put your modified SLIGE.CFG in the
+     current directory, or use the -config switch to name it.
+
+  Q. So what's it good for?
+
+  A. I see two main uses for SLIGE: for DOOM players to hone their
+     playing skills by DOOMing in lots of new environments they've
+     never played in before, and for DOOM level designers to get
+     bases to build on and ideas for rooms of their own.  Sometimes
+     the computer can come up with something neat and inspiring,
+     just because it has no common sense, or because it gets lucky.
+     (It's also been suggested that SLIGE is a good source of PWADs
+     to test PWAD utilities like editors and stuff on; I hadn't
+     thought of that, but it sounds reasonable!)
+
+  Q. Is this a beta?
+
+  A. Not any more!  There have been lots of releases of the program,
+     and while I have All Sorts of Grandiose Plans about improvements
+     for the future, I finally got some config-file stuff done, and
+     the code in general is pretty well-tested by now and seems to have
+     too few bugs to really deserve the name "beta".  (On the other hand,
+     some of the obvious limitations that I keep telling myself I'll
+     fix real soon (like how square the rooms are) are still in there.)
+
+  Q. Are there known bugs?
+
+  A. A few.  Previous builds sometimes had an occasional doorway
+     you couldn't get through, or a thing with an invalid id, or a
+     switch that didn't do anything, but I think those are all fixed
+     now.  In the current version, there's an occasional semi-transparent
+     pillar in a room-of-pillars, but I think that's a blockmapper or
+     engine bug).  Very rarely, a tree can block a door that you don't
+     really need to get through anyway; more seriously but also very
+     rarely, there can be a teleport gate that's difficult or impossible
+     to get through, or to get past.  These will all be fixed eventually.
+
+     Other known things that go wrong are subtler (sometimes oddly
+     aligned textures or strange monster placement), and not quite
+     bugs.  But I'm eager for feedback about anything at all that bothers
+     you (or impresses you!) about SLIGE levels, so don't hesitate to
+     write even if you're not sure something's a bug.  (If it's HOM or
+     a slime-trail, it's almost definitely a bug, unless you're using
+     some unreliable blockmap builder.)
+
+     Oh, and if you see any wall sections that are red (REDWALL)
+     that don't look like they ought to be, send those in, too.
+     That's the way SLIGE's post-production HOM-killer marks
+     places where a texture was left out by the main program.
+
+  Q. When I try to use this SLIGE level, I get a message like
+     "R_TextureNumForName: <something> not found".  Why?
+
+  A. Well, if the <something> is the name of one of SLIGE's custom
+     textures or flats (MARBGARG, EXITSWIT, DOORSKUL, GRAYALT, or SLDOOR1,
+     for instance), it may mean that something (your blockmap builder,
+     or your editor if you touched the WAD with an editor) has removed
+     an important lump, where the custom texture/flat is stored.  If this
+     is the case, you can either (a) get a blockmapper or editor that
+     doesn't suck quite so badly, (b) throw this WAD away and use the
+     -nocustom switch in the future to tell SLIGE not to use any custom
+     graphics, or (c) use the -cwad switch to produce a PWAD containing
+     *only* the custom graphics, and use that WAD along with normal
+     SLIGE PWADs in the future (see below for an example).
+
+     Of course, if you've been messing with the config files (see
+     below somewhere), and you get this message referring to one of
+     the textures that you were messing with, you probably just
+     spelled the name wrong or something, and should fix your config
+     file.
+
+  Q. Nope, that wasn't it; the "TextureNumForName" message was about
+     a standard DOOM texture (and/or I tried what you said above and
+     it didn't help), and I haven't been messing with the config file.
+     So?
+
+  A. Send me a note and tell me about it!  Probably I forgot to tell
+     SLIGE that some particular texture is DOOM I or DOOM II only, and
+     it's trying to use it in the wrong game.  Ooops!  Tell me the name
+     of the texture from the error message, and I can fix it quick.
+
+  Q. I don't get that particular message, but the WADs that I make
+     just don't work!  SLIGE sucks!
+
+  A. More likely your blockmap-builder sucks, or at least has some
+     "limitations".  I recommend using BSP 2.3 or above; it seems to
+     have no trouble with SLIGE levels.  If you have trouble with some
+     other blockmap builder, try the "-noslinfo" and "-nocustom" switches
+     when running SLIGE (to remove things from the WAD that might be
+     confusing your blockmapper), and use any switches you can find to
+     tell your blockmapper not to (for instance) merge vertexes that
+     are "too close together".  That might help.  Also try the "-nulls"
+     switch (see below), and if that helps, let me know.
+
+     If a SLIGE wad isn't working with some DOOM port (WinDoom, ZDoom,
+     Boom, etc), try it with vanilla DOOM/DOOM 2, and see if it works
+     there.  If it does, then there's some problem with the port you're
+     using; send me a note about it, and also send the WAD to the owners
+     of your port.  One hint: if the WAD is causing ZDoom to hang, try
+     the -noflathack switch on ZDoom.  That's said to help sometimes.
+
+  Q. There's a step in this level that's a little too high to
+     go up.  Is that a bug?
+
+  A. Have you tried activating it?  It's probably just a very
+     low lift.  Or maybe there's a switch or teleporter somewhere
+     further along that'll get you up there.  But if it won't
+     activate, and you can't get up it, and it's keeping you from
+     finishing the level or otherwise getting somewhere desirable,
+     send it in; it's a bug.
+
+  Q. I've noticed that sometimes the short edges of door
+     sectors aren't unpegged, so they seem to move with
+     the door.  You should fix that!
+
+  A. Nah, I do it on purpose.  I think it sometimes looks
+     kind of cool to have the track move with the door,
+     so the program sometimes does that.
+
+  Q. Mostly SLIGE uses the sky textures correctly, but once in
+     awhile there's a sky texture just sitting on a wall or a
+     pillar, like a painting.  Is that a bug?
+
+  A. No, it's a painting!  *8)  In fact I was inspired to do it by
+     a comment in the UDS: "They can also be used on regular walls,
+     but they usually aren't, because then they look just like a
+     painting."  I thought that might look cool, and when my
+     daughter saw the results of my first experiment she thought
+     it looked really neat, so I kept it in.  Now that I finally have
+     some config-file support working, you can (if you're brave enough
+     and clever enough to figure out the config format!) go in and
+     take the "plaque" attribute off of that texture, and it'll stop
+     doing that.
+
+  Q. What's this stuff SLIGE prints when it runs?
+
+  A. Nothing much.  You can mostly ignore it unless it sounds really
+     fatal.  SLIGE pretty much never fails to generate a usable
+     output file (unless you're out of disk space or memory or
+     something silly like that).  The stuff that SLIGE prints also
+     changes from build to build, so if you've gotten used to a
+     certain build telling you every time it puts in a certain thing,
+     you may find that the next build puts them in without mentioning
+     it.  This is normal.
+
+  Q. Do SLIGE-built PWADs implement difficulty levels?
+
+  A. Definitely!  While building a map, SLIGE maintains three
+     different user models, one for each of the main difficulty
+     levels.  It keeps track of the expected condition (health /
+     ammo / armor) of each kind of player in each room, and
+     puts in monsters and ammo and armor accordingly.  Do try
+     a few SLIGE levels on more than one setting, and let me
+     know what you think!  I expect to have to twiddle things
+     quite a bit before I have it just right.  Too much health
+     on Hurt Me Plenty?  Not enough extra monsters on Ultra?
+     Write and tell me!
+
+  Q. The levels SLIGE makes are too hard for me!
+
+  A. So don't play on Ultraviolence!  *8)  I know some people are
+     used to playing all WADs that way, but SLIGE's aren't really
+     intended for *everyone* to play on UV.  Try Hurt Me Plenty,
+     try Not Too Rough, try Too Young To Die.  If some level is
+     too hard even on Too Young to Die, let me know!
+
+  Q. I'm a guy who likes to take on Cyberdemons with just my
+     fists.  Even on Ultraviolence, the levels SLIGE makes are
+     too easy!
+
+  A. Well, Rambo, SLIGE has a switch for you!  You can use the
+     "-macho" switch, along with a number from 1 to 100, to
+     cause the Ultraviolence (and to a lesser extent Hurt Me
+     Plenty) settings of the generated level(s) to be harder.
+     For instance:
+
+         slige -macho 60
+
+     The -macho switch tells SLIGE that you can kill the average
+     monster at a lower cost in ammo and health than the default
+     player model.  -macho 1 will be pretty much unnoticable,
+     whereas -macho 100 is a claim that you're about twice as
+     good as the default model says you should be.  Again,
+     -macho effects only Hurt Me Plenty and Ultraviolence;
+     Too Young to Die and Not Too Rough will be as easy as ever.
+
+  Q. I'm even harder to please!  Most of these SLIGE levels are
+     pretty easy, but there are a couple where you're trapped in
+     a room with two Revenants, and...
+
+  A. Yeah, with the introduction of some of the bigger monsters,
+     like Cacos and Revs, where placement and environment are
+     (even) more important than with troopers and cattle, the
+     SLIGE model is just too simple.  It doesn't realize that a
+     Caco trapped in a small room that you can just lob shells
+     into is very different from one that's got you trapped at
+     the top of a lift.  Deal with it!  Think of it as good
+     practice.  (Which it is.)  If you get a level that you
+     think really can't be done at all, send it to me and I'll
+     see if I agree, and if I can think of a way to avoid the
+     situation occurring in the future.
+
+| Q. Are there any other ways to mess with the monster balance?
+|    What about weapons?
+|
+| A. Usually, SLIGE decides at random whether or not a given
+|    level will contain any "big" monsters, or any "big"
+|    weapons (with later levels in the same multi-level WAD
+|    being more likely to).  You can use the "-bimo" and/or
+|    "-biwe" switch to turn on big monsters and/or big weapons,
+|    respectively, in all the levels produced in one run.
+|
+|    You can also use the "-bimo!" switch (that's -bimo with
+|    an exclamation point on the end) to force SLIGE into
+|    "biggest monsters" mode, in which it will tend to choose
+|    bigger monsters more often than smaller ones.
+|
+|    So if you do "slige -doom2 -bewe -bimo -bimo!", for instance,
+|    you're likely to get a rather extreme level!  SLIGE will
+|    sometimes produce a level like this even without the switches,
+|    but with the switches it's more or less a sure thing.
+|
+  Q. Can SLIGE-built levels be used in co-op mode?  How about
+     Deathmatch?
+
+| A. Yes, and sort of: SLIGE puts four co-op starts into each
+     level, and I've tried to take the advice of various veteran
+     co-op players in making SLIGE co-op-friendly.  If you're
+     a co-op player and you have any advice on how SLIGE's levels
+|    could be (even) better for co-op play, let me know!  Co-op
+|    players might want to try out the -bimo and -bimo! switches
+|    described above, as I'm told that having lots of big nasty
+|    monsters is especially fun in co-op.
+
+|    For deathmatch, SLIGE has a -dm switch, that causes it to
+|    put in at least four deathmatch starts (almost always), to
+|    avoid things that don't work in deathmatch (like one-way
+|    boss-arena teleports), and to make sure that every room with
+|    a deathmatch start has some decent weapon.  I suspect that
+|    the levels produces by "slige -dm" aren't really ideal for
+|    deathmatch play, since they're still quite linear, and have
+|    lots of noisy doors and stuff, but give it a try and let
+|    me know what you think!
+
+  Q. Do SLIGE-built PWADs work with the ShareWare DOOM?
+
+  A. I don't think so.  Each level contains one object (a dead
+     Lost Soul) that's invisible and has no effect on the game,
+     but isn't present in the shareware DOOM, and so should keep
+     the WAD from working there.  So you can pass around SLIGE
+     levels without worrying about offending id Software.  At
+     least this is my theory!  I don't have the Shareware version
+     to test it with.
+
+  Q. What about DOOM 1.2 / Ultimate DOOM / Final DOOM / BOOM / etc?
+
+  A. I personal have tested the WADs with DOOM 1.9.  As far as I know,
+     they should work with all DOOMs 1.2 or greater; if you find any
+     SLIGE WADs that don't, let me know!  They should also work with
+     BOOM, just because BOOM is very DOOM-compatible, but again I
+     haven't tested.  If I get into BOOM, I may someday add some
+     optional BOOM features to SLIGE (via a -boom switch or whatever).
+     I have no plans at the moment to extend to Hexen or anything.
+     See above for some suggestions if you encounter problems running
+     SLIGE levels with your favorite DOOM port (search on "ZDoom").
+
+  Q. Aren't there any more program switches and parameters and stuff?
+
+  A. A few.  If you want the output file to be something other than
+     SLIGE.OUT, you can specify it, as in
+
+      slige newlevel.out
+
+    If you think the levels are too dark, you can specify a base
+    light-level somewhere between 100 and 220 or so, as in
+
+      slige -minlight 180
+
+    But try out the default first, and let me know if you find that
+    you really want it to be different!  (The "minlight" setting is
+    the light level that SLIGE considers to be the utterly darkest
+    room that's at all playable.)
+|
+|   If you don't want to ever have a monster in a secret closet, use
+|   the "-nosemo" switch ("no secret monsters").  That way you can
+|   blast through ignoring all those subtle secret hints, and still
+|   maybe get 100% kills at the end.
+
+    If you want a different number of rooms in the new level, you
+    can use the -rooms switch, as in:
+
+      slige -rooms 7
+
+    but note that the number you give is just a request; the exact
+    number of rooms in the level may be bigger or littler.  The
+    default if you don't use this switch is like 18ish.  The
+    exact meaning of this switch is in flux; it may soon go
+    away altogether, or its meaning may change radically.
+
+    By default SLIGE just produces one level, and it's E1M1 in
+    DOOM, or MAP01 in DOOM II.  But you can ask for more, as in
+
+      slige -levels 8
+
+    to replace all the levels of E1; or
+
+      slige -levels 6 -doom2
+
+    to get MAP01 through MAP06.  You can also change the origin,
+    as in
+
+      slige -E2M3
+
+    or
+
+      slige -doom2 -map17
+
+    Secret levels are a little complex; SLIGE will always put them
+    in if the level that leads to them is generated, but they do
+    *not* count for the purposes of the -levels switch.  So doing
+    "slige -levels 8" will in fact get you E1M1 through E1M9, with
+    E1M9 reachable as always from E1M3.  Similarly, if you do
+    "slige -doom2 -map15", you'll get MAP15, MAP31, and MAP32.  To
+    get an entire Doom I megawad, do "slige -levels 32" (not 36!).
+    The current handling of secret levels is pretty simple; another
+    thing I hope to improve later on.
+
+    SLIGE sometimes puts in a typical fight-the-big-monster arena
+    at the end of the last level in a WAD (especially for multi-level
+    WADs).  If you want to make almost certain that that will happen
+    in a given WAD, use the "-arena" switch.
+
+    The "-v" switch will cause SLIGE to produce lots of extra
+    meaningless output while it runs.  And "-restrict 12" should
+    cause it to use only textures and monsters and stuff that
+    are present in both DOOM and DOOM2, in case you want to
+    produce an "ambidextrous" PWAD using some magic utility.
+    This has not been extensively tested!  Finally, the "-doom0"
+    switch may increase compatibility with versions of DOOM prior
+    to 1.666, but I've never tested it.  Everyone has 1.9, right?
+
+    If you need a patch PWAD containing the SLIGE custom graphics
+    (see the question about texture error messages above), do
+
+      slige <game switch(es)> -cwad <filename.ext>
+
+    as in
+
+      slige -doom2 -cwad slcust.wad
+
+    This will produce "SLCUST.WAD" with the SLIGE custom textures for
+    DOOM 2.  (It wil *not* produce a PWAD with a new level; just the
+    texture WAD.)  To use that with a SLIGE level, do for instance
+
+      doom2 -file slcust.wad slige.wad
+
+    The related "-nocustom" switch tells SLIGE not to use any custom
+    graphics at all in the levels it generates (see example below).
+
+    There's also a "-noslinfo" switch, to suppress the SLINFO lump.
+    If you don't know what that means, you have no need to use
+    the switch!  *8)
+
+    The "-nulls" switch tells SLIGE to include zero-length index
+    entries for the "derived lmps" (the things that the blockmap
+    builder creates).  Some utilities, including some versions of
+    DeeP97 and WARM, apparently get confused if there aren't index
+    entries for these lmps.  That DeeP97 limitation has now been fixed,
+    but there may be other programs with the same problem.  If you're
+    having trouble using SLIGE output with some DooM utility, see if
+    giving the -nulls switch on the command line helps.  If it does,
+    drop me a note!
+
+    By default, SLIGE gets information on textures and flats and
+    themes and stuf from the file SLIGE.CFG in the current directory
+    (or from internal hardwired defaults if that file isn't there).
+    You can use the -config switch to change this, as in
+
+      slige -config blue.cfg
+
+    Let's see; that's about it, I think.  There are some other
+    switches, but none of them work well enough to tell anyone
+    about yet.  Here's a big example:
+
+|    slige -doom2 d:\tmp\fred.dat -map03 -levels 5 -arena -nocustom -biwe
+
+    will produce a blockmapless PWAD called FRED.DAT in d:\tmp,
+    containing maps three through seven for DOOM 2, using only
+    standard DOOM 2 textures, with (probably) a fight-the-boss
+|   arena at the end, and with an increased probability of the
+|   larger weapons (plasma rifle, rocket launcher) showing up in
+|   every level.
+
+  Q. Does SLIGE do secret levels?  What about the special endings
+     to ExM8 and MAP30?
+
+  A. SLIGE does do secret levels; see the long long answer to the
+     previous question for the details.  It also does the special
+     episode-endings in ExM8 (for instance, E2M8 will almost always
+     end with a Cyberdemon battle, and when you kill the Cybie, the
+     level ends), and in MAP07 (but only if it's the last level in
+     the PWAD).  It doesn't currently use the other sector-special
+     death-effects (E4M6, say), and it doesn't use any Keens or
+     Romero-heads.  It may later on (although I've never really
+     gotten the point of the Keen dolls).
+
+  Q. So why don't you replace the background music, too, while
+     you're at it?  Heh heh heh.
+
+     Well, in fact...   Long before I did SLIGE, I was heavily
+     into algorithmic composition for awhile.  SLIGE does have a
+     -music switch, but it doesn't do much of anything yet.  If
+     I get around to it, I'll port some of my old music ideas into
+     it, and you *will* be able to get new automatically-genned
+     music.  Might not be all that good, though!  *8)
+
+  Q. Pretty neat!  Doesn't it know about any other textures, though?
+     I've never seen it use my favorite wall texture, PIGEYE7.
+
+  A. At the moment it has four "themes" (generic military, generic
+     wood, generic marble, and a wild theme that it sometimes uses
+     in secret levels) set up by default.  Each theme has a pretty
+     random set of textures that I threw in.  As of build 464, though,
+     you can change the themes, and the textures and flats that they
+     use, by messing with the config file.
+
+  Q. What config file?
+
+  A. By default, SLIGE loads texture and flat and theme information
+     from SLIGE.CFG in the current directory.  If that file isn't
+     there, it uses hardwired defaults (which are in fact the same
+     as the settings in the SLIGE.CFG that's shipped with SLIGE).
+     To make SLIGE use some other config file, use the -config
+     switch.  SLIGE comes with a sample other config file called
+     BLUE.CFG, that has an extra "blue" theme in addition to the
+     four default themes.  Try it out!
+
+  Q. OK, I've mastered the -config switch, and the blue theme was
+     fun (if garish).  Now how do I make my own changes?  What's
+     the format of the config file?
+
+  A. The config file is a flat text file, editable with your
+     favorite text editor.  There's no formal documentation for
+     the language used to write the file yet, but there are
+     comments in the shipped SLIGE.CFG that should let you at
+     least play around a little.  Give it a try and see if it
+     makes any sense!  Make suggestions to me about stuff that
+     should be alterable via the config file but isn't, or stuff
+     that you wanted to do but couldn't figure out how to.
+
+     Note that it's entirely possible to make changes to the config
+     file that will cause SLIGE to trap, or to produce WADs that
+     will crash DOOM.  So ya hafta be a little careful.  I expect
+     more error-checking and stuff will be added as we go; the
+     config code is still very young.
+
+  Q. What about other monsters / weapons / stuff?
+
+  A. At the moment you get zombies (including DOOM II commandos),
+     imps, demons, spectres, lost souls, cacodemons, and DOOM II
+     revenants and hellknights, as well as (in wad-end arenas)
+     cyberdemons, archviles, mancubi, Barons, spider-demons, pain
+     elementals, and baby spiders.  Weapons are the shotgun (and
+     supershotgun in DOOM II), chaingun, plasma gun, rocketlauncher
+     and chainsaw, and sometimes there are barrels scattered around,
+     and once in awhile you'll get a BFG in an arena.  Invisibility
+     and radsuits are in there also, as well as backpacks, but none
+     of them are terribly well modelled.  No megaspheres or invuls yet;
+     probably eventually.  The boss arenas are still sort of boring,
+     and it'd be nice to have the occasional Big monster somewhere
+     besides a level-end arena.  I plan to improve all that over
+     time!  But I'm philosophically opposed to having Cyberdemons
+     just sort of wandering the corridors.  And I fully expect to get
+     letters from the ASPCM complaining about how cramped many of the
+     cacodemons feel, trying to float in those same corridors.
+
+     The current config-file support doesn't allow you to change
+     or add monsters or weapons or other objects (except to tell it
+     which lamps belong in which theme).  Later versions of SLIGE
+     may include putting that kind of thing in the config file too.
+
+  Q. Speaking of corridors, why are SLIGE levels so interior?
+
+  A. Outside areas are somewhat more complex to design and build
+     in DOOM.  That's another area that I'm actively working on.
+     In this version, you'll find some airholes to the outside,
+     and the occasional exterior window or patio, but no extensive
+     outdoor areas.
+
+  Q. Why are there so few puzzles?  And Crushing Ceilings!  I love
+     being crushed!
+
+  A. SLIGE does sometimes use keys and other locked inter-room
+     links in building its levels.  The usage is pretty simple,
+     and doesn't really count as a puzzle.  The secret doors are
+     similarly simple, and can be traps or surprises, but not
+     really puzzles.  SLIGE levels are basically shoot-em-ups
+     rather than detective stories!  But I plan to add more
+     stuff as I go along.  If there's any particular mode of thing
+     that happens in DOOM that you especially like, and that SLIGE
+     doesn't seem to do (secret-related or not), drop me a line.
+     SLIGE *does* do a crushing ceiling now and then, but not often;
+     I don't really like 'em all that much myself...
+
+     (SLIGE always sets the "secret" bit of the very first sector of
+     each level to TRUE if there are no real secrets on a level,
+     just so the message at the end will say "100%" rather than "0%",
+     and you'll know you didn't miss anything.)
+
+  Q. How come there's always this strange pair of awnings or whatever
+     it is in the first room?
+
+  A. That's an "S"-shaped hole in the ceiling.  I put it there as a
+     sort of "watermark" to differentiate SLIGE-generated levels.  This
+     way if someone wants to SLIGE up a dozen new levels and upload
+     them to cdrom.com as his own creations, he'll at least have to
+     learn enough about level-editing to remove the watermarks first!
+     (The last bit of the spherical fireball from the dead Lost
+     Soul is sometimes visible also, just for fun.)
+
+  Q. OK, so I've played with it a little.  Now what?
+
+  A. Tell me about it!  I'm always looking for feedback of any
+     and all kinds from DOOMers.  Did it work?  Did it ever crash
+     or otherwise malfunction?  Did it ever produce a level that
+     could not be walked through in -nomonsters mode?  Did it ever
+     produce a level that seemed unbeatable without cheating?  Is
+     the ammo balance annoyingly wrong annoyingly often?  Did
+     it ever really amaze you?  Do you think it's just the best
+     program in the whole universe?  Do you have suggestions for
+     future versions?  Let me know.
+
+     Post to rec.games.computer.doom.editing, or send me a note
+     at dmchess@aol.com.  (The newsgroup might be slightly
+     preferable, in that you'll at least be able to talk to
+     other folks about it while waiting for me; sometimes I
+     don't check my email for some time.)
+
+  Q. Why's it called "SLIGE", anyway?
+
+  A. SLIGE is an acronym for "Space Llama Interment Gazelle Expert".
+     It is also the Gaelic word for "shell", in the sense of "sea
+     shell".  Whether it can properly be used to mean "artillery shell"
+     is apparently a hotly-contested issue among Gaelic speakers, some
+     of whom consider the usage an unwanted Englishism, while others
+     are just good friends.  "Slige" is also a Danish word meaning
+     roughly "such", or "some", or "these".  For instance, the phrase
+     in Ezra 9:14 that reads "Should we again break thy commandments,
+     and join in affinity with the people of these abominations?", comes
+     out in Danish as "skal vi da p† ny kr‘nke dine Bud ved at besvogre
+     os med Folk, der over slige Vederstyggeligheder?".  Lovely word,
+     that "Vederstyggeligheder".
+
+  Q. What's SLIGE written in?  Can I get the source?
+
+  A. SLIGE is somewhat over fifteen thousand lines of very vanilla C.
+     (I use Microsoft Visual C++ Standard Edition, because that's
+     what was cheap at Babbage's, but I don't use any special MSC'isms,
+     or any of that commie C++ stuff.)  I'm a great believer in open
+     source, and as of Build 311, the source is now freely available.
+     Look in the same place you got this file (see the URLs up there
+     on the title page).  If you do do anything with the source,
+     *please* read the few requests at the very top of the file.
+
+  Q. Are you going to do a DOS version?  Or Linux?
+
+  A. I might, but it's not a Really High Priority.  SLIGE is very
+     vanilla C, but it's also very 32-bit; a 16-bit port would be
+     Boring.  I sometimes compile a 32-bit DOS version myself
+     using DJGPP, but so far I don't release or support that
+     (there are all sorts of issues involving DPMI and floating
+     point support and stuff that I'd rather be ignorant of).
+     Since the source is available, you can of course port it
+     wherever you want!  A DOS DJGPP port by Matthew Wong is
+     available at "http://www.ualberta.ca/~mkwong/sligedos/"
+     (or was at the time of this writing anyway).  A couple
+     of people have told me that it compiles and runs fine under
+     Linux, but I haven't done that myself, and I don't know of
+     anyone who has made a Linux SLIGE binary generally available.
+     No Mac ports reported yet!  I've heard from one person doing
+     a RISC OS port, for the Acorn; DOOM is everywhere...
+
+  Q. So what's your schedule?
+
+  A. When I get 'round to it!  I get enough of schedules at work.  I
+     hack on SLIGE when and if I get the time and feel like it (I wish
+     laptops did better in full sunlight).  I've been doing it pretty
+     spotily lately (mid 1999), and if I suddenly vanish for months
+     and SLIGE-related mail goes unanswered, don't say I didn't warn
+     you!   *8)
+
+  Q. Aren't you forgetting something?
+
+  A. All thanks are due to the entire DOOM community, including the
+     folks on rec.games.computer.doom.editing, id Software itself
+     ("DOOM" and "DOOM II" are trademarks of id Software), the
+     authors of BSP (and especially Lee Killough for his helpful
+     participation in the newsgroup), S. John Ross, Blake Wilfong,
+     Len Pitre, and Rob Ellwood for extensive testing and accurate
+     bug reporting, http://www.doomworld.com/ for the server-space,
+     Matthew Fell for the Unoffical DOOM Specs, and everybody that
+     *he* thanks in his acknowledgements.  The "keybox" effect (a
+     cute thing that SLIGE does once in a great while to mark a locked
+     door) was inspired by a feature in TWZONE.WAD by Paul Corfiatis
+     (thanks to Blake Wilfong for suggesting it).  Also all past, present,
+     and future users of SLIGE itself, for their support, and my
+     daughter Mayanne for playtesting with Golden Eyes (I finally
+     got floating heads in, didn't I?).
+
+  Q. So what's new?
+|
+| A. The main new things in build 485 since 474 are:
+|    - Rudimentary deathmatch support via the -dm switch, including
+|      a few bug fixes, and an increased likelihood of "extra hugeness",
+|      over the alpha version,
+|    - Some minor bug fixes,
+|    - The -nosemo switch, so S.Napper can get 100% kills
+|      without having to hunt for all the secrets,
+|    - The -biwe, -bimo, and -bimo! switches, to get various
+|      sorts of "big" weapons and monsters without having to
+|      wait for the dice to roll that way.
+
+  A. The main new things in build 474 since 464 are:
+     - Fixed buffer-overrun that would cause the DOS version to trap,
+     - Removed filelength() call, which isn't standard C,
+     - Restored the "LIGHT" attribute on various flats, which was
+       accidentally removed in 464; so SLIGE knows about ceiling
+       lights again,
+     - Finally fixed the oddity where a window grating could look
+       completely different when viewed from the other side,
+     - Added a "night" mode, a "dim" mode, and a few other lighting
+       tweaks,
+     - Added a few more within-level correlations, like "no doors"
+       and "wide links".
+
+  A. The main new things in build 464 since 449 are:
+     - Config-file support!  Finally!!  Just textures and flats
+       (and lamps) and themes so far.  But it's a start.
+     - Included a sample BLUE.CFG config-file that includes a
+       new demonstration "blue" theme.  Kinda pretty, really.
+     - Fixed the bug where barred doors were stuck open.
+     - Fixed a bug found by Len Pitre, where you could get stuck in
+       a closet if you tried real hard.
+     - Fixed a bug where SLIGE would rarely crash when making an arena
+       (and there were no available ceiling-light flats in the theme).
+     - Got rid of those occasional annoying do-nothing switches.
+     - Added one new surprise; I imagine you'll know it if you see it.
+       Heh heh heh.
+
+  A. The main new things in build 449 since 426 are:
+     - SLIGE will now create and use some custom flats and patches in
+       both DOOM and DOOM 2 PWADS, in addition to the custom textures
+       that it uses in DOOM 2 only.  It's possible that this will
+       confuse some DOOM ports; use -nocustom to tell SLIGE not to
+       use custom graphics, and see documentation above for other hints,
+     - Made the level-end arenas a *bit* more varied, by adding a few
+       more architectural elements, and sometimes pain elementals or
+       baby spiders,
+     - Fixed a bug (found by Aaron Parsons) that would sometimes put a
+       lamp where it blocked a door,
+     - Fixed a couple of bugs that could sometimes put monsters too
+       close together, resulting in sticky monster-gobs,
+     - Fixed a bug that would rarely cause SLIGE to loop when putting
+       in a barred door on an extra-hugeness level,
+     - Made it (even) less likely that a secret level will be unreachable,
+     - Improved SLIGE's models of the plasma gun, super-shotgun, chainsaw,
+       and berserk-pack,
+     - Removed the case-sensitity from the -ExMx switch (so -exmx works),
+     - Added computer area maps as bonuses,
+     - Allowed monsters to use some teleporters, for extra fun,
+     - Made theme-changes more rational (less random) in most levels,
+     - Various random new elements, including the PLAT1 lift-texture,
+       the occasional crushing surprise, a new kind of secret, and a
+       bit more awareness of lighting, especially light-texture ceilings.
+
+  A. The only new thing in build 426 since 425 is:
+     - Fixed the line that caused gcc to choke during compilation.
+       (426 is released in source only; the Win32 binary is functionally
+       identical to 425.)
+
+  A. The main new things in build 425 since 400 are:
+     - Secret levels.  A rather simple implmentation, but it's a start.
+     - Level-end boss-battles!  Also a rather boring implementation,
+       but it's nice to finally have the occasional Archvile or
+       Cybie in a SLIGE level.
+     - Mission 8 special endings (do try an E1M8, for instance).
+     - Occasional nukage around teleport gates, just for a nice surprise!
+     - A whole bunch of other new architectural features and stuff
+       that you can find for yourself.
+     - Finally fixed the bug that rarely made a level-end switch
+       have the wrong y-alignment and look silly.
+     - Made all DOOM II exit switches even more glaringly obvious.
+     - Added the STEP textures, so steps often look steppier.
+     - Fixed a bug that could rarely cause engine crashes from
+       barred doors in extra-huge levels.
+     - Somewhat better modelling of backpacks.
+     - A new -nulls switch, to accommodate a limitation in previous
+       versions of DeeP97 and perhaps other utilities (see the doc).
+     - Folded up a multi-line #define that was causing some people
+       (but not others) to have trouble compiling under Linux.
+
+     The main new things in build 400 since 382 are:
+     - Fixed the bugs in 382 that could make a level unfinishable,
+     - Added some teleport-gates (and probably new bugs!),
+     - The occasional "extra huge" level (you'll know it when
+       you see it),
+     - Constructs (you'll probably know them when you see them,
+       too); sort of lame right now, but a start,
+     - Some new level-ending styles,
+     - Grid rooms can now have bonuses (as well as monsters),
+     - Multiforks (rooms with four or more doors),
+     - The usual random new decorations and surprises.
+
+     The main new things in build 382 since 354 are:
+     - A whole new class of inter-room links, which should add some
+       more variety to play (and perhaps some new bugs!), and one new
+       flavor of room.
+     - Some other small new features and eyecandy.
+     - Fixed a bunch of bugs, including one that gave some levels
+       *way* too many rooms and one (found by Len Pitre and Rob Ellwood)
+       that sometimes put a monster in the void inside a pillar.
+     - The occasional radiation-suit.
+     - Major cleanup to the custom-texture code, so now it's easier for
+       me to add lame new DOOM2 textures that use existing patches.
+     - A couple of lame new DOOM2 textures using existing patches.  *8)
+
+     The main new things in build 354 since 337 are:
+     - Fixed most of the remaining y-offset annoyances, so wall textures
+       should look much better, and there should be no more things
+       that look just like secret doors but aren't,
+     - Some new eyecandy and architectural features that I'd rather
+       surprise you with than tell you about,
+     - Hellknights in DOOM 2 maps (although they're pretty rare!),
+     - A few experimental custom textures in DOOM 2 maps,
+     - Monsters in rooms will now usually be facing the door that
+       you're coming in through, rather than wandering around at random,
+     - Restricted the number of "barred" doors on a level, to try to
+       avoid an engine crash,
+     - Fixed a bug found by Rob Ellwood where SLIGE would try to use
+       the LITEMET texture with the wrong IWAD.
+
+     The new things in build 337 since 325 are:
+     - Barrels!  Lots of people seem to like those, so here
+       they are.
+     - The occasional window to the Outside, and miscellaneous
+       other eye-candy and small architectural features.
+     - Increased various within-level correlations, so that each
+       level may have more of a distinctive flavor.
+     - Increased code portability somewhat; should compile and
+       run under gcc with no source changes or special defines,
+       even with all warnings turned on.
+     - Fixed a bug found by Rob Ellwood where a monster could be
+       stuck inside a door.
+
+     The new things in build 325 since 311 are:
+     - A new theme, generic marble, to go with generic wood and
+       generic military.  Blow things up in a museum!  Also a new
+       "Nukage City" level-flavor (not a theme, just a flavor).
+     - Some other new small architectural features.
+     - A few other new things that you may or may not notice,
+       especially if they kill you.  *8)
+
+     The only things in build 311 that have changed since 310:
+     - Random little bits of code-cleanup, finally got rid of
+       the last few compiler warnings, made sure comments were
+       sensible.  One *does* like to have one's children looking
+       their best when they go out in public!
+     - Made the source freely available on the Web.
+
+     Main things in build 310 that have changed since 279:
+     - Levels now sometimes include switch-locked (as well as
+       key-locked) doors (and the level-end switch will tend
+       to be specially-marked, to clue you that it's not just
+       an open-door switch)
+     - More monsters sometimes included: Cacodemons (floating heads)
+       and Revenants (in DOOM II)
+     - Rocketlaunchers and rockets sometimes included (ka-pow!)
+     - In multi-level WADs, later levels will sometimes have
+       bigger monsters and weapons than earlier ones.
+     - Some new architectural features, including "barred" doors
+     - Still more progress toward config files, still not done
+     - Further twiddling with the model; among other things, there
+       should be less ammo-starvation in multi-level WADs
+     - The MSVC++ rand() function appears to suck big-time, so I
+       cons'd up a perhaps slightly better one from multiple calls
+       to the lousy one.  If nothing else, seeds are now 32 bit...
+
+     Main things in build 279 that have changed since 228:
+     - SLIGE-generated levels now sometimes include locked doors,
+       skull-keys and keycards, and less linearity in general
+     - New "-macho" switch to generate harder levels
+     - Another monster sometimes included: Lost Soul (flaming skull)
+     - A number of new textures, especially in DOOM2 (same old
+       two primitive themes, though)
+     - Some new secret-door hint styles
+     - PWADs can now span multiple DOOM episodes (I think)
+
+     More minor things:
+     - Some small lighting and architecture improvements.
+     - Some infrastructure coding to allow textures in a config
+       file; not done yet, though!
+     - I think the invalid-thing bug is fixed; thanks to Unseen
+       Dragon and others for reports and samples (actually I
+       think it was fixed by accident in build 228)
+     - Another attempt to avoid the bleeding-grating engine bug
+       (thanks to Blake Wilfong for finding an example the last fix
+       didn't fix).
+     - Fixed up some y-offsets, so they wouldn't look like secret
+       doors, and some other minor bugs.
+
+     Main things in build 228 that have changed since 200:
+     - Added starting positions for players 2, 3, and 4 in
+       co-op mode (suggestions for more co-op special stuff
+       would be most welcome!).
+     - Added simple damaging floors, backpacks full of ammo, the
+       occasional plasma gun or chainsaw or invisibility sphere,
+       and some lifts that come down when you approach them.
+     - Added some more secret closets, and some that open when you
+       least expect it.
+     - Reduced the number of rooms with nothing at all in them.
+     - Fixed a bug where the level would be all messed up if any
+       coordinate went outside (-10000,10000).  Thanks to
+       John Kleinman for sending in an example of the bug.
+     - Moved pickables slightly away from walls, to make it less
+       likely that the player can grab them from the next room
+       (why does the engine allow grasp to extend through voids
+       anyway?).  Thanks to Blake Wilfong for noticing.
+     - Twiddled around with the parameters of the user-model again;
+       UV in particular should have a little more ammo and some more
+       monsters.  If I've guessed right, which I often don't.  It's
+       a pretty complex model.
+
+     Things in build 200 that changed since 180:
+     - Added some real secrets, with monsters and bonuses and stuff!
+     - The start of non-linearity: there are now some rooms that
+       aren't on the direct path from start to finish.  No keys
+       or anything yet, though.
+     - Avoided the tutti-frutti effect above BIGDOOR6, by not using
+       that texture on doors over 112 tics high,
+     - Made "twinned" connections between rooms (two doors, two
+       staircases) a little less common, and windows a little
+       more common.
+     - Avoided the bleeding-grating effect in grated windows,
+       by twiddling a light level (hope that works!).
+     - Twiddled some parameters to make the levels a little harder
+       on Hurt Me Plenty and Ultraviolence.
+     - Fixed a bug in multi-level mode where the user model was
+       getting reset before each new level.
+
+  Dave Chess
+  February, 2000

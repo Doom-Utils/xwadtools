@@ -1,0 +1,23 @@
+# List of sector types for Doom2, sorted by function. The list doesn't need to
+# be in any particular order, tkwadcad will sort it alphabetical by the
+# description texts.
+
+ 0 : Default: Normal
+
+ 1 : Light: random off
+17 : Light: flickers on and off randomly
+ 2 : Light: blinks 0.5 second
+ 3 : Light: blinks 1.0 second
+12 : Light: blinks 0.5 second, synchronized
+13 : Light: blinks 1.0  second, synchronized
+ 8 : Light: level oscillates
+ 4 : Light: blinks 0.5 second and -20% health/sec
+
+ 7 : Health: -5% health/sec
+ 5 : Health: -10% health/sec
+16 : Health: -20% health/sec
+11 : Health: -20% health/sec, on health < 11% level ends
+
+10 : Special: Close sector ceiling 30 seconds after level starts
+14 : Special: Open sector ceiling 300 seconds after level starts
+ 9 : Special: Credit 1 Secret for standing in sector

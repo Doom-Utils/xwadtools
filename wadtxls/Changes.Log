@@ -1,0 +1,26 @@
+ChangeLog for DMTXLS: DooM TeXtures LiSter
+==========================================
+
+1.1:	added Ultimate DOOM support
+950719	added 'addtxtu.sh' script & djgpp/addtxtu.bat batch file
+	updated various text files and manual pages
+
+1.0:	added README & djgpp/readme.1st files and manual pages
+950425	added 'dmtxls10.txt' file with blurb for public release
+	added 'addtxtsh.sh' script & djgpp/addtxts[2h].bat batch files
+	added texture names mapping to uppercase to list.c
+
+0.9:	added Heretic support
+950416	beta release
+
+0.8:	added verbose/verbline counting/printing code to list.c
+950314
+
+0.7:	added textures counting/printing code to list.c
+950224	added 'addtxts.sh' & 'alltxts2.sh' scripts
+
+0.6:	added specific command-line options and 'list.c' framework
+950215	updated '-h' help text
+
+0.5:	copied & transformed DMPSMU v2.3 core distribution into DMTXLS
+950214

@@ -1,0 +1,33 @@
+DMPSMU: DooM PostScript Maps Utility v2.6
+=========================================
+
+DESCRIPTION:
+        DMPSMU is an interactive utility on Unix and DOS (source code
+included) to generate PostScript maps of levels in DOOM, DOOM ][,
+Ultimate DOOM and Heretic.  It offers several advanced features:
+    - detailed control over layout and appearance of the page(s)
+    - multi-page capability, printing on 2 or 4 normal pages
+    - detailed control over which Things will be printed
+    - fading LineDefs that are secret or part of a secret Sector
+    - shading secret Sector areas, but not their inner Sectors
+    - linking teleporters and their exits by faint lines
+It is derived from DEU, the Doom Editor Utility and retains from this tool
+all functions that have a read-only effect on the main WAD files, thus
+allowing examination but not modification of these files under Unix, and it
+has a new function to display a level's vital statistics.  A command-line
+based utility DMPSMAP with only the map printing function is also included.
+
+CHANGES from v2.0:
+	This release adds DOS executables, fixes teleport linking problems,
+adds damage Sector shading, fixes various shading problems with oddly
+shaped sectors, adds Ultimate DOOM and Heretic support, and includes other
+minor changes.
+
+CREATED BY:
+        Frans P. de Vries <fpv@xymph.iaf.nl>
+
+AVAILABLE AT:
+        Site (1): utils/misc/dmpsmu26.zip
+
+        (1) = ftp://ftp.cdrom.com/pub/idgames/ and its mirrors
+

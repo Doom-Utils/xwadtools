@@ -1,0 +1,165 @@
+ew  (Examine Wad) v1.08  by Tormod Tjaberg (tormod@sn.no)
+xew (X11/Forms) by Hans Peter Verne (hpv@kjemi.uio.no) 
+
+ew is free software, distributed under the terms of the GNU General Public
+License.  ew comes with no warranty at all.  For details see the file
+COPYING.
+
+This file is written by Hans Peter Verne.  It describes the UNIX
+peculiarities of ew.
+
+
+unix
+====
+
+UNIX is a trademark owned by somebody, but is here used about anything that
+feels, smells or looks like unix, such as linux.  So there!
+
+
+ew
+==
+
+Read the file ew.txt for general information about ew.  It mostly applies
+except where it doesn't :-).  This file tries to describe the discrepancies.
+
+Currently, (x)ew only works for little-endian machines, such as i386,
+DEC-alpha, and decstation.  You can probably modify it to work for big-endian
+machines too, if you really need it....  Now, If you compile it on a
+big-endian machine it will exit with a fitting remark when you run it.
+
+If the int is anything but 32 bits on your machine you have to change the
+typedef's of Int4 and Uint4 in ew.h accordingly. (Please remember that a long
+on the alpha is 64 bits).
+
+
+xew
+===
+
+Under Unix, you can compile ew either as a text-only program using curses or
+ncurses, or with a graphical interface under X11 using the "Forms" library.
+Only the Forms version (xew) has the ability to show images directly
+on-screen.  The curses version of ew can only spawn external programs or
+export the entries to file.  If you have X11 running, there is probably
+little reason to make the (n)curses version.  I'll assume you won't!
+
+If you do not allready have it, you will need the Forms library.  Run don't
+walk to http://bragg.phys.uwm.edu/xforms/ for information about Forms,
+including how to download.  It's free for non-commercial use.
+
+Xew also has certain features not found in either the DOS or curses versions.
+It can play sound directly over /dev/dsp (or whatever), if you have such a
+device (this works under linux, I have no idea about other systems).
+There is even a feature for reversing the sound sample, to listen to
+"hidden" messages.  :-)
+
+MUS-entries can still only be played back externally, so you have to configure 
+your .ewini for external playback (see below).
+
+For viewing, you can choose among an internal Doom, Heretic or Hexen type
+palette, so you do not have to supply your own palette file for these kinds
+of (P)WAD's.
+
+You can of course still use external players/viewers, or use your own palette
+file if you want to.  Xew cannot display HIRES images, and cannot zoom or
+otherwise manipulate an image, so there are still good reasons to use
+external viewers.
+
+When exporting images or viewing external, xew creates a (temporary) pcx file
+on disk with the palette currently active (ie. set in the "Palette Type ...."
+box).  You can also export images in the XPM format.  These xpm-files have
+the zero pixel-value set transparent, so they will make nice icons for your
+X11 desktop :-)
+
+There is no manual page (apart from this file), but xew should otherwise be
+fairly intuitive to use....  Just set up your ini file (see below), and
+remember to set the correct palette for your WAD.
+
+Known bugs of Xew: 
+
+1) Xew assumes your fontpath is properly set.  If not, the fonts may
+be wrong, and the display might look weird.  Fix your fontpath, or fix
+xew.
+
+2) Just holding (say) the down-key pressed to sequentially play/view
+the entries in the browser may cause "hicups".  I try to flush the
+events, but this is in the hands of xforms...
+
+3) Using xpm to put images on-screen may not be the fastest way there is,
+but it is easily implemented with forms.  It works reasonably even on my
+486dx/33.
+
+4) You can't export an entry without selecting it first, ie. viewing it or
+playing it.  
+
+
+ini file 
+========
+
+On unixen, you don't want to use ini files lurking around in $PATH.  So the
+ini file is only searched for in your home directory, $HOME.  #define DOT_INI
+when compiling to have ew assume the file is called ".ewini" instead of
+"ew.ini" (see "compiling ew").
+
+Copy the ew.ini to your home directory (preferably as .ewini), and edit it.
+You must most certainly change the entries, there are some comments there
+suggesting what to use under unix/linux:
+
+  WAV play %s
+
+"play" is simply the sound conversion utility sox under a different
+name.  You can find sox or other wav-players at your favourite linux
+archive, such as ftp://sunsite.unc.edu/pub/Linux/ or a mirror (look in
+apps/sound/convert/ or apps/sound/players/).  If you don't have a
+soundcard you can take a look at
+ftp://ftp.informatik.hu-berlin.de/pub/os/linux/hu-sound/
+
+  MUS qmus2mid %s tmp.mid -nodisp ; xplaymidi tmp.mid ; rm tmp.mid 
+
+I know of no native mus-player for linux (hmm, perhaps the musserver can be
+tweaked into this?).  qmus2mid is a utility for (surprise!) converting
+musfiles to midi.  Then, playmidi (or xplaymidi) can play the midi-file, which
+is finally deleted.  This actually goes reasonably quick.  You can get
+playmidi from sunsite or mirrors, look in apps/sound/midi.  qmus2mid is
+originally a dos-program, ported to unix by yours sincerely.  If you can't
+find it on sunsite/mirrors or ftp.cdrom.com, email me at hpv@kjemi.uio.no.
+
+  PCX xv %s
+
+xv is an excellent program, and comes with most linux distributions, I
+believe, but it is unreasonably slow to start for even small images.  
+I suppose there are some viewers out there that may be quicker?
+
+
+using curses-ew
+===============
+
+The keystroke handling in the (n)curses version of ew is a bit of ad-hockery
+and leaves a lot to be desired.  For starters, the keys End, PageUp, etc. are
+received as escape sequences, and simply exits the program (ouch!).  Feel
+free to fix this!  The arrow keys work for me, and you can use the numbers on
+your nummeric keypad (with NumLock set) as Home, End, etc.
+
+
+compiling (x)ew
+===============
+
+Take a look in the Makefile: It is set up to compile Xew with /dev/dsp as
+audio device.  Delete the AUDIO_DEVICE entry if you don't have a properly
+installed soundcard.  There are comments in that file which should help you
+set it up for (n)curses compilation.
+
+If you get errors about header files forms.h or (n)curses.h not being found,
+add an -I/dir flag to the INCLUDE= statement, where /dir is the path to the
+missing header files on your machine.
+
+If you get errors from the linker (ld) about missing -lforms or -lcurses, add
+an -L/dir to LDFLAGS=, where /dir is the path to the appropriate libraries.
+
+I do not know where you keep your header files or libraries on your computer,
+so I can't help you if you run into trouble about that.  Otherwise, feel free
+to send complaints, bugfixes and comments to me.
+
+
+Have fun,
+--
+Hans Peter Verne ( hpv@kjemi.uio.no )

@@ -1,0 +1,336 @@
+# List of linedef types for XDoom based on Doom2 linedefs, sorted into classes.
+# The list doesn't need to be in any particular order, tkwadcad will present
+# the list entries in the same order than in this file.
+#
+# Meaning of the trigger flags:
+# 1st char:	N no sector tag required, local doors
+#		- sector tag required
+# 2nd char:	S this is a switch
+#		G activated by a gunshot
+#		W activated by walking over the linedef
+# 3rd char:	R can be activated repeatedly
+#		1 can only be activated once
+# 4th char:	M a monster can activate the linedef
+#		- only players can activate the linedef
+#
+# No	Class	Trigger	Speed	Wait	Description
+0	Default	----	-	-	: Default, no function
+
+# Local Doors
+1	LDoor	NSRM	Medium	4	: Opens and closes door
+26	LDoor	NSR-	Medium	4	: Opens and closes blue key door
+27	LDoor	NSR-	Medium	4	: Opens and closes yellow key door
+28	LDoor	NSR-	Medium	4	: Opens and closes red key door
+31	LDoor	NS1-	Medium	-	: Opens door
+32	LDoor	NS1-	Medium	-	: Opens blue key door
+33	LDoor	NS1-	Medium	-	: Opens red key door
+34	LDoor	NS1-	Medium	-	: Opens yellow key door
+117	LDoor	NSR-	Turbo	4	: Opens and closes door
+118	LDoor	NS1-	Turbo	-	: Opens door
+300	LDoor	NSR-	Medium	4	: Opens and closes sliding door
+
+# Remote Doors
+2	RDoor	-W1-	Medium	4	: Opens and closes door
+3	RDoor	-W1-	Medium	-	: Closes door
+4	RDoor	-W1M	Medium	4	: Opens and closes door
+16	RDoor	-W1-	Medium	30	: Closes door and opens later
+29	RDoor	-S1-	Medium	4	: Opens and closes door
+42	RDoor	-SR-	Medium	-	: Closes door
+46	RDoor	-GR-	Medium	-	: Opens door
+50	RDoor	-S1-	Medium	-	: Closes door
+61	RDoor	-SR-	Medium	-	: Opens door
+63	RDoor	-SR-	Medium	4	: Opens and closes door
+75	RDoor	-WR-	Medium	-	: Closes door
+76	RDoor	-WR-	Medium	30	: Closes door and opens later
+86	RDoor	-WR-	Medium	-	: Opens door
+90	RDoor	-WR-	Medium	4	: Opens and closes door
+99	RDoor	-SR-	Turbo	-	: Opens blue key door
+103	RDoor	-S1-	Medium	-	: Opens door
+105	RDoor	-WR-	Turbo	4	: Opens and closes door
+106	RDoor	-WR-	Turbo	-	: Opens door
+107	RDoor	-WR-	Turbo	-	: Closes door
+108	RDoor	-W1-	Turbo	4	: Opens and closes door
+109	RDoor	-W1-	Turbo	-	: Opens door
+110	RDoor	-W1-	Turbo	-	: Closes door
+111	RDoor	-S1-	Turbo	4	: Opens and closes door
+112	RDoor	-S1-	Turbo	-	: Opens door
+113	RDoor	-S1-	Turbo	-	: Closes door
+114	RDoor	-SR-	Turbo	4	: Opens and closes door
+115	RDoor	-SR-	Turbo	-	: Opens door
+116	RDoor	-SR-	Turbo	-	: Closes door
+133	RDoor	-S1-	Turbo	-	: Opens blue key door
+134	RDoor	-SR-	Turbo	-	: Opens red key door
+135	RDoor	-S1-	Turbo	-	: Opens red key door
+136	RDoor	-SR-	Turbo	-	: Opens yellow key door
+137	RDoor	-S1-	Turbo	-	: Opens yellow key door
+175	RDoor	-S1-	Medium	30	: Closes door and opens later
+196	RDoor	-SR-	Medium	30	: Closes door and opens later
+350	RDoor	-W1-	Medium	-	: Opens door silent
+351	RDoor	-S1-	Medium	-	: Opens door silent
+352	RDoor	-W1M	Medium	-	: Only Monsters open door silent
+
+# Ceilings, not crushing
+40	Ceil	-W1-	Slow	-	: Moves up to highest adjacent ceiling
+41	Ceil	-S1-	Slow	-	: Moves down to floor
+43	Ceil	-SR-	Slow	-	: Moves down to floor
+44	Ceil	-W1-	Slow	-	: Moves down to 8 units above floor
+72	Ceil	-WR-	Slow	-	: Moves down to 8 units above floor
+145	Ceil	-W1-	Fast	-	: Moves down to floor
+151	Ceil	-WR-	Slow	-	: Move ceiling up to highest adjacent, floor down to lowest adjacent
+152	Ceil	-WR-	Fast	-	: Moves down to floor
+166	Ceil	-S1-	Slow	-	: Move ceiling up to highest adjacent, floor down to lowest adjacent
+167	Ceil	-S1-	Slow	-	: Moves down to 8 units above floor
+186	Ceil	-SR-	Slow	-	: Move ceiling up to highest adjacent, floor down to lowest adjacent
+187	Ceil	-SR-	Slow	-	: Moves down to 8 units above floor
+199	Ceil	-W1-	Slow	-	: Moves down to lowest adjacent ceiling
+200	Ceil	-W1-	Slow	-	: Moves down to highest adjacent floor
+201	Ceil	-WR-	Slow	-	: Moves down to lowest adjacent ceiling
+202	Ceil	-WR-	Slow	-	: Moves down to highest adjacent floor
+203	Ceil	-S1-	Slow	-	: Moves down to lowest adjacent ceiling
+204	Ceil	-S1-	Slow	-	: Moves down to highest adjacent floor
+205	Ceil	-SR-	Slow	-	: Moves down to lowest adjacent ceiling
+206	Ceil	-SR-	Slow	-	: Moves down to highest adjacent floor
+
+# Crushing ceilings
+6	CrCeil	-W1-	Medium	Lock	: Start crushing ceiling, inflict pain quickly
+25	CrCeil	-W1-	Medium	Lock	: Start crushing ceiling, inflict pain slowly
+49	CrCeil	-S1-	Medium	Lock	: Start crushing ceiling, inflict pain slowly
+57	CrCeil	-W1-	-	Lock	: Stop crushing ceiling
+73	CrCeil	-WR-	Slow	Lock	: Start crushing ceiling, inflict pain slowly
+74	CrCeil	-WR-	-	Lock	: Stop crushing ceiling
+77	CrCeil	-WR-	Medium	Lock	: Start crushing ceiling, inflict pain quickly
+141	CrCeil	-W1-	Slow	Lock	: Start crushing ceiling, inflict pain slowly, move silent
+150	CrCeil	-WR-	Slow	Lock	: Start crushing ceiling, inflict pain slowly, move silent
+164	CrCeil	-S1-	Medium	Lock	: Start crushing ceiling, inflict pain quickly
+165	CrCeil	-S1-	Slow	Lock	: Start crushing ceiling, inflict pain slowly, move silent
+168	CrCeil	-S1-	-	Lock	: Stop crushing ceiling
+183	CrCeil	-SR-	Medium	Lock	: Start crushing ceiling, inflict pain quickly
+184	CrCeil	-SR-	Slow	Lock	: Start crushing ceiling, inflict pain slowly
+185	CrCeil	-SR-	Slow	Lock	: Start crushing ceiling, inflict pain slowly, move silent
+188	CrCeil	-SR-	-	Lock	: Stop crushing ceiling
+
+# Floors
+5	Floor	-W1-	Slow	-	: Moves up to lowest adjacent ceiling
+9	Floor	-S1-	Slow	-	: Donut effect
+18	Floor	-S1-	Slow	-	: Moves up to highest adjacent floor
+19	Floor	-W1-	Slow	-	: Moves down to highest adjacent floor
+23	Floor	-S1-	Slow	-	: Moves down to lowest adjacent floor
+24	Floor	-G1-	Slow	-	: Moves up to lowest adjacent ceiling
+30	Floor	-W1-	Slow	-	: Moves up to shortest lower texture
+36	Floor	-W1-	Fast	-	: Moves down to 8 units above highest adjacent floor
+37	Floor	-W1-	Slow	-	: Moves down to lowest adjacent floor
+38	Floor	-W1-	Slow	-	: Moves down to lowest adjacent floor
+45	Floor	-SR-	Slow	-	: Moves down to highest adjacent floor
+55	Floor	-S1-	Slow	-	: Moves up to 8 units below lowest adjacent ceiling and crush
+56	Floor	-W1-	Slow	Lock	: Moves up to 8 units below lowest adjacent ceiling and crush
+58	Floor	-W1-	Slow	-	: Moves up 24 units
+59	Floor	-W1-	Slow	Lock	: Moves up 24 units
+60	Floor	-SR-	Slow	-	: Moves down to lowest adjacent floor
+64	Floor	-SR-	Slow	-	: Moves up to lowest adjacent ceiling
+65	Floor	-SR-	Slow	-	: Moves up to 8 units below lowest adjacent ceiling and crush
+69	Floor	-SR-	Slow	-	: Moves up to highest adjacent floor
+70	Floor	-SR-	Fast	-	: Moves down to 8 units above highest adjacent floor
+71	Floor	-S1-	Fast	-	: Moves down to 8 units above highest adjacent floor
+78	Floor	-SR-	-	-	: Change floor texture only (numeric), no motion
+82	Floor	-WR-	Slow	-	: Moves down to lowest adjacent floor
+83	Floor	-WR-	Slow	-	: Moves down to highest adjacent floor
+84	Floor	-WR-	Slow	-	: Moves down to lowest adjacent floor
+91	Floor	-WR-	Slow	-	: Moves up to lowest adjacent ceiling
+92	Floor	-WR-	Slow	-	: Moves up 24 units
+93	Floor	-WR-	Slow	Lock	: Moves up 24 units
+94	Floor	-WR-	Slow	Lock	: Moves up to 8 units below lowest adjacent ceiling and crush
+96	Floor	-WR-	Slow	-	: Moves up to shortest lower texture
+98	Floor	-WR-	Fast	-	: Moves down to 8 units above highest adjacent floor
+101	Floor	-S1-	Slow	-	: Moves up to lowest adjacent ceiling
+102	Floor	-S1-	Slow	-	: Moves down to highest adjacent floor
+119	Floor	-W1-	Slow	-	: Moves up to highest adjacent floor
+128	Floor	-WR-	Slow	-	: Moves up to highest adjacent floor
+129	Floor	-WR-	Turbo	-	: Moves up to highest adjacent floor
+130	Floor	-W1-	Turbo	-	: Moves up to highest adjacent floor
+131	Floor	-S1-	Turbo	-	: Moves up to highest adjacent floor
+132	Floor	-SR-	Turbo	-	: Moves up to highest adjacent floor
+140	Floor	-S1-	Medium	-	: Moves up 512 units
+142	Floor	-W1-	Slow	-	: Moves up 512 units
+146	Floor	-W1-	Slow	-	: Donut effect
+147	Floor	-WR-	Slow	-	: Moves up 512 units
+153	Floor	-W1-	-	-	: Change floor texture only, no motion
+154	Floor	-WR-	-	-	: Change floor texture only, no motion
+155	Floor	-WR-	Slow	-	: Donut effect
+158	Floor	-S1-	Slow	-	: Moves up to shortest lower texture
+159	Floor	-S1-	Slow	-	: Moves down to shortest lower texture
+160	Floor	-S1-	Slow	-	: Moves up 24 units
+161	Floor	-S1-	Slow	-	: Moves up 24 units
+176	Floor	-SR-	Slow	-	: Moves down to shortest lower texture
+177	Floor	-SR-	Slow	-	: Moves down to shortest lower texture
+178	Floor	-SR-	Slow	-	: Moves up 512 units
+179	Floor	-SR-	Slow	-	: Moves up 24 units
+180	Floor	-SR-	Slow	-	: Moves up 24 units
+189	Floor	-S1-	-	-	: Change floor texture only, no motion
+190	Floor	-SR-	-	-	: Change floor texture only, no motion
+191	Floor	-SR-	Slow	-	: Donut effect
+219	Floor	-W1-	Slow	-	: Moves down to lowest adjacent floor
+220	Floor	-WR-	Slow	-	: Moves down to lowest adjacent floor
+221	Floor	-S1-	Slow	-	: Moves down to lowest adjacent floor
+222	Floor	-SR-	Slow	-	: Moves down to lowest adjacent floor
+239	Floor	-W1-	-	-	: Change floor texture only (numeric), no motion
+240	Floor	-WR-	-	-	: Change floor texture only (numeric), no motion
+241	Floor	-S1-	-	-	: Change floor texture only (numeric), no motion
+
+# Moving Floors
+53	MoFloor	-W1-	Slow	3/Lock	: Start moving floor
+54	MoFloor	-W1-	Slow	Lock	: Stop moving floor
+87	MoFloor	-WR-	Slow	3/Lock	: Start moving floor
+89	MoFloor	-WR-	Slow	Lock	: Stop moving floor
+
+# Platforms
+14	Plat	-S1-	Slow	Lock	: Moves up 32 units, change texture
+15	Plat	-S1-	Slow	Lock	: Moves up 24 units, change texture
+20	Plat	-S1-	Slow	Lock	: Moves up to highest adjacent floor, change texture
+22	Plat	-W1-	Slow	Lock	: Moves up to highest adjacent floor, change texture
+47	Plat	-G1-	Slow	Lock	: Moves up to highest adjacent floor, change texture
+66	Plat	-SR-	Slow	Lock	: Moves up 24 units, change texture
+67	Plat	-SR-	Slow	Lock	: Moves up 32 units, change texture
+68	Plat	-SR-	Slow	Lock	: Moves up to highest adjacent floor, change texture
+95	Plat	-WR-	Slow	Lock	: Moves up to highest adjacent floor, change texture
+143	Plat	-W1-	Slow	Lock	: Moves up 24 units, change texture
+144	Plat	-W1-	Slow	Lock	: Moves up 32 units, change texture
+148	Plat	-WR-	Slow	Lock	: Moves up 24 units, change texture
+149	Plat	-WR-	Slow	Lock	: Moves up 32 units, change texture
+162	Plat	-S1-	Slow	3/Lock	: Moves between lowest and highest floor
+163	Plat	-S1-	-	-	: Stop platform
+181	Plat	-SR-	Slow	3/Lock	: Moves between lowest and highest floor
+182	Plat	-SR-	-	-	: Stop platform
+211	Plat	-SR-	Inst	-	: Ceiling toggle
+212	Plat	-WR-	Inst	-	: Ceiling toggle
+
+# Lifts
+10	Lift	-W1-	Fast	3	: Lowers then rises to original height
+21	Lift	-S1-	Fast	3	: Lowers then rises to original height
+62	Lift	-SR-	Fast	3	: Lowers then rises to original height
+88	Lift	-WRM	Fast	3	: Lowers then rises to original height
+120	Lift	-WR-	Turbo	3	: Lowers then rises to original height
+121	Lift	-W1-	Turbo	3	: Lowers then rises to original height
+122	Lift	-S1-	Turbo	3	: Lowers then rises to original height
+123	Lift	-SR-	Turbo	3	: Lowers then rises to original height
+
+# Elevators
+227	Elev	-W1-	Fast	-	: Rises to highest adjacent floor
+228	Elev	-WR-	Fast	-	: Lowers to highest adjacent floor
+229	Elev	-S1-	Fast	-	: Rises to highest adjacent floor
+230	Elev	-SR-	Fast	-	: Rises to highest adjacent floor
+231	Elev	-W1-	Fast	-	: Lowers to lowest adjacent floor
+232	Elev	-WR-	Fast	-	: Lowers to lowest adjacent floor
+233	Elev	-S1-	Fast	-	: Lowers to lowest adjacent floor
+234	Elev	-SR-	Fast	-	: Lowers to lowest adjacent floor
+235	Elev	-W1-	Fast	-	: Elevate to current floor
+236	Elev	-WR-	Fast	-	: Elevate to current floor
+237	Elev	-S1-	Fast	-	: Elevate to current floor
+238	Elev	-SR-	Fast	-	: Elevate to current floor
+
+# Stairs
+7	Stairs	-S1-	Slow	-	: Starts rising staircase of 8 unit intervals
+8	Stairs	-W1-	Slow	-	: Starts rising staircase of 8 unit intervals
+100	Stairs	-W1-	Turbo	-	: Starts rising staircase of 16 unit intervals and crush
+127	Stairs	-S1-	Turbo	-	: Starts rising staircase of 16 unit intervals and crush
+256	Stairs	-WR-	Slow	-	: Starts rising staircase of 8 unit intervals
+257	Stairs	-WR-	Fast	-	: Starts rising staircase of 16 unit intervals
+258	Stairs	-SR-	Slow	-	: Starts rising staircase of 8 unit intervals
+259	Stairs	-SR-	Fast	-	: Starts rising staircase of 16 unit intervals
+
+# Ending level
+11	End	NS--	-	-	: Ends level and advances to following level
+51	End	NS--	-	-	: Ends level and advances to secret level
+52	End	NW--	-	-	: Ends level and advances to following level
+124	End	NW--	-	-	: Ends level and advances to secret level
+197	End	NG--	-	-	: Ends level and advances to following level
+198	End	NG--	-	-	: Ends level and advances to secret level
+
+# Teleporting
+39	Tele	-W1M	-	-	: Teleports
+97	Tele	-WRM	-	-	: Teleports
+125	Tele	-W1M	-	-	: Teleports monsters only
+126	Tele	-WRM	-	-	: Teleports monsters only
+174	Tele	-S1M	-	-	: Teleports, sets orientation
+195	Tele	-SRM	-	-	: Teleports, sets orientation
+207	Tele	-W1M	-	-	: Teleports thing silent in tagged sector, preserves orientation
+208	Tele	-WRM	-	-	: Teleports thing silent in tagged sector, preserves orientation
+209	Tele	-S1M	-	-	: Teleports thing silent in tagged sector, preserves orientation
+210	Tele	-SRM	-	-	: Teleports thing silent in tagged sector, preserves orientation
+243	Tele	-W1M	-	-	: Teleports silent with orientation preserved to line with same tag
+244	Tele	-WRM	-	-	: Teleports silent with orientation preserved to line with same tag
+262	Tele	-W1M	-	-	: Teleports silent with orientation preserved to reverse of line with same tag
+263	Tele	-WRM	-	-	: Teleports silent with orientation preserved to reverse of line with same tag
+264	Tele	-W1M	-	-	: Teleports monster only silent in tagged sector, reverse orientation
+265	Tele	-WRM	-	-	: Teleports monster only silent in tagged sector, reverse orientation
+266	Tele	-W1M	-	-	: Teleports monster only silent in tagged sector, preserves orientation
+267	Tele	-WRM	-	-	: Teleports monster only silent in tagged sector, preserves orientation
+268	Tele	-W1M	-	-	: Teleports monster only silent in tagged sector, sets orientation
+269	Tele	-WRM	-	-	: Teleports monster only silent in tagged sector, sets orientation
+
+# Lighting
+12	Light	-W1-	-	-	: Set sectors light level to light level of brightest adjacent sector
+13	Light	-W1-	-	-	: Set sectors light level to 255
+17	Light	-W1-	-	-	: Start strobe light
+35	Light	-W1-	-	-	: Set sectors light level to 0
+79	Light	-WR-	-	-	: Set sectors light level to 0
+80	Light	-WR-	-	-	: Set sectors light level to light level of brightest adjacent sector
+81	Light	-WR-	-	-	: Set sectors light level to 255
+104	Light	-W1-	-	-	: Set sectors light level to light level of dimmest adjacent sector
+138	Light	-SR-	-	-	: Set sectors light level to light level of dimmest adjacent sector
+139	Light	-SR-	-	-	: Set sectors light level to light level of brightest adjacent sector
+156	Light	-WR-	-	-	: Start strobe light
+157	Light	-WR-	-	-	: Set sectors light level to light level of dimmest adjacent sector
+169	Light	-S1-	-	-	: Set sectors light level to light level of brightest adjacent sector
+170	Light	-S1-	-	-	: Set sectors light level to 35
+171	Light	-S1-	-	-	: Set sectors light level to 255
+172	Light	-S1-	-	-	: Start strobe light
+173	Light	-S1-	-	-	: Set sectors light level to light level of dimmest adjacent sector
+192	Light	-SR-	-	-	: Set sectors light level to light level of brightest adjacent sector
+193	Light	-SR-	-	-	: Start strobe light
+194	Light	-SR-	-	-	: Set sectors light level to light level of dimmest adjacent sector
+213	Light	----	-	-	: Set tagged floor light level to light level of 1st sidedefs sector
+261	Light	----	-	-	: Set tagged ceiling light level to light level of 1st sidedefs sector
+
+# Scrolling
+48	Scroll	----	-	-	: Scroll texture horizontally left
+85	Scroll	----	-	-	: Scroll texture horizontally right
+214	Scroll	----	-	-	: Accel tagged ceiling w.r.t 1st side's sector
+215	Scroll	----	-	-	: Accel tagged floor w.r.t 1st side's sector
+216	Scroll	----	-	-	: Accel objects on tagged floor w.r.t 1st side's sector
+217	Scroll	----	-	-	: Accel objects & tagged floor w.r.t 1st side's sector
+218	Scroll	----	-	-	: Accel tagged wall w.r.t 1st side's sector
+245	Scroll	----	-	-	: Scroll tagged ceiling w.r.t 1st side's sector
+246	Scroll	----	-	-	: Scroll tagged floor w.r.t 1st side's sector
+247	Scroll	----	-	-	: Push objects on tagged floor w.r.t 1st side's sector
+248	Scroll	----	-	-	: Push objects & tagged floor w.r.t 1st side's sector
+249	Scroll	----	-	-	: Scroll tagged wall w.r.t 1st side's sector
+250	Scroll	----	-	-	: Scroll tagged ceiling
+251	Scroll	----	-	-	: Scroll tagged floor
+252	Scroll	----	-	-	: Carry objects on tagged floor, but doesn't scroll floor
+253	Scroll	----	-	-	: Scroll tagged floor, carry objects
+254	Scroll	----	-	-	: Scroll tagged texture
+255	Scroll	----	-	-	: Scroll texture according to sidedef offsets
+
+# Boom special effects
+223	Special	----	-	-	: Tagged sector has friction
+224	Special	----	-	-	: Tagged sector has constant wind
+225	Special	----	-	-	: Tagged sector has constant current
+226	Special	----	-	-	: Tagged sector has point wind/current
+242	Special ----	-	-	: Make tagged sector two level sector with fake ceiling/floor
+260	Special	----	-	-	: Make this or tagged 2s normal texture translucent
+
+# XDoom/Lxdoom special effects
+271	Special ----	-	-	: Sky texture property transfer
+272	Special	----	-	-	: Flipped Sky texture property transfer
+
+# XDoom Lasers
+320	Laser	----	-	-	: Laser barrier, deadly for players
+321	Laser	-SR-	Turbo	10	: Switch laser off and on
+322	Laser	-G1-	Turbo	-	: Switch laser off
+
+# XDoom communication gadget
+330	Comdev	-WR-	-	-	: Send new message to UAC gadget
+331	Comdev	-W1-	-	-	: Send new message to UAC gadget
+332	Comdev	-S1-	-	-	: Activate teleporter
+333	Comdev	-S1-	-	-	: Deactivate force field
+334	Comdev	-W1M	-	-	: Send new message to UAC gadget

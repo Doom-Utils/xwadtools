@@ -1,0 +1,54 @@
+.TH trigcalc 6 "21 September 2000"
+
+.SH NAME
+trigcalc \- trigger calculator for Doom level maps
+
+.SH SYNOPSIS
+.B trigcalc
+
+.SH DISCLAIMER
+This program is furnished on an AS IS basis for the fun of it.
+id Software, Raven Software and Activision do not support this program.
+
+.SH DESCRIPTION
+.B trigcalc
+is an interactive program to calculate generalized linedef type numbers
+for Doom level maps, based on answers to questions about what it does.
+.LP
+Generalized linedefs have been implemented by TeamTNT for the Boom engine
+originally. These linedefs range from 0x2f80 to 0x7fff and use bit fields
+to define the function of the linedef, which makes it difficult for humans
+to find the correct type number for a given function.
+.LP
+At the time of this writing UNIX level map editors like
+.BR yadex (6)
+and
+.BR tkwadcad (6)
+have no dialogs builtin for generalized linedef types, but both editors
+allow to enter any number for the type. Until this gets implemented
+.B trigcalc
+can be used for the computing.
+.LP
+It is necessary to read the engine specifications about generalized
+linedefs which comes with game engines like Boom, Lxdoom and XDoom,
+else the dialog of the program won't make much sense.
+
+.SH SUPPORTED GAMES
+Boom, Lxdoom, XDoom, maybe others.
+
+.SH SEE ALSO
+Engine specification of the game engine used.
+.br
+.BR yadex "(6), "
+.BR tkwadcad "(6), "
+.BR xwadtools (6)
+
+.SH BUGS/ERRORS
+None.
+
+.SH AUTHOR
+.B trigcalc
+was written by Jim Flynn (72713.3334@compuserve.com) for the Boom
+engine by TeamTNT.
+.LP
+Ported to UNIX by Udo Munk (um@compuserve.com).

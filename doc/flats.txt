@@ -1,0 +1,137 @@
+********************************************************
+* Adding sprites and flats into a PWAD without merging *
+********************************************************
+
+Version Info:  1.4, 5:58 PM 3/24/96
+
+Credits:
+
+Author: Niklata   Internet: nichd@norfolk.infi.net
+		  CIS: 72164,540
+
+Credits: S_END independently developed by Dalias and myself.
+	 F_END jointly developed by Dalias and myself.
+	 Jim F. Flynn for suggesting I write this
+
+
+Contents:
+
+1.0 ..... Introduction
+2.0 ..... Adding Sprites to a PWAD
+2.1 ..... Advanced Sprite manipulation using DeHackEd
+3.0 ..... Adding Flats to a PWAD without external utlities
+
+
+
+1.0  ---  Introduction
+
+	When the question of adding sprites or flats comes up in the average 
+DOOM/DOOM2/Heretic/Hexen discussion,  you usually hear things like: "You can't do 
+that without using DeuSF," or "Adding flats isn't possible without DeuSF," or 
+endless other variations on the same theme.  This file is here to document 
+what was previously undocumented, and that is the real way to add these 
+things to a PWAD.  All of my step-by-step explanations within this document 
+refer to the tool DeuTex, but you can do these things by using a comparable 
+program such as NWT.  This document does assume that you are familiar with 
+standard WAD concepts (like adding sprites, flats, textures, etc.
+"normally").  This method has been tested and I know that these techniques work,
+since I have used them extensively myself.  This document makes 
+the assumption that you are already somewhat familiar with the use of these tools.
+
+
+2.0  ---  Adding Sprites to a PWAD
+
+	To add sprites to a PWAD, you must either replace the currently existing
+sprites with sprites with identical names or use the method described in [2.1].
+
+2.1  ---  Advanced Sprite manipulation using DeHackEd
+
+	This is somewhat complex, but it isn't as bad is it sounds.  Add
+custom sprites only where you have to, since use of these techniques require the 
+end-user to have DeHackEd to run your WAD.  Note that this material very much
+applies to creators of DeHackEd patches, since they already need DeHackEd to 
+use your patch.  This applies mainly to when you want to extensively change 
+the appearance of a thing (i.e. editing the number of frames, etc.). In deutex
+(or wintex, or NWT), add in a sprite using a new name, following this convention:
+
+	????A0 , ????B0 ... ????Z
+
+	Here I'm going to describe the basic structure of DOOM sprite naming
+convention.  The first four letters may be anything you want, they're the
+ONLY part you can be original about, otherwise your sprites will cause
+problems (ie. they won't work).  The fifth character is a letter
+that corresponds to the sprite subnumber in DeHackEd (ie. Sprite Subnumber
+1 = ????A0).  Okay, here comes the really strange and important part.
+The 0 in my examples tells doom that that is the sprite does not have
+multiple sprites that display for each viewpoint (in simpler terms,
+the sprite looks like that no matter what direction it is facing in
+relation to the player).  Here's a little chart that shows
+you what the numbers are for each direction:
+
+			Facing
+			  1
+			2   8
+Left		      3   *   7                  Right
+			4   6
+			  5
+
+			 Away
+
+
+Note that you can combine the numbers, espically for the diagonal facings
+and the side facings.  A typical list of sprite name/numbers is diagrammed
+below.
+
+ZSPRA1
+ZSPRA3A7
+ZSPRA2A8
+ZSPRA4A6
+ZSPRA5
+
+Note that if you want to make a sprite with multiple viewpoints, you must
+have a sprite defined for each viewpoint, no matter what...
+
+	This applies only to custom sprites manipulated using DeHackEd.  
+Next, create your sprites normally, but do not use the same names as 
+preexisting doom sprites.  After you have built the WAD containing your 
+sprites, it is time to use dehacked.  Fire up dehacked and press "z" to load 
+the original doom exe data.  Then press "F2" to enter thing editing mode.
+From here, press "G" and select the thing whose sprites you wish to replace 
+from the list.  Then, arrow over to the second box from the top to the right.  
+From here, go to the group of the things sprites you wish to replace and 
+press "J" (i.e.: if you wanted to replace the imp's fireball attack frames, go 
+to "Far Attack Frame" and press "J").  Now you are in frames editor.  You 
+don't want to be here.  Hit "J" two more times to get into the text editor.  
+Here, press enter to edit the currently highlighted text, and change it so 
+it matches the first four letters of the set of sprites you wish to add (i.e.:
+let's say that the names of your imp attack frames were ITROA0, ITROB0, ITROC0, 
+and ITROD0.  Type in ITRO, since it is the common first four letters of the 
+group).  Now press "F3" to get back into frames editor.  Notice the changes?  
+Now you have to adjust the sprites so they display such as you want.  Change 
+the sprite subnumber to select what the last letter of your set of sprites is 
+for that entry.  Note that this is zero-based.  Press the spacebar at any 
+time to see what the sprite looks like.  Note that dehacked will only view 
+sprites in the main IWAD, not from a PWAD.  Change the next frame number to 
+indicate what frame to goto.  0 indicates that that frame is the last frame
+for the action.  Change the duration to affect how long the frame is 
+displayed.  -1 indicates that is displayed infinitely.  When you're 
+finished, press "S", type in a filename, and press enter to save.  Then load 
+the patch "dehacked -reload -load filename.deh" and run doom using your WAD.
+	If you wish to get something that uses this technique, here's a
+few files that I know use this technique:
+
+	Niklata's Advanced Tech TC
+	Dalias's Justice Quest TC
+	Dalias's Megaflame Patch
+	Dalias's Flaming Patch
+	Dalias's Ice Patch
+
+3.0  ---  Adding Flats to a WAD
+
+	This is very similar to adding sprites to a PWAD.  All you have to do 
+is make a flat named "F_END" as your last flat within your PWAD.  Then run 
+the WAD as usual.  This has been tested in Doom, Doom II, Ultimate Doom, 
+Heretic, and Hexen.  It's really easy to do :).  Files that use this:
+
+	Niklata's NKARENA2 Deathmatch WAD
+	Dalias's Justice Quest TC

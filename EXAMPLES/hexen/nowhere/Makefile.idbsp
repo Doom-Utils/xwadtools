@@ -1,0 +1,15 @@
+nowhere.wad: nowhere.lwad nowhere.rwad
+	rm -f nowhere.wad
+	wadcat -o nowhere.wad nowhere.lwad nowhere.rwad
+
+nowhere.lwad: nowhere.map nowhere.aco
+	idbsp -q -b nowhere.aco nowhere.map nowhere.lwad
+
+nowhere.rwad: mapinfo.txt
+	mkwad nowhere.rwad @nowhere.res
+
+nowhere.aco: nowhere.acs
+	acc nowhere.acs nowhere.aco
+
+clean:
+	rm -f *.bak nowhere.lwad nowhere.rwad nowhere.aco

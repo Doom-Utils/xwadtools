@@ -1,0 +1,68 @@
+This hints are for UNIX users, I'm very ignorant about DOS and Windows and
+so I don't know which tools you need for those, besides what is included
+in this archive.
+
+WAD editors:
+============
+Sure is possible that you don't like tkwadcad. Fortunately there is an
+alternative for UNIX systems, try out Yadex
+(http://www.teaser.fr/~amajorel/yadex/), this is a WAD editor for UNIX/X11
+based on the DOS WAD editor DEU. Well, have a look anyway, this editor can
+do several things which tkwadcad currently cannot do. Is free open source too.
+
+GRAPHICS:
+=========
+If you want to edit images for PWAD files, good programs for this task
+are 'xpaint' and 'gimp', both free available with sources from the Internet
+(you know how to use search engines to locate source archives, right?).
+Make sure you are using a 24bpp X server while editing images, else your
+images will look different in the game engines than in your image painting
+program. A 8bpp or 16bpp X server will not use the correct colors from the
+game palettes and the tool 'wadgc' will be forced to adjust colors with a
+'best match' method to the correct colors. Besides that the process is
+slow, usually the result is horrible too.
+Don't use _some_ color palette when drawing images, use a correct color
+palette appropriate for the game, or the results also will look horrible,
+same reason as above. This tools include the program 'mkxppal', which can
+create palette files for xpaint. Open your image in 'xpaint' and then load
+the palette from the file and use the colors from this palette only. If you
+prefer to use 'gimp', there is the program 'mkgipal' which generates palette
+files for this one.
+
+I would suggest you do all your work in PPM P6 image format, no compression
+algorithms which mess up your colors and other fun like that. However, you
+might want the 'netpbm' tools, those can convert between almost any existing
+image format, helpful if you want to start working based on images in
+another format than PPM P6 (which 'wadgc' requires to assemble graphic
+resources for PWAD's). If you start from graphics not using the correct
+color palette for the game, create a color quantization map with 'mkqmap'
+and use 'ppmquant' to quantize the colors for the PPM file. The algorithms
+used in 'ppmquant' work much better than the one implemented in 'wadgc'.
+Blah... how do I do that???
+
+	mkqmap -c doom >doom.map
+	ppmquant -map doom.map orig.ppm >new.ppm
+
+Note: ppmquant is part of netpbm, not part of xwadtools.
+
+If you don't like to draw images by hand, a free ray tracing program is
+'povray'. It can generate very realistic looking skies and stuff like that.
+The tool 'mkpopal' creates an color include file with the colors from the
+game palettes, use this one instead of the color include file which comes
+with 'povray'. There are some example povray scene files in
+EXAMPLES/doom/textures, use them as a base for experimenting with povray.
+
+Sound:
+======
+A pretty good package for editing sounds on UNIX workstations is 'snd'.
+You also might want 'sox' which can convert between all the various
+different sound formats. For composing MIDI music 'Rosegarden' is
+a good program. It is a good idea to visit http://www.4front-tech.com/,
+4Front has a very complete list of UNIX applications which work with
+their OSS sound driver on many different UNIX platforms. What really is
+missing is a program which converts MIDI music files into the MUS
+format for the id games. The only program existing for this so far is a DOS
+program, which some company wrote for id Software, sources not available.
+
+That's it for now folks, if you have more helpful hints you would like
+to share, send email which allows me to quote you here.

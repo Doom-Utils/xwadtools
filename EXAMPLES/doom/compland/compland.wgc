@@ -1,0 +1,40 @@
+S_START
+  TRE1A0 smaltree.ppm @ 0 0 W 72 H 38 X 19 Y 38
+  COL6A0 palmtree.ppm @ 0 0 W 149 H 131 X 75 Y 131
+  POL2A0 tree1.ppm @ 0 0 W 121 H 116 X 60 Y 116
+  POL4A0 tree2.ppm @ 0 0 W 76 H 92 X 38 Y 92
+S_END
+
+P_START
+  ROCKSB rocksb.ppm @ 0 0 W 256 H 128
+  ROCKSG rocksg.ppm @ 0 0 W 256 H 128
+  UMMARB1 ummarb1.ppm @ 0 0 W 256 H 128
+  K_A1 k_a1.ppm @ 0 0 W 64 H 128
+  K_A2 k_a2.ppm @ 0 0 W 64 H 128
+  K_A3 k_a3.ppm @ 0 0 W 64 H 128
+  K_A4 k_a4.ppm @ 0 0 W 64 H 128
+P_END
+
+TEXTURE1_START
+  BFALL1 64 128 1
+    K_A1 0 0
+  BFALL2 64 128 1
+    K_A2 0 0
+  BFALL3 64 128 1
+    K_A3 0 0
+  BFALL4 64 128 1
+    K_A4 0 0
+  ROCKSB 256 128 1
+    ROCKSB 0 0
+  ROCKSG 256 128 1
+    ROCKSG 0 0
+  UMMARB1 256 128 1
+    UMMARB1 0 0
+TEXTURE1_END
+
+F_START
+F1_START
+  UMMARBF1 ummarbf1.ppm @ 0 0
+F1_END
+F_END
+

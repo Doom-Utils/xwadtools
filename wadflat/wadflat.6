@@ -1,0 +1,53 @@
+.TH wadflat 6 "13 January 2000"
+
+.SH NAME
+wadflat \- extract floor and ceiling flats from WAD files into ppm graphic files
+
+.SH SYNOPSIS
+.BR wadflat " [" \-p "] [" "\-c \fIpalette\fP" ]
+.I wadfile
+
+.SH DISCLAIMER
+This program is furnished on an AS IS basis for the fun of it.
+id Software, Raven Software and Activision do not support this program.
+
+.SH DESCRIPTION
+The program takes a WAD file (either IWAD or PWAD) as input, and decompiles
+all flats used for floors and ceilings found between the F_START or FF_START
+and F_END labels into raw ppm graphic files.
+.P
+A flat named \fBFRED\fP would be saved as \fB./flats/fred.ppm\fP.
+If the \fB./flats\fP directory does not already exist, it is created.
+
+.SH OPTIONS
+.TP
+.B \-p
+Preserve case. Prevent the name of the graphic files to be forced to lower
+case. For example, a flat named \fBFRED\fP would be saved as
+.B ./flats/FRED.ppm
+.TP
+\fB\-c\fR \fIpalette\fR
+By default the program uses the Doom palette for the color table lookup.
+With this option another palette can be used, \fIpalette\fR can be \fIdoom\fR,
+\fIheretic\fR, \fIhexen\fR or \fIstrife\fR.
+
+.SH SUPPORTED GAMES
+Doom, Ultimate Doom, Doom][, Final Doom, Heretic, Hexen, Strife.
+
+.SH SEE ALSO
+The Unofficial Doom Specs by Matthew S Fell.
+.br
+.BR tkwadcad "(6), "
+.BR wadgc "(6), "
+.BR ppm "(5), "
+.BR xwadtools (6)
+
+.SH BUGS/ERRORS
+None.
+
+.SH AUTHOR
+.B wadflat
+was written by Udo Munk (um@compuserve.com).
+.LP
+Option \-p added and bugfix with extracting some flats by
+Andre Majorel <amajorel@teaser.fr>.

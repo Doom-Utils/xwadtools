@@ -1,0 +1,135 @@
+
+                REJECT.EXE version 1.1.0
+                Copyright (C) 1994 L.M.Witek
+                lee@trousers.demon.co.uk
+
+
+1.0 Introduction
+----------------
+    REJECT.EXE is a command line based utility used for building the 
+    REJECT resource in a DOOM or DOOM 2 PWAD file. It post-processes a 
+    PWAD which has been created using a level editor such as DEU. Its main 
+    purpose is to speed up slow PWAD files by reducing the number of 
+    line-of-sight calculations performed by the DOOM engine. 
+
+    REJECT.EXE is freeware. 
+
+2.0 Legal bit
+-------------
+
+    This program is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation. 
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program; if not, write to the Free Software
+    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+
+3.0 Support
+-----------
+    
+    I can be contacted by email at the above address. All the information 
+    required to run and operate REJECT should be provided in this document. 
+    Before using REJECT:
+                       ********************* 
+                        READ THIS DOCUMENT!
+                       ********************* 
+
+    My spare time is limited so I will not respond to any queries if 
+    the answer is to be found in this document. However I would be glad 
+    to here from anyone who thinks they have found a bug in REJECT or 
+    has any ideas on how to improve REJECT. 
+
+    The source to REJECT is provided in the file SOURCE.ZIP you are free
+    to use all or part of the source in your own programs, however if you
+    do I would be grateful if you would credit me in some way. 
+
+    If you create a enhanced version of REJECT from the source provided
+    I would be grateful if you would send the modified source to me so
+    I can put the enhancements into the 'official' version. 
+ 
+    I will not support any versions of REJECT other than those built by
+    myself.
+
+    Please _DO_NOT_ send me any large binary files (such as your latest 
+    PWAD) as email without my prior consent. My time on the net is limited
+    as I have to call long distance to my Internet Access provider and my
+    phone bill is large enough already.
+
+
+4.0 Requirements
+----------------
+
+    REJECT is a 32 bit DOS extended program built with SYMANTEC C++ v6.11.
+    Any machine which is capable of running DOOM will (should :->) be capable
+    of running REJECT.
+
+5.0 Usage
+---------
+        
+    REJECT is run from the DOS command line. The syntax is:
+
+        REJECT <WADNAME> <MAPNAME> <THRESHOLD>
+
+    Where: 
+       <WADNAME>   = Name of the WAD file to process. Don't add .WAD onto 
+                     the end of the name.
+       <MAPNAME>   = The map name to modify. REJECT will only process one
+                     map at a time so if you have more than one map in your 
+                     WAD then you need to REJECT multiple times.
+                     DOOM 1 & DOOM 2 use different naming conventions for
+                     map names. If you are using a DOOM1 wad file use the 
+                     format ExMy where x and y are the Episode number and 
+                     Map number respectively. DOOM2 map names are constructed
+                     thus: MAPxx where xx is the map number from 01 to 32. 
+       <THRESHOLD> = The distance at which sectors are rejected. See next 
+                     section for explanation of this parameter.
+         
+
+    eg: reject mywad1 e1m1 600
+
+        or
+
+        reject mywad2 map01 600
+
+
+    NOTE: REJECT writes back to the original wad so make a backup
+    before using. Having said that it hasn't corrupted any of the wads
+    I've tried it on.
+
+    Both DEU and BSP will overwrite the reject table in a wad file so run
+    REJECT *AFTER* you run either of these utilities. I use a simple batch
+    file to control the edit/run cycle:
+
+        deu
+        bsp mywad.wad
+        reject tmp e1m1 600
+        doom -file tmp.wad
+
+
+    If you want it to dump a load of debug info use the DOS command 
+
+        SET DEBUG_DEVICE=REJECT.LOG
+
+    will dump into the file REJECT.LOG which you may (or may not)
+    find interesting. :->
+
+
+6.0 Operation
+-------------
+
+    REJECT works by reading the map specified and creating a list of all
+    the sectors which exist in the map. It then takes each sector in turn 
+    and compares the distance of all the other sectors. If this distance 
+    is less the THRESHOLD parameter the the sector is 'ACCEPTED' in the 
+    reject table. If the distance is greater than the THRESHOLD parameter    
+    then the sector is 'REJECTED' and DOOM will not perform line of sight 
+    calculations for that sector thereby speeding up the operation of DOOM.
+
+    The exact value of the THRESHOLD varies greatly from WAD to WAD but
+    start by using 600 and see if the game play is acceptable.  

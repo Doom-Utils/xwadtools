@@ -1,0 +1,421 @@
+.TH dmpsmu 6 "12 January 2000"
+
+.SH NAME
+dmpsmu \- DooM PostScript Maps Utility
+
+.SH SYNOPSIS
+.BR dmpsmu " [" "\-?" "] [" "\-w \fImain_WAD_file\fR" ]
+.RB [ "\-pw \fIpatch_WAD_file\fR" ]
+.RB [ "\-file \fIpatch_WAD_files .\|.\|." ]
+
+.SH DISCLAIMER
+This program is furnished on an AS IS basis for the fun of it.
+id Software, Raven Software and Activision do not support this program.
+
+.SH DESCRIPTION
+.B dmpsmu
+is an interactive utility of which the primary function is to generate
+PostScript maps of levels in
+.BR DOOM ,
+.BR "DOOM ][" ,
+.B Ultimate DOOM
+and
+.BR Heretic ,
+the 3D action games by id Software and Raven Software.
+It is derived from
+.BR DEU ,
+the Doom Editor Utility and retains from this tool all functions that have
+a read-only effect on the DOOM/Heretic WAD files, thus allowing examination
+but not modification of these files under Unix.
+.LP
+The appearance of the PostScript maps is controlled by a large number of print
+flags, yielding a wide range of possibilities in outputting the maps. Besides
+printing the basic map,
+.B dmpsmu
+offers several advanced features:
+.IP \(bu 2
+detailed control over layout and appearance of the page(s).
+.IP \(bu
+multi-page capability, printing on 2 or 4 normal pages.
+.IP \(bu
+detailed control over which Things will be printed.
+.IP \(bu
+fading LineDefs that are secret or part of a secret Sector.
+.IP \(bu
+shading secret and damage Sector areas, but not their inner Sectors.
+.IP \(bu
+linking teleporters and their exits by faint lines.
+.P
+For an explanation of Things, LineDefs and Sectors, as well as anything else
+you may want to know about WAD files, see the DOOM Specs.
+
+.SH OPTIONS
+Options are case-insensitive and filenames are case-sensitive.
+Both the short and long forms of the options are listed.
+.TP
+.B \-? \-h \-help
+Displays usage information.
+.TP
+.B \-w \-main
+Specifies the name of the main WAD file; default is doom.wad.
+Eg. to use the shareware main WAD file, specify:
+.B \-w
+\fIdoom1.wad\fR.
+.TP
+.B \-pw \-pwad
+Specifies the name of a patch WAD file.
+Eg. to merge a single patch WAD file, specify:
+.B \-pw
+\fI<file>.wad\fR.
+.TP
+.B \-file
+Specifies a list of names of patch WAD files.
+Eg. to merge several patch WAD files, specify:
+.B \-file
+\fI<file1>.wad <file2>.wad <file3>.wad\fR.
+
+.SH COMMANDS
+Commands, print flags and directory entries are case-insensitive
+and filenames and level names are case-sensitive.
+Both the short and long forms of the commands are listed.
+.TP
+.B ? H Help
+Gives a brief command overview. The commands and their parameters with a
+short explanation are displayed.
+.TP
+.B A Analyze
+Analyzes and displays a level's statistics. Specify an episode number and
+a mission number for a DOOM/Heretic level, or 0 (zero) and a map number for
+a DOOM ][ level. An overview of that map's characteristics is displayed:
+the map dimensions, the amount of structures of various kinds (including the
+number of player-teleporting LineDefs and secret Sectors), a break-down of
+Things into classes (see THING CLASSES below) and break-downs of PowerUps
+(weapons and enhancements) and Enemies into types. The Analyze command
+respects the state of the M and U print flags.
+.TP
+.B D Dump
+Displays a directory entry in hex. Specify the name of a directory entry
+and an optional output filename. A hex/text dump of the entry is displayed,
+pausing after every 23 lines, or written to the file. In case of multiple
+entries with the same name, the command allows for skipping to the next
+such entry, or writes all such entries to the file.
+.TP
+.B F Flags
+Displays or sets the print flags. If no parameters are specified, the current
+state of all flags is listed. Otherwise, specify a list of flag settings
+to set (+flag) or reset (\-flag) any print flag. See PRINT FLAGS below for
+the available flags and their meaning.
+.TP
+.B L List
+Lists the directory of a WAD file. Specify the name of a (main or patch)
+WAD file and an optional output filename. The directory of the WAD file is
+displayed, pausing after every 23 lines, or written to the file.
+.TP
+.B M Master
+Displays the master directory. Optionally specify an output filename.
+The master directory is displayed, pausing after every 23 lines, or
+written to the file. The master directory is an administrative list,
+maintained by the program, of the directory entries from all open files,
+both the main WAD file and any merged patch WAD files.
+.TP
+.B N Name
+Displays or (re)sets the user level name. If no parameter is specified,
+the current name is displayed. Otherwise, specify the name to be used when
+subsequently printing or analyzing a level, or '' to reset it. Multiple
+spaces within the name are condensed to single ones. The main purpose
+is to temporarily set the actual name of a patch WAD level before printing,
+overruling the regular name for that episode/mission.
+.TP
+.B P Print
+Prints the map of a level to a PostScript file. Specify an episode number
+and a mission number for a DOOM/Heretic level, or 0 (zero) and a map number for
+a DOOM ][ level. Follow either combination with an output filename. The layout
+and objects of that map are printed in PostScript to the file, according to
+the currect print flag settings.
+.TP
+.B Q Quit
+Quits the program.
+.TP
+.B R Read
+Reads a new patch WAD file. Specify the filename of a patch WAD file.
+The file is read and its directory entries are merged into the master
+directory, overwriting any duplicate entries.
+.TP
+.B W Wads
+Displays a list of the open WAD files. Requires no parameters.
+The currently open WAD files are listed, starting with the main WAD file
+and then any merged patch WAD files.
+.TP
+.B X Xtract Extract
+Extracts a directory entry into a raw file. Specify the name of a directory
+entry and an output filename. The entry is written as binary data to the file.
+In case of multiple entries with the same name, only the first such entry is
+extracted.
+
+.SH THING CLASSES
+As shown by the Analyze command, DOOM / Heretic Things are grouped in the
+following classes:
+.TP 10
+START
+player and deathmatch starting points
+.TP
+TLPORT
+teleport exits
+.TP
+BONUS
+helmets, potions, stimpacks, medikits and small ammunition (DOOM) /
+vials, flasks and small ammunition (Heretic)
+.TP
+WEAPON
+weapons and boxes of ammunition (DOOM) / weapons and large ammunition (Heretic)
+.TP
+ENHANC
+keys, armours, spheres, hi-tech gadgets (suit, goggles, etc.) and backpacks
+(DOOM) / keys, shields, artifacts (tome of power, morph ovum, etc.) and bags
+of holding (Heretic)
+.TP
+ENEMY
+former humans, imps, demons, barons, etc. (DOOM) / gargoyles, golems,
+disciples, ironliches, etc. (Heretic)
+.TP
+DECOR
+pillars, torches, stakes, dead monsters, etc.
+.TP
+BARREL / POD/VC
+explosive barrels (DOOM) / pods & tiny volcanos (Heretic)
+
+.SH PRINT FLAGS
+The following flags are available with the Flags command, shown in
+their 'set' meaning with their 'reset' meaning in brackets:
+.TP 4
+.B 2
+use double [normal] page
+.br
+Double pages are A3 or Tabloid, depending on flag
+.BR A .
+The resulting PostScript file can be displayed using a GhostScript viewer.
+To print the file into an upper and lower normal sized page, use the
+.B dmps2ul.sh
+command. Flags
+.BR 2 " and " 4
+cannot both be set; if necessary flag
+.B 4
+is reset.
+.TP
+.B 4
+use quadruple [normal] page
+.br
+Quadruple pages are A2 or double_Tabloid, depending on flag
+.BR A .
+The resulting PostScript file can be displayed using a GhostScript viewer,
+although not all viewers may be able to show the whole map.
+To print a normal sized page from the file for each of the 4 quadrants, use
+the
+.B dmps4qd.sh
+command. Flags
+.BR 2 " and " 4
+cannot both be set; if necessary flag
+.B 2
+is reset.
+.TP
+.B A
+use A4 [Letter] paper size
+.br
+Gives a choice of European and American paper sizes.
+.TP
+.B B
+print [no] border around map
+.br
+The border is a solid rectangle with a thin white stripe, 0.25 inch inside
+the edges of the paper.
+.TP
+.B D
+print all [no] decorations & barrels / pods
+.br
+Decorations are printed as tiny crosses and barrels (DOOM) / pods (Heretic)
+as small circles. Heretic pod generators are printed as larger circles.
+.TP
+.B E
+print all [no] enemies
+.br
+Enemies are printed as triangles with a line extending from the center
+in the direction the monster faces.
+.TP
+.B F
+[don't] fade secret lines
+.br
+Prints faint lines for LineDefs part of a secret Sector and for secret LineDefs.
+.TP
+.B G
+print all [no] goodies (weapons/bonuses/enhancements)
+.br
+Weapons are printed as double squares, bonuses as small single squares
+and enhancements as double circles.
+.TP
+.B L
+print [no] legend above map
+.br
+The legend is a box in the upper-right corner of the map with the icons
+used for the Thing classes and the map scale.  This is a relative scale,
+indicating the ratio of map coordinates to PostScript coordinates.
+.TP
+.B M
+print [no] multi-player things
+.br
+Multi-player Things also include player 2, 3 & 4 and deathmatch starting
+points.  An indicator (M) is printed in the corner of the legend box.
+.TP
+.B N
+print [no] name above map
+.br
+The name is a text in the upper-left corner of the map, printed as ExMy:
+<map name> . In the name, x is the episode number, y is the mission number
+and <map name> is the user level name if set or else the regular name.
+.TP
+.B P
+use Portrait [Landscape] orientation
+.br
+Offers a choice of horizontal and vertical map orientation, allowing auto-zoom
+to achieve the optimum scale depending on a map's dimensions.
+.TP
+.B S
+[don't] shade secret & damage areas
+.br
+Prints medium grey areas for secret Sectors and light grey areas for damage Sectors;
+any inner Sectors (eg. massive pillars) are not shaded.
+.TP
+.B T
+[don't] link teleports
+.br
+Prints a faint line from the middle of each (incl. monster-only) teleporting
+LineDef to the corresponding teleport exit.
+.TP
+.B U
+print things for [below] Ultra-Violence skill
+.br
+Things below UV skill are all Things on the first three difficulty levels
+together. This is a simplification, but nobody plays below UV anyway,
+right? :\-)
+The Heretic equivalent of Ultra-Violence skill is Smite-Meister.
+.TP
+.B Z
+auto-zoom [default] map scale
+.br
+Auto-zoom computes the scale such that the map achieves an optimum fit on the
+page, depending on paper size, orientation and the presence of name and/or
+legend.  The default scale ensures that the largest level (E3M6) fits on a
+normal Portrait page; this helps to get an idea of the sizes of the maps
+relative to eachother.
+.LP
+By default, all flags except
+.BR 2 ", " 4 " and " M
+are set. The player 1 starting point and teleport exits are always printed.
+Starting points are printed as circles and teleport exits as squares.
+Both have a line extending from the center in the direction the player faces
+at that point.
+
+.SH EXAMPLES
+The command:
+.nf
+
+  dmpsmu \-pw foobar.wad
+
+.fi
+starts the utility with the following messages:
+.nf
+
+  DMPSMU: DooM PostScript Maps Utility, ver 2.6
+   By Frans P. de Vries <fpv@xymph.iaf.nl>
+  [Derived from DEU v5.21 GCC by Brendon Wyber and Raphael Quinet]
+
+  Patch WAD file: foobar.wad.
+  Loading main WAD file: doom.wad...
+  Loading patch WAD file: foobar.wad...
+     [Updating level E1M1]
+
+.fi
+Some examples of
+.B dmpsmu
+commands are shown below:
+.nf
+
+  [? for help]> flags \-p +m
+
+  \-P      use Landscape orientation
+  +M      print multi-player things
+
+  [? for help]> n FooBar
+
+  User level name set : FooBar
+
+  [? for help]> print 1 1 foobar.ps
+
+  Outputting PostScript map of level E1M1 to "foobar.ps".
+
+  [? for help]> name ''
+
+  User level name reset
+
+  [? for help]> a 3 6
+
+  Statistics of level E3M6: Mt. Erebus
+  ========================
+
+  MapDim:   MaxX    MinX   SizeX    MaxY    MinY   SizeY
+            4216   -2568    6784    3392   -3400    6792
+
+  Struct: Things  Vertxs  LinDfs  TelePt  SidDfs  Sectrs  Secret
+             334     550     687      10     949     125       4
+
+  Things:  START  TLPORT   BONUS  WEAPON  ENHANC   ENEMY   DECOR  BARREL
+               9       6      60      18      16     126      85       0
+
+  PowrUps:SHOTGN  COMBAT  CHAING  RCKTLR  PLASMA   BFG9K  CHNSAW  BERSRK  BCKPCK
+               1       0       1       1       1       0       1       1       1
+          GRNARM  BLUARM  SOULSP  MEGASP  BLURAF  INVLAF  RDSUIT  CMPMAP  LITAMP
+               2       1       2       0       0       2       5       1       0
+
+  Enemies: HUMAN   SARGE  COMNDO     IMP   DEMON  SPECTR  LOSTSL  CACODM  PNELEM
+               7      18       0      36       6       4      32      22       0
+          MANCBS  REVENT  KNIGHT   BARON  ARCHNO  ARVILE  CYBERD  SPIDER  WOLFSS
+               0       0       0       1       0       0       0       0       0
+
+.fi
+
+.SH "SEE ALSO"
+DEU 5.21, by Raphael Quinet and Brendon J. Wyber, ported to GCC by
+Per Allansson and Per Kofod
+.LP
+DOOM Specs v1.666, by Matt Fell
+.LP
+.BR dmpsmap "(6), "
+.BR wadps "(6), "
+.BR xwadtools (6)
+
+.SH LIMITATIONS
+When shading secret & damage Sectors, those with more than 250 LineDefs
+are skipped.
+
+.SH DIAGNOSTICS
+.B dmpsmu
+can show warning messages in the following format:
+.RS
+[<warning message>.]
+.RE
+or terminate with error messages in the following format:
+.RS
+Program Error: *** <error message> ***
+.RE
+The messages are fairly self-explanatory and are therefore not repeated here.
+
+.SH NOTES
+The
+.B T
+print flag really just emerged out of my inability to remember which
+teleporter took me to which part of the end area in DOOM E3M7 :\-)
+
+.SH AUTHOR
+Frans P. de Vries (fpv@xymph.iaf.nl)
+.LP
+Bug fixed for big endian by
+Oliver Kraus (olikraus@yahoo.com).

@@ -1,0 +1,61 @@
+# A minimal Doom test level with only two sectors and an end switch.
+# This level just was written with vi and it was the first Doom level
+# I was able to build completely under UNIX.
+#
+# This level only uses stuff available in Doom and Doom 2, to compile it
+# for Doom change the LEVEL_START below to 1 1 0 Doom.
+
+LEVEL_START 0 1 0 Doom2
+
+ VERTEXES_START
+  V1 : 0 0
+  V2 : 0 128
+  V3 : 128 128
+  V4 : 128 0
+  V5 : 0 384
+  V6 : 64 384
+  V7 : 128 384
+ VERTEXES_END
+
+ SECTORS_START
+  S1 : 0 96 FLOOR0_3 FLAT18 140 0 0
+  S2 : 0 128 FLOOR0_3 FLAT2 255 0 0
+ SECTORS_END
+
+ LINEDEFS_START
+  V1 V2 : 17 0 0	# notice lower unpegged bit set, to align the texture
+   S1 0 0 - - GRAY4
+   -
+  V2 V3 : 4 0 0		# Two-sided border between S1 & S2
+   S1 0 0 - - -
+   S2 0 0 GRAY4 - -	# Upper texture - S1 has lower ceiling
+  V3 V4 : 17 0 0	# notice lower unpegged bit set, to align the texture
+   S1 0 0 - - GRAY4
+   -
+  V4 V1 : 17 48 0	# Animated wall just for fun
+   S1 0 0 - - GRAY4
+   -
+
+  V2 V5 : 1 0 0
+   S2 0 0 - - GRAY4
+   -
+  V5 V6 : 1 11 0	# End-level switch
+   S2 0 0 - - SW1COMP
+   -
+  V6 V7 : 1 0 0
+   S2 0 0 - - GRAY4
+   -
+  V7 V3 : 1 0 0
+   S2 0 0 - - GRAY4
+   -
+ LINEDEFS_END
+
+ THINGS_START
+  1 : 64 64 90 7	# A player 1 start
+  2003 : 108 364 0 7	# A rocket launcher for alternative level exit
+  2035 : 118 344 0 7	# some cans to blast...
+  2035 : 108 334 0 7
+  2035 : 98 324 0 7
+ THINGS_END
+
+LEVEL_END

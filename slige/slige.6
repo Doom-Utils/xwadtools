@@ -1,0 +1,185 @@
+.TH slige 6 "17 June 2000"
+
+.SH NAME
+slige \- an automatic level generator for Doom
+
+.SH SYNOPSIS
+.BR slige " [" options "] [" \fIfilename\fR]
+
+.SH DISCLAIMER
+This program is furnished on an AS IS basis for the fun of it.
+id Software does not support this program.
+
+.SH DESCRIPTION
+.B Slige
+is an automatic level generator for Doom and Doom][. Levels generated
+with this program need to be processed with a node builder, like
+.B bsp,
+.B idbsp
+or
+.B warm,
+before they can be played with a Doom engine. If no filename is provided
+the program will build the level(s) in a file with the name SLIGE.OUT.
+
+.SH OPTIONS
+.TP
+.B \-doom1
+Create a level for Doom, this is the default too.
+.TP
+.B \-doom2
+Create a level for Doom][.
+.TP
+\fB\-config\fR \fIfile.cfg\fR
+Use configuration file \fIfile.cfg\fR to configure some of \fBslige\fR's
+functionality. The program comes with two configuration files, \fIslige.cfg\fR
+includes the same configuration as the hardwired functionality. The file
+\fIblue.cfg\fR adds a new theme. By default \fBslige\fR will load a config
+file \fISLIGE.CFG\fR from the current directory, if this file is available.
+The provided example configuration files include lots of comments, so
+see there to figure out how to configure \fBslige\fR.
+.TP
+\fB\-outfile\fR \fIfilename\fR
+Write the PWAD into \fIoutfile\fR, instead of the default file SLIGE.OUT.
+.TP
+\fB\-seed\fR \fIn\fR
+Use the seed \fIn\fR for the random number generator instead using the
+system clock.
+.TP
+\fB\-restrict\fR \fI12\fR
+Should cause the program to use only textures and monsters and stuff that
+is present in both, Doom and Doom][.
+.TP
+\fB\-rooms\fR \fIn\fR
+Request the program to make a map with \fIn\fR rooms, but note that it's a
+request only, the exact number of generated rooms in the level may
+be bigger or littler. The default if this option isn't used is like
+18 rooms.
+.TP
+.B \-ExMx
+Change the origin for the generated level(s) for Doom. By default the first
+level created will be E1M1, use this option to start with another one.
+.TP
+.B \-MAPxx
+Change the origin for the generated level(s) for Doom][. By default
+the first level generated will be MAP01, use this option to start
+with another one.
+.TP
+\fB\-levels\fR \fIn\fR
+By default
+.B slige
+produces one level, E1M1 for Doom and MAP01 for Doom][. With this
+option one can ask for more and for Doom it can generate
+more levels than just for one episode. This version now also
+supports generation of secret levels. The program always will
+put in a secret level, if the level that leads to them is generated,
+but the secret levels do \fBnot\fR count for the purpose of
+\fB\-levels\fR. So using option \fB\-levels\fR \fI8\fR will in fact generate
+E1M1 through E1M9, with E1M9 reachable from E1M3. Similarly, if a
+Doom][ map is generated with \fB\-doom2 \-map15\fR the program will
+generate MAP15, MAP31 and MAP32. To get an entire Doom megawad
+use \fB\-levels\fR \fI32\fR (not 36!).
+.TP
+.B \-arena
+.B Slige
+sometimes puts in a typical fight-the-big-monster arena at the end
+of the last level in a WAD, especially for multi-level WAD's. With this
+option the program will almost certain generate such an arena in a
+given WAD.
+.TP
+.B \-bimo
+Usually
+.B slige
+decides at random whether or not a given level will
+contain any "big" monsters. This option turns on big monsters in all
+the levels produced by one run. Also one can use the \fB\-bimo!\fR
+option to force
+.B slige
+into "biggest monsters" mode, in which it will
+tend to choose bigger monsters more often than smaller ones.
+.TP
+.B \-biwe
+Turn on "big" weapons in all levels produced in one run.
+.TP
+\fB\-macho\fR \fIn\fR
+This option tells
+.B slige
+that one can kill the average monsters at a lower cost in ammo and health
+than the default player model. \fB\-macho\fR \fI1\fR will be pretty much
+unnoticable, whereas \fB\-macho\fR \fI100\fR is a claim that one is about
+twice as good as the default player model. This option effects only the
+difficulty levels Hurt Me Plenty and Ultraviolence, the other settings will
+be as easy as ever.
+.TP
+.B \-nosemo
+Don't put monsters in a secret closet. That way one can blast through
+ignoring all those subtle secret hints, and still maybe get 100% kills
+at the end.
+.TP
+.B \-dm
+This option causes
+.B slige
+to put in at least four deathmatch starts, to avoid things that
+don't work in deathmatch, and to make sure that every room with
+a deathmatch start has some decent weapon.
+.TP
+\fB\-minlight\fR \fIn\fR
+Used to specify a base light-level, it should be somewhere between 100
+and 220. Lower numbers result in darker levels.
+.TP
+.B \-music
+Doesn't do much yet.
+.TP
+.B \-noslinfo
+This option suppresses the SLINFO lump in the produced PWAD, for usage
+together with node builders which cannot handle it.
+.TP
+.B \-nocustom
+With this option the program will not use any custom textures at all.
+.TP
+.BR \-cwad " [\fIfilename\fR]"
+This option will produce a PWAD with the
+.B slige
+custom textures for Doom][ only. Without a filename the data will be written
+into the default file SLIGE.OUT. This option can be used together with
+\fB\-nocustom\fR, if the used node builder cannot handle texture lumps in
+the PWAD file.
+.TP
+.B \-nulls
+This option tells
+.B slige
+to include zero-length index entries for the lumps created by node builders.
+This helps using the program together with tools, which won't work on
+PWAD's without this entries. As an example building nodes with
+.B warm
+now is a lot easier, see the included shell script for generating
+ready to run WAD's too.
+.TP
+.B \-v
+Verbose operation, write more detailed informations about what the program
+is doing.
+
+.SH SUPPORTED GAMES
+The generated maps will work with Doom, Ultimate Doom, Doom][ and Final Doom.
+
+.SH SEE ALSO
+.B slige.txt
+.br
+.BR bsp "(6), "
+.BR idbsp "(6), "
+.BR warm "(6), "
+.BR wreject "(6), "
+.BR xwadtools (6)
+
+.SH BUGS/ERRORS
+The program has a few bugs, please read the included file slige.txt, known
+problems are documented in this file.
+
+.SH AUTHOR
+.B Slige
+was written by Dave Chess (dmchess@aol.com).
+.LP
+The Makefile, manual page and the shell scripts to build ready to run PWAD's
+were written by Udo Munk (um@compuserve.com).
+.LP
+Please note that this version of \fBslige\fR is modified to make it compile
+on all supported platforms.

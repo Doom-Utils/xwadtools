@@ -1,0 +1,81 @@
+.TH mkwad 6 "12 January 2000"
+
+.SH NAME
+mkwad \- create a WAD file from raw data lump files
+
+.SH SYNOPSIS
+.BR mkwad " [" \-ipv ]
+.I wadfile
+.RI [ "lumpname lumpfile" " | " "\fB\-label\fR lumpname
+.RI " | " "\fB\-marker\fR lumpname ..." "] | \fB@\fR" response-file
+
+.SH DISCLAIMER
+This program is furnished on an AS IS basis for the fun of it.
+id Software, Raven Software and Activision do not support this program.
+
+.SH DESCRIPTION
+.B mkwad
+is used to build IWAD and PWAD files
+from raw data lump files, containing game resources like level maps, textures,
+sprites, sound and music. The first argument is the WAD file the program
+will create from the lumps. Followed by this are argument pairs, which
+describe the lumps which should be included into the WAD file. There are three
+different lump types included in WAD files, real lumps containing data
+and lumps which just are a label or marker without any data. For the first form
+use a lump name with a maximum length of 8 characters, followed by the
+filename containing the raw lump data.  For a label use \fB\-label\fR followed
+by the lump name and for a marker \fB\-marker\fR followed by the lump name.
+The lump names in IWAD files from id Software are all upper case,
+.B mkwad
+is case sensitive.
+.br
+The order of the lumps included in a WAD file is important for some lumps.
+The details will not be explained in this manual page, read the documentation
+\'The Unofficial Doom Specs\' for details about WAD file contents and structure.
+.br
+The number of argument pairs is not limited in any way by the program,
+it can create WAD files of any size and contents. However, the OS might
+limit the number of arguments passed to a program, so the program supports
+usage of a response file. This file must include the resource name followed
+by the raw data filename, or \fB\-label\fR or \fB\-marker\fR followed by the
+resource name. As an example a response file could look like this:
+.LP
+.nf
+	BIGGUN biggun.dat
+	-label S_START
+	DOOR1 door1.dat
+	DOOR2 door2.dat
+	-label S_END
+.fi
+
+.SH OPTIONS
+.TP
+.B \-i
+Build an IWAD file.
+.TP
+.B \-p
+Build a PWAD file, this is the default.
+.TP
+.B \-v
+Verbose output of processing, without this option
+.B mkwad
+works silent.
+
+.SH SUPPORTED GAMES
+Doom, Ultimate Doom, Doom][, Final Doom, Heretic, Hexen, Strife.
+
+.SH SEE ALSO
+The Unofficial Doom Specs by Matthew S Fell.
+.br
+.BR xwadtools (6)
+
+.SH BUGS/ERRORS
+If the WAD file to create already exists, it will be overwritten without
+any warnings and the original WAD file is lost.
+
+.SH AUTHOR
+.B mkwad
+was written by Udo Munk (um@compuserve.com).
+.LP
+Ported to RISCOS and support for response files added by
+Justin Fletcher (doom@thevillage.ndirect.co.uk).

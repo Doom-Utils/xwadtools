@@ -1,0 +1,44 @@
+# Project:   qmus2mid
+
+
+# Toolflags:
+CCflags = -c -depend !Depend -I^.include.,C: -throwback  -DRISCOS  
+C++flags = -c -depend !Depend -IC: -throwback
+Linkflags = -aif -c++ -o $@
+ObjAsmflags = -throwback -NoCache -depend !Depend
+CMHGflags = 
+LibFileflags = -c -o $@
+Squeezeflags = -o $@
+PCflags = -c -depend !Depend -throwback -IP:
+JFPatchflags = -depend !Depend -throwback -out $@
+Bas2Txtflags = -j -b -o $@ -i 
+Basic2Cflags = -t -o $@ -4 -i 
+MakeDllflags = -o $@
+DiffFlags = -NCw
+LinkDllflags = $(linkflags)
+
+
+# Final targets:
+@.qmus2mid:   @.^.lib.o.libwad @.o.qmus2mid C:o.stubs 
+        link $(linkflags) @.^.lib.o.libwad @.o.qmus2mid C:o.stubs 
+
+
+# User-editable dependencies:
+diffs:        @.diffs.qmus2mid @.diffs.qmus2mid-h
+clean:
+        X wipe @.o.* ~C~VF
+        X Wipe @.diffs.* ~C~VF
+
+# Static dependencies:
+@.o.qmus2mid:   @.c.qmus2mid
+        cc $(ccflags) -o @.o.qmus2mid @.c.qmus2mid 
+@.diffs.qmus2mid: @.c.qmus2mid
+        -diff $(diffflags) @.c-orig.qmus2mid @.c.qmus2mid > @.diffs.qmus2mid
+@.diffs.qmus2mid-h: @.h.qmus2mid
+        -diff $(diffflags) @.h-orig.qmus2mid @.h.qmus2mid > @.diffs.qmus2mid-h
+
+
+# Dynamic dependencies:
+o.qmus2mid:	c.qmus2mid
+o.qmus2mid:	^.include.h.unixlike
+o.qmus2mid:	h.qmus2mid

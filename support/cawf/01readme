@@ -1,0 +1,36 @@
+This is cawf a text formater. It manages most of the -ms and -mm
+macros. Its big advantage is, that it can handle national characters.
+Coherents original nroff can't.
+
+It compiles under Coherent 4.0 (cc compiler) and DOS (Quick-C compiler)
+
+I made some changes to store.c 
+
+-------------old source piece-----------------
+struct scale Scale[] = {		/* scaling factors */
+	{ 'i',	(240.0)		 	},
+	{ 'c',	((240.0 * 50.0)/127.0)	},
+	{ 'P',	(240.0/6.0)		},
+	{ 'p',	(240.0/72.0)		},
+	{ 'u',  (1.0)                   },
+	{ 'm',  (1.0)                   },
+	{ 'n',  (1.0)                   },
+	{ 'v',  (1.0)                   },
+	{ '\0',	(0.0)			}
+};
+------------new source piece-----------------
+struct scale Scale[] = {		/* scaling factors */
+	{ 'i',	(240.0)		 	},
+	{ 'c',	(94.488188)		},
+	{ 'P',	(40.0) 			},
+	{ 'p',	(3.333333)		},
+	{ 'u',  (1.0)                   },
+	{ 'm',  (1.0)                   },
+	{ 'n',  (1.0)                   },
+	{ 'v',  (1.0)                   },
+	{ '\0',	(0.0)			}
+};
+
+
+
+02/08/93  Stephan Forth       stephan@forthdv.rmt.sub.org

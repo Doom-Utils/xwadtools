@@ -1,0 +1,86 @@
+There is no installation program for this yet, so you need to do it by hand.
+
+The executable program is tkwadcad, copy this into the directory with your
+local installed programs, /usr/local/bin under UNIX, c:\bin under Windows.
+
+The data files must be installed in a local lib directory, under UNIX
+use /usr/local/lib/tkwadcad, this can be a symbolic link too. Under
+Windows use c:\lib\tkwadcad.
+Now you need to copy the directories scripts, lib and the file engines.lst
+into this lib directory. Depending on the game engines you want to edit
+level maps for, you need to copy the directories doom, doom2, xdoom, xdoomplus
+and hexen too.
+If the lib directory is not /usr/local/lib/tkwadcad or c:\lib\tkwadcad,
+you must modify the line with this string in your tkwadcad executable to
+match the directory you choosed for the data files.
+
+Under Win9x/NT you also need to rename the wish executable for using the
+one included in Cygwin:
+
+#!/bin/sh
+# the next line restarts using wish \
+exec cygwish80 "$0" "$@"
+...
+
+With this done it runs like under UNIX too, open a Cygwin bash shell
+and type 'tkwadcad your_map_file'. With option -debug under Windows
+the console will be visible. I use this for debugging under Windows,
+'puts' output goes into the console and not into the terminal window
+as under UNIX.
+
+If you want to see the wall textures and floor/ceiling flat graphics
+and sprite graphics in the editor, you need to extract them from your
+IWAD files first.
+
+For Doom do this:
+cd /usr/local/lib/tkwadcad/doom
+wadtex -t /path_to_your_iwad_files/doom.wad
+wadflat /path_to_your_iwad_files/doom.wad
+wadsprit /path_to_your_iwad_files/doom.wad
+
+Of course you can use the IWAD from Ultimate Doom too. The shareware Doom
+doesn't include all image resources, so it cannot be used for this. Besides
+that it isn't possible to load PWADs with the shareware version anyway.
+
+For Doom2:
+cd /usr/local/lib/tkwadcad/doom2
+wadtex -t /path_to_your_iwad_files/doom2.wad
+wadflat /path_to_your_iwad_files/doom2.wad
+wadsprit /path_to_your_iwad_files/doom2.wad
+
+I think you can use one of the IWAD's from Final Doom too, but I haven't
+tested this, there might be differences, dunno, try it.
+
+For the other supported games do the same as above, extract the graphics
+resources from the IWAD you intend to use into /usr/local/lib/tkwadcad/xdoom
+as an example. Of course it can be a symbolic link under UNIX too, which
+points to the Doom or Doom][ resource directory, so that the graphics use up
+disk space only once.
+For other games than Doom, like Hexen and Heretic, do not forget to use
+option -c hexen or so with the graphics extract tools, else the colors
+will be all wrong, because all graphic tools assume the Doom palette as
+the default.
+
+Extracting the graphics data needs to be done once, if you have them
+already, just install the new program and data files in place. The graphics
+in PPM image format will take up a lot of disk space, you don't have to
+extract them, the editor will work without, just not showing any images
+then. If you have extracted images with tools from an release before
+11-Feb-1999, you should export the images again, because the older version
+used a wrong color palette.
+Also with this release tkwadcad will find the graphic files only, if they are
+all lower case. So if you had them exported before with upper case you need
+to change the filenames to lower case, or just extract them again without
+option -p for the tools.
+
+Have a look at the  scripts /usr/local/lib/tkwadcad/scripts/wadrun_*.sh.
+The pathnames for the WAD engines in this scripts are from my systems,
+you need to adjust them for your systems, if you want to run a engine from
+the editor directly.
+
+The file /usr/local/lib/tkwadcad/engines.lst includes the WAD engines
+you can choose from tkwadcad to run a map with. This is an example,
+edit it to fit your needs. Under Win9x the id Doom, id Doom 2 and
+Boom engines are supported, but it won't work to run them from tkwadcad,
+the engines get stuck. I don't know why, use Doom95, ZDoom or glDoom, that
+works.

@@ -1,0 +1,188 @@
+#
+# Makefile to compile under Win9x/NT with the Cygwin tools
+#
+
+# define for big endian machine like Sun Sparc, the x86 stuff is little endian
+# solaris on sparcs:              ENDIAN = -DBIGEND
+# linux/solaris on x86 systems:   ENDIAN = 
+ENDIAN =
+
+# Define the Operating System here, possible choices are:
+#	-DUNIX
+#	-DMSDOS
+# The Cygwin environment for NT and Win9x just is another UNIX and not DOS!
+OS = -DUNIX
+
+# we use GNU C from Cygnus
+CC = gcc
+CFLAGS = '-O2 -Wall $(ENDIAN) $(OS)'
+
+# and use GNU C++ too
+CPP = g++
+CPPFLAGS = '-O -Wall $(ENDIAN) $(OS)'
+
+# Cygwin comes with GNU make, we'll use that
+MAKE = make
+
+# your installation directories
+BINDIR = //c/bin
+LIBDIR = //c/lib
+MANDIR = //c/man/man6
+MAN1DIR = //c/man/man1
+
+#-----------------------------------------------------------------------------
+
+all:
+	cd support/cawf; $(MAKE) CC=$(CC)
+	cd lib; $(MAKE) CC=$(CC) CFLAGS=$(CFLAGS)
+	cd mkwad; $(MAKE) CC=$(CC) CFLAGS=$(CFLAGS)
+	cd lswad; $(MAKE) CC=$(CC) CFLAGS=$(CFLAGS)
+	cd mktran; $(MAKE) CC=$(CC) CFLAGS=$(CFLAGS)
+	cd wadps; $(MAKE) CC=$(CC) CFLAGS=$(CFLAGS)
+	cd wadwhat; $(MAKE) CC=$(CC) CFLAGS=$(CFLAGS)
+	cd qmus2mid; $(MAKE) CC=$(CC) CFLAGS=$(CFLAGS)
+	cd wadtxls; $(MAKE) CC=$(CC) CFLAGS=$(CFLAGS)
+	cd bsp; $(MAKE) CC=$(CC) CFLAGS=$(CFLAGS)
+	cd idbsp; $(MAKE) CC=$(CC) CFLAGS=$(CFLAGS)
+	cd wadlc; $(MAKE) CC=$(CC) CFLAGS=$(CFLAGS)
+	cd wadldc; $(MAKE) CC=$(CC) CFLAGS=$(CFLAGS)
+	cd wadgc; $(MAKE) CC=$(CC) CFLAGS=$(CFLAGS)
+	cd wadext; $(MAKE) CC=$(CC) CFLAGS=$(CFLAGS)
+	cd wadtex; $(MAKE) CC=$(CC) CFLAGS=$(CFLAGS)
+	cd wadflat; $(MAKE) CC=$(CC) CFLAGS=$(CFLAGS)
+	cd wadsprit; $(MAKE) CC=$(CC) CFLAGS=$(CFLAGS)
+	cd wadpat; $(MAKE) CC=$(CC) CFLAGS=$(CFLAGS)
+	cd wadcat; $(MAKE) CC=$(CC) CFLAGS=$(CFLAGS)
+	cd multigen; $(MAKE) CC=$(CC) CFLAGS=$(CFLAGS)
+	cd raw2ppm; $(MAKE) CC=$(CC) CFLAGS=$(CFLAGS)
+	cd raw2sfx; $(MAKE) CC=$(CC) CFLAGS=$(CFLAGS)
+	cd reject; $(MAKE) CPP=$(CPP) CPPFLAGS=$(CPPFLAGS)
+	cd warm; $(MAKE) CC=$(CC) CFLAGS=$(CFLAGS)
+	cd slige; $(MAKE) CC=$(CC) CFLAGS=$(CFLAGS)
+	cd dmpsmu/source; $(MAKE) CC=$(CC) CFLAGS=$(CFLAGS)
+	cd swantbls; $(MAKE) CC=$(CC) CFLAGS=$(CFLAGS)
+	cd acc; $(MAKE) CC=$(CC) CFLAGS=$(CFLAGS) LIBDIR=$(LIBDIR)
+	cd deutex; $(MAKE) CC=$(CC) CFLAGS=$(CFLAGS)
+	cd listacs; $(MAKE) CPP=$(CPP) CPPFLAGS=$(CPPFLAGS)
+
+install:
+	-mkdir -p $(LIBDIR)
+	-mkdir -p $(BINDIR)
+	-mkdir -p $(MANDIR)
+	-mkdir -p $(MAN1DIR)
+	-mkdir -p $(LIBDIR)/awflib
+	cp support/awf/lib/* $(LIBDIR)/awflib
+	sed -e 's!/usr/local/lib/awflib!$(LIBDIR)/awflib!' support/awf/awf >$(BINDIR)/awf
+	cp support/awf/man/awf.1 $(MAN1DIR)
+	-mkdir -p $(LIBDIR)/cawflib
+	cp support/cawf/cawf.exe $(BINDIR)
+	cp support/cawf/bsfilt.exe $(BINDIR)
+	cp support/cawf/common $(LIBDIR)/cawflib
+	cp support/cawf/dumb.dev $(LIBDIR)/cawflib
+	cp support/cawf/man.mac $(LIBDIR)/cawflib
+	cp support/cawf/ms.mac $(LIBDIR)/cawflib
+	cp support/cawf/bsfilt.1 $(MAN1DIR)
+	cp support/cawf/cawf.1 $(MAN1DIR)
+	cp support/man/man $(BINDIR)
+	cp support/man/man.1 $(MAN1DIR)
+	cp mkwad/mkwad.exe $(BINDIR)
+	cp mkwad/mkwad.6 $(MANDIR)
+	cp lswad/lswad.exe $(BINDIR)
+	cp lswad/lswad.6 $(MANDIR)
+	cp mktran/mktran.exe $(BINDIR)
+	cp mktran/mktran.6 $(MANDIR)
+	cp wadps/wadps.exe $(BINDIR)
+	cp wadps/wadps.6 $(MANDIR)
+	cp wadwhat/wadwhat.exe $(BINDIR)
+	cp wadwhat/wadwhat.6 $(MANDIR)
+	cp qmus2mid/qmus2mid.exe $(BINDIR)
+	cp qmus2mid/qmus2mid.6 $(MANDIR)
+	cp wadtxls/wadtxls.exe $(BINDIR)
+	cp wadtxls/wadtxls.6 $(MANDIR)
+	cp bsp/bsp.exe $(BINDIR)
+	cp bsp/bsp.6 $(MANDIR)
+	cp idbsp/idbsp.exe $(BINDIR)
+	cp idbsp/idbsp.6 $(MANDIR)
+	cp idbsp/waddwd.exe $(BINDIR)
+	cp idbsp/waddwd.6 $(MANDIR)
+	cp wadlc/wadlc.exe $(BINDIR)
+	cp wadlc/wadlc.6 $(MANDIR)
+	cp wadldc/wadldc.exe $(BINDIR)
+	cp wadldc/wadldc.6 $(MANDIR)
+	cp wadgc/wadgc.exe $(BINDIR)
+	cp wadgc/wadgc.6 $(MANDIR)
+	cp wadext/wadext.exe $(BINDIR)
+	cp wadext/wadext.6 $(MANDIR)
+	cp wadtex/wadtex.exe $(BINDIR)
+	cp wadtex/wadtex.6 $(MANDIR)
+	cp wadflat/wadflat.exe $(BINDIR)
+	cp wadflat/wadflat.6 $(MANDIR)
+	cp wadpat/wadpat.exe $(BINDIR)
+	cp wadpat/wadpat.6 $(MANDIR)
+	cp wadsprit/wadsprit.exe $(BINDIR)
+	cp wadsprit/wadsprit.6 $(MANDIR)
+	cp wadcat/wadcat.exe $(BINDIR)
+	cp wadcat/wadcat.6 $(MANDIR)
+	cp multigen/multigen.exe $(BINDIR)
+	cp raw2ppm/raw2ppm.exe $(BINDIR)
+	cp raw2ppm/raw2ppm.6 $(MANDIR)
+	cp raw2sfx/raw2sfx.exe $(BINDIR)
+	cp raw2sfx/raw2sfx.6 $(MANDIR)
+	cp reject/wreject.exe $(BINDIR)
+	cp reject/wreject.6 $(MANDIR)
+	cp warm/warm.exe $(BINDIR)
+	cp warm/warm.6 $(MANDIR)
+	cp slige/slige.exe $(BINDIR)
+	cp slige/slige.6 $(MANDIR)
+	cp dmpsmu/source/dmpsmu.exe $(BINDIR)
+	cp dmpsmu/dmpsmu.6 $(MANDIR)
+	cp dmpsmu/source/dmpsmap.exe $(BINDIR)
+	cp dmpsmu/dmpsmap.6 $(MANDIR)
+	cp swantbls/swantbls.exe $(BINDIR)
+	cp swantbls/swantbls.6 $(MANDIR)
+	cp acc/acc.exe $(BINDIR)
+	cp acc/acc.6 $(MANDIR)
+	-mkdir -p $(LIBDIR)/acc/hexen
+	cp acc/common.acs $(LIBDIR)/acc/hexen
+	cp acc/defs.acs $(LIBDIR)/acc/hexen
+	cp acc/specials.acs $(LIBDIR)/acc/hexen
+	cp deutex/deutex.exe $(BINDIR)
+	cp deutex/deusf.exe $(BINDIR)
+	cp deutex/deutex.6 $(MANDIR)
+	cp listacs/listacs.exe $(BINDIR)
+	cp listacs/listacs.6 $(MANDIR)
+	cp doc/xwadtools.6 $(MANDIR)
+	cp tkwadcad/tkwadcad.6 $(MANDIR)
+
+clean:
+	cd support/cawf; $(MAKE) clean
+	cd lib; $(MAKE) clean
+	cd mkwad; $(MAKE) clean
+	cd lswad; $(MAKE) clean
+	cd mktran; $(MAKE) clean
+	cd wadps; $(MAKE) clean
+	cd wadwhat; $(MAKE) clean
+	cd qmus2mid; $(MAKE) clean
+	cd wadtxls; $(MAKE) clean
+	cd bsp; $(MAKE) clean
+	cd idbsp; $(MAKE) clean
+	cd wadlc; $(MAKE) clean
+	cd wadldc; $(MAKE) clean
+	cd wadgc; $(MAKE) clean
+	cd wadext; $(MAKE) clean
+	cd wadtex; $(MAKE) clean
+	cd wadflat; $(MAKE) clean
+	cd wadsprit; $(MAKE) clean
+	cd wadpat; $(MAKE) clean
+	cd wadcat; $(MAKE) clean;
+	cd multigen; $(MAKE) clean
+	cd raw2ppm; $(MAKE) clean
+	cd raw2sfx; $(MAKE) clean
+	cd reject; $(MAKE) clean
+	cd warm; $(MAKE) clean
+	cd slige; $(MAKE) clean
+	cd dmpsmu/source; $(MAKE) clean
+	cd swantbls; $(MAKE) clean
+	cd acc; $(MAKE) clean
+	cd deutex; $(MAKE) clean
+	cd listacs; $(MAKE) clean

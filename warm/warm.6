@@ -1,0 +1,232 @@
+.TH warm 6 "12 January 2000"
+
+.SH NAME
+warm \- WAD Auxiliary Resource Manipulator
+
+.SH SYNOPSIS
+.BR warm " [" options "] " \fIinput.wad\fR
+.RB [ \fIoutput.wad\fR ]
+
+.SH DISCLAIMER
+This program is furnished on an AS IS basis for the fun of it.
+id Software, Raven Software and Activision do not support this program.
+
+.SH DESCRIPTION
+.B Warm's
+main purpose is to build the NODES, SSECTORS, SEGS, BLOCKMAP and REJECT
+resources for a level map in a WAD file. Executing the program with no
+arguments will display help informations. Note that the program has
+several optional functions that are unrelated to the reject, nodes or
+blockmap creation.
+.LP
+Besides building resources for Doom WAD files this program also can handle
+Heretic and Hexen WAD files. Hexen WAD files have an additional BEHAVIOR
+resource,
+.B warm
+simply checks for this resource in a WAD file and if it is there, then it
+is marked and handled as a Hexen WAD file.
+.TP
+.B Doom BSP generation informations
+Some lines in a level do not affect the display in any way; these
+lines are those that have no floor nor ceiling texture/height changes
+on either side of them and do not have a texture on them. So visually
+one cannot tell there is a line present while playing the game. Thus
+there is no reason for these lines to be considered during node generation.
+Doing this will create fewer NODES, SSECTORS and SEGS, thus a smaller
+and faster WAD. There is an option to disable this feature since most
+special effects require that these non-visual lines be present in the
+SEGS list.
+.br
+There are two options that can be given to the node builder, the "a"
+and the "m" options. The "a" option stands for "use all SEGS" and
+the "m" option stands for "multiple sectors/subsector". The "a" option
+usually must be present to make special effects like transparent
+platforms, lifts, etc. working. This is because all the SEGS must be
+present in the SEGS list to properly fool the game engine into
+producing the intended display. The "m" option controls whether SSECTORS
+can be created from more than one sector (i.e. from SEGS attached to
+different SECTORS). Normally SSECTORS are only created from SEGS from
+the same sector and so this option is needed for transparent doors.
+Note, however that the "m" option will destroy some special effects,
+so the "m" option can be made to apply to specified sectors only
+if both special effects and transparent doors are present in a WAD.
+.TP
+.B Hexen BSP generation info
+Hexen WAD files can contain extended objects called polyobjects. These
+objects, such as doors that open from the player require that the area
+containing the polyobjects not be split by any partition line created
+during the BSP generation.
+.B Warm
+currently has no mechanism to recognize these objects and build the
+BSP tree around them. If a WAD doesn't work, try building the BSP
+tree with the \-n=a option. If it still doesn't work, then the WAD
+needs to be changed. Typically the sector containing the polyobject
+should be a simple convex sector (like a rectangle), so there is
+a good chance the node builder will use one subsector for the sector.
+.TP
+.B Packed level data
+The resource data that forms a typical level can have a significant
+amount of redundant and unused data. The unused data consist of
+unused SIDEDEFS, VERTICES and SECTORS that are not referenced by
+any of the other resources and do not contribute to the level that
+a player sees. Unused data is more prevalent in older WADs; most WAD
+editors now automatically remove unused data before the level data is
+saved.
+.B Warm
+currently does not attempt to remove unused level data. Removing
+redundant SIDEDEFS entries can significantly reduce the size of the
+level data. The drawback to removing duplicate SIDEDEFS is that it
+can make further editing of the level difficult (not if
+.B tkwadcad
+is used), especially if LINEDEFS and/or SIDEDEFS have been deleted.
+Thus any packed level should be unpacked if further major editing is
+required. Lastly the levels BLOCKMAP is packed.
+.TP
+.B Packed BLOCKMAP
+Each block in the BLOCKMAP represents a 128x128 region of the map area.
+Many of this regions will be empty, i.e. no LINEDEFS exist in these
+regions. However, doing so is unnecessary. A single entry in the
+BLOCKMAP can represent all of the empty blocks. Having such a single
+entry can typically reduce the size of the BLOCKMAP by 1/4.
+.TP
+.B REJECT generation algorithm
+The REJECT resource basically is built from strictly line of sight
+determinations between all sector pairs. For each sector pair a check
+is made as to whether any one-sided lines block the view of a
+chosen two-sided  line from each sector. I.e. if one-sided lines
+block the views of all two-sided lines of one sector from all the
+two-sided lines of the other sector, then the sector pair is deemed
+not in sight of each other. Otherwise the sector pair can see each
+other. However, the method used is not perfect and will not catch
+all instances of line-of-sight.
+.br
+For each pair of test points all potentially blocking one-sided lines
+must be checked. To avoid having to check all the one-sided lines of
+each level, the BLOCKMAP is used to greatly limit the search. Since the
+BLOCKMAP is a record of which lines are in each 128x128 block of the
+map, and since it is fairly easy to compute which blocks are between
+a pair of test points, the BLOCKMAP provides a ready list of only
+those one-sided lines that are potentially in the way of line of sight.
+Even with this method the process is still computationally expensive;
+for large levels the REJECT computation takes far longer than the nodes
+generation. The program does have an option to produce a zeroed REJECT
+resource, so the possible lengthly computation time can be avoided.
+.LP
+If the above sounds all greek to you, the Unofficial Doom Spec document
+explains the theory behind \fBB\fRinary \fBS\fRpace \fBP\fRartitions,
+or BSP for short, as well the the function of the blockmap and reject
+resources.
+
+.SH OPTIONS
+.TP
+.I input.wad
+A PWAD or IWAD file
+.TP
+[\fR\fIoutput.wad\fR]
+The output WAD file, if not specified the input file is rewritten.
+.TP
+\fB\-\fR\fIlevels\fR
+specify level(s) to process; \fIlevels\fR is \-<lvl>,<lvl>... where
+<lvl> is e#m# or map##.
+.TP
+\fB\-n\fR[\fB=\fR\fIopt\fR]
+build nodes; \fIopt\fR is one or both of 'a', 'm[(<S>[,...])]' where <S>
+is sector #; if no sector #'s specified applies to all sectors; use
+these options for special effects.
+.TP
+.B \-b
+build packed blockmap
+.TP
+\fB\-r\fR[\fB=\fR\fIxlist\fR]
+build reject; \fIxlist\fR is exception list of the form [!]<S>-<S>[,...]
+where <S> is * (all sectors) or sector #; 1 is forced (0 for leading !)
+for each sector pair; invalid pairs are ignored.
+.TP
+.B \-z
+build zero-filled reject, much faster; same as \-r=!*\-*
+.TP
+.B \-q
+quiet - suppress screen I/O, use from GUI's and such.
+.LP
+The following options are addons which have nothing to do with
+resource generation.
+.TP
+\fB\-dmit=\fR\fI#\fR
+deathmatch-ize level for version 1 or 2 deathmatch.
+.TP
+\fB\-rand=\fR\fI#\fR
+randomly swap positions for creatures, weapons, bonuses and deathmatch
+starts using specified seed.
+.TP
+.B \-flip
+flip level about y-axis /make mirror image)
+.TP
+\fB\-shift=\fR\fIdx,dy\fR[\fI,dz\fR]
+shift level by \fIdx\fR, \fIdy\fR, \fIdz\fR, useful with later merge operation.
+.TP
+.B \-pack
+remove redundant level resource data; do not do this if intending
+further major editing with another WAD editor than
+.B tkwadcad.
+.TP
+.B \-unpack
+reverse pack function; use this if need to edit a packed WAD.
+.TP
+.B \-emstat
+display level statistics.
+.TP
+.B \-dir
+display entire resource directory.
+.TP
+\fB\-s=\fR\fIwlist\fR
+substitute resources in input file with resources in comma-separated
+PWAD or IWAD or VERDA patch file list.
+.TP
+\fB\-e=\fR\fIrlist\fR
+extract comma-separated named resources from input file to output file;
+resources E#M#/MAP## get all data for the level; if starts with !, extract
+all resources not named.
+.TP
+\fB\-m=\fR\fIwlist\fR
+merge comma-separated PWAD, IWAD or VERDA patch files with input file;
+matching E#M#/MAP## level data is merged (which needs new nodes, blockmap,
+reject), unique resources are added.
+.TP
+\fB\-mraw=\fR\fIflist\fR
+merge comma-separated raw/lump files with input file; \fIflist\fR is
+<rfile>-<name>[,...]; each <rfile> is given resource name <name>
+as it is merged.
+
+The program defaults to options \fB\-n \-b \-r\fR if not specified otherwise.
+
+.SH SUPPORTED GAMES
+Doom, Ultimate Doom, Doom][, Final Doom, Heretic, Hexen.
+
+.SH SEE ALSO
+The Unofficial Doom Specs by Matthew S Fell.
+.br
+The Official Hexen Technical Specs by Ben Morris.
+.br
+.BR acc "(6), "
+.BR bsp "(6), "
+.BR idbsp "(6), "
+.BR wreject "(6), "
+.BR xwadtools (6)
+
+.SH BUGS/ERRORS
+If sectors are build from two sided lines with upper textures only on
+their left sidedef and no textures at all on their right sidedef, the
+textures look misaligned in the game engines. It is not known what causes
+this effect, but it can be avoided by flipping the lines, so that the
+sidedef with the upper texture is on the right side.
+.LP
+Option -emstat displays wrong informations for Hexen WAD files.
+
+.SH AUTHORS
+.B Warm
+was written by Robert Fenske, Jr (rfenske@swri.edu).
+.LP
+Porting to OS/2 was done by Mark Mathews (mmathews@genesis.nred.ma.us).
+.LP
+Some minor modifications done for portability under UNIX by
+Udo Munk (um@compuserve.com).
