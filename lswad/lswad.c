@@ -1,5 +1,5 @@
 /************************************************************************/
-/*      Copyright (C) 1998, 1999 by Udo Munk (um@compuserve.com)        */
+/*      Copyright (C) 1998, 1999 by Udo Munk (munkudo@aol.com)          */
 /*	Copyright (C) 1999, 2000 by Andre Majorel (amajorel@teaser.fr)	*/
 /*                                                                      */
 /*      Permission to use, copy, modify, and distribute this software   */
@@ -41,8 +41,8 @@
 
 #define VERSION "1.8"
 
-static int list_wad (const char *file);
-static void err (const char *file, const char *fmt, ...);
+static int list_wad(const char *file);
+static void err(const char *file, const char *fmt, ...);
 
 static char *program = NULL;
 static int verbose = 0;
@@ -86,7 +86,7 @@ void print_name(char *n)
 				   n[7] ? n[7] : ' ');
 }
 
-int main(int argc, char** argv)
+int main(int argc, char **argv)
 {
 	int		exit_code = 0;
 	int		show_file_name = 0;
@@ -161,7 +161,7 @@ int main(int argc, char** argv)
 /*
  *	list_wad - list the contents of one wad file
  */
-static int list_wad (const char *file)
+static int list_wad(const char *file)
 {
 	wadinfo_t	wad_header;
 	filelump_t	lump;
@@ -328,7 +328,7 @@ static int list_wad (const char *file)
 /*
  *	err - printf an error message to stderr
  */
-static void err (const char *file, const char *fmt, ...)
+static void err(const char *file, const char *fmt, ...)
 {
 	va_list args;
 

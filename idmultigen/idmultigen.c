@@ -17,7 +17,7 @@
  *	between the generated sources and those included in the
  *	public released sources.
  *
- *	24 June 1998, Udo Munk	um@compuserve.com
+ *	24 June 1998, Udo Munk	munkudo@aol.com
  */
 
 #define VERSION "1.1"

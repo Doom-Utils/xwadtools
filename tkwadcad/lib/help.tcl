@@ -1,7 +1,7 @@
 #
 # Help package for tkwadcad
 #
-# Copyright (C) 1999, 2000 by Udo Munk (um@compuserve.com)
+# Copyright (C) 1999-2001 by Udo Munk (munkudo@aol.com)
 #
 # Permission to use, copy, modify, and distribute this software
 # and its documentation for any purpose and without fee is
@@ -13,7 +13,7 @@
 # "as is" without express or implied warranty.
 #
 
-package provide WCHelp 1.2
+package provide WCHelp 1.3
 
 namespace eval WCHelp {
 
@@ -53,9 +53,9 @@ namespace eval WCHelp {
     $f.txt config -state normal
     $f.txt delete 1.0 end
 
-    $f.txt insert end "\t\tTkWadCad Release 1.1.6\n"
-    $f.txt insert end "\t\t======================\n\n"
-    $f.txt insert end "Copyright (C) 1998-2000 by Udo Munk (um@compuserve.com)\n\n"
+    $f.txt insert end "\t\tTkWadCad Release 1.2\n"
+    $f.txt insert end "\t\t====================\n\n"
+    $f.txt insert end "Copyright (C) 1998-2001 by Udo Munk (munkudo@aol.com)\n\n"
     $f.txt insert end "Permission to use, copy, modify, and distribute this software\n"
     $f.txt insert end "and its documentation for any purpose and without fee is\n"
     $f.txt insert end "hereby granted, provided that the above copyright notice\n"

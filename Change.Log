@@ -1,3 +1,20 @@
+Fri Jun 15 13:25:38 2001	<munkudo@aol.com>
+
+* multigen
+  - renamed to idmultigen, PalmOS tools for UNIX include a program
+    named multigen too.
+
+* raw2ppm
+  - ROTT support added by Andre Majorel.
+
+* wadext
+  - many improvements by Andre Majorel.
+
+* slige
+  - new release build 490 with better UNIX support.
+
+Sun Oct 1 17:23:52 2000		<um@compuserve.com>
+
 * general
   - modified makefiles so that vanilla UNIX make can be used. everything
     other than deutex/deusf now can be build with vanilla UNIX make.

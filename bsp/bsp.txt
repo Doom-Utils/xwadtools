@@ -11,7 +11,7 @@ Has some bug fixes.
 
 Has some new options and features.
 
-If you modify BSP please mail diffs to um@compuserve.com, so that
+If you modify BSP please mail diffs to munkudo@aol.com, so that
 it can be included in future releases, thanks.
 
 -----------------------------------------------------------

@@ -1,4 +1,4 @@
-.TH raw2ppm 6 "12 January 2000"
+.TH raw2ppm 6 "15 June 2001"
 .ds . \fBraw2ppm\fP
 
 .SH NAME
@@ -68,11 +68,12 @@ command line with \fBgetopt()\fP and therefore supports all the usual features
 .BI "\-c " game
 Translate pixel values to RGB colours using the palette from game \fIgame\fP.
 The possible values of \fIgame\fP are \fBdoom\fP, \fBdoom04\fP, \fBdoom04t\fP,
-\fBdoom05\fP, \fBdoom05t\fP, \fBheretic\fP, \fBhexen\fP and \fBstrife\fP.
-\fBdoom\fP is for Doom and Doom II. \fBdoom04\fP and \fBdoom05\fP are for Doom
-alpha 0.4 and Doom alpha 0.5 respectively. \fBdoom04t\fP and \fBdoom05t\fP are
-the \fBTITLEPIC\fP palettes (\fBTITLEPAL\fP) of Doom alpha 0.4 and Doom alpha
-0.5 respectively. The default is \fBdoom\fP.
+\fBdoom05\fP, \fBdoom05t\fP, \fBheretic\fP, \fBhexen\fP, \fBrott\fP and
+\fBstrife\fP. \fBdoom\fP is for Doom and Doom II. \fBdoom04\fP and \fBdoom05\fP
+are for Doom alpha 0.4 and Doom alpha 0.5 respectively. \fBdoom04t\fP and
+\fBdoom05t\fP are the \fBTITLEPIC\fP palettes (\fBTITLEPAL\fP) of Doom alpha
+0.4 and Doom alpha 0.5 respectively. \fBrott\fP is for Rise of the triad. The
+default is \fBdoom\fP.
 .TP
 .BI "\-h " height
 Height of the output image. \fIheight\fP is a decimal integer unless prefixed
@@ -112,7 +113,7 @@ than 0.
 
 .SH SUPPORTED GAMES
 Doom, Doom alpha, Doom PR, Ultimate Doom, Doom][, Final Doom, Heretic, Hexen,
-Strife.
+Strife. And even ROTT. :-)
 
 .SH EXIT VALUE
 \fB0\fP	OK.
@@ -136,5 +137,5 @@ The Unofficial Doom Specs by Matthew S Fell.
 None known.
 
 .SH AUTHOR
-\*. was written by Udo Munk (um@compuserve.com) and hacked by Andre Majorel
+\*. was written by Udo Munk (munkudo@aol.com) and hacked by Andre Majorel
 (amajorel@teaser.fr).

@@ -7,7 +7,7 @@
  *	collection. Please don't bother anyone at id Software about
  *	this, if you have a problem you could try to email me.
  *
- *	24 June 1998, Udo Munk	um@compuserve.com
+ *	24 June 1998, Udo Munk	munkudo@aol.com
  */
 
 #include <stdio.h>

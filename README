@@ -56,11 +56,11 @@ some ftp server, fine with me, go ahead.
 New in this release:
 ====================
 
-- Bug fixes in idbsp, slige, reject and wadgc.
-- Wad editor tkwadcad got many improvements and support for many new
-  XDoom features.
-- added trigcal by Jim Flynn, used to calculate linedef numbers for
-  Boom generalized linedefs.
+- includes a new slige release with better UNIX support
+- multigen renamed to idmultigen, PalmOS tools for UNIX
+  also include a program called multigen, which gets
+  installed into /usr/local/bin
+- some ROTT support
 
 Trademarks, Legalize:
 =====================
@@ -76,7 +76,7 @@ Software or Activision, even not with some of their sources included.
 This software is provided on AS IS basis just for the fun of it and it
 comes without any warranty. In case of problems don't bother anyone at
 the game vendors, you got all sources, use them. If you can't fix a problem
-your self feel free to email me at um@compuserve.com, I might look into
+your self feel free to email me at munkudo@aol.com, I might look into
 it. If you can fix a problem your self, please email a patch.
 
 Some of the tools included have restictions on usage, like: may not be used
@@ -84,4 +84,4 @@ for profit. Consult the included documentation for all tools about details,
 not everything included is under GPL or similar license conditions!
 
 Enjoy,
-Udo Munk <um@compuserve.com>
+Udo Munk <munkudo@aol.com>

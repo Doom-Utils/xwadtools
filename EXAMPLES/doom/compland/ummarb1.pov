@@ -1,6 +1,6 @@
 // vi:set tabstop=4:
 //
-// Copyright (C) 1999 by Udo Munk (um@compuserve.com)
+// Copyright (C) 1999 by Udo Munk (munkudo@aol.com)
 //
 // Feel free to use, share and modify, but leave my Copyright intact.
 //

@@ -11,7 +11,7 @@
    version 1.0.1 by Antony Suter <antony@werple.apana.org.au>
       these fixes and modification (c) 1994 by Antony Suter
 
-   version 2.0.0 by Udo Munk <um@compuserve.com>, see README for details.
+   version 2.0.0 by Udo Munk <munkudo@aol.com>, see README for details.
  */
 
 #include "waddwd.h"
@@ -51,7 +51,7 @@ int main(int argc, char *argv[])
 	printf("** WAD_DWD - a WAD->DWD converter for DOOM - version 2.0.0 **\n"
 		"(c) 1994 Ron Rossbach (ej070@cleveland.freenet.edu)\n"
 		"Version 1.0.1 by Antony Suter <antony@werple.apana.org.au>\n"
-		"Version 2.0.0 by Udo Munk <um@compuserve.com>\n\n"
+		"Version 2.0.0 by Udo Munk <munkudo@aol.com>\n\n"
 		"DOOM is a registered trademark of id Software, Inc.\n"
 		"See the accompanying README for terms of use, distribution, etc.\n");
 

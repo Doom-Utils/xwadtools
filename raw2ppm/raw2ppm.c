@@ -1,6 +1,6 @@
 /************************************************************************/
-/*      Copyright (C) 1998, 1999 by Udo Munk (um@compuserve.com)	*/
-/*      Copyright (C) 1999 by Andre Majorel (amajorel@teaser.fr)        */
+/*      Copyright (C) 1998, 1999 by Udo Munk (munkudo@aol.com)	        */
+/*      Copyright (C) 1999-2001 by Andre Majorel (amajorel@teaser.fr)   */
 /*                                                                      */
 /*      Permission to use, copy, modify, and distribute this software   */
 /*      and its documentation for any purpose and without fee is        */
@@ -24,6 +24,9 @@
 
    UM 1999-11-17
      Use Andre's my_getopt instead depending on libc getopt.
+
+   AYM 2001-01-24
+     Added ROTT palette.
 */
 
 #include <unistd.h>
@@ -48,6 +51,7 @@ extern const unsigned char doom05_rgb[];
 extern const unsigned char *doom05t_rgb;
 extern const unsigned char heretic_rgb[];
 extern const unsigned char hexen_rgb[];
+extern const unsigned char rott_rgb[];
 extern const unsigned char strife_rgb[];
 
 static long offset     = 0;
@@ -65,7 +69,7 @@ void usage(char *name)
 	    name);
 	fprintf (stderr,
 "Options:\n"
-"  -c game  Palette (doom|doom04|doom04t|doom05|doom05t|heretic|hexen|strife)\n"
+"  -c game  Palette (doom|doom04|..04t|..05|..05t|heretic|hexen|rott|strife)\n"
 "  -h n     Set image height to n pixels. Default 64.\n"
 "  -I       Use Doom alpha interleaving scheme.\n"
 "  -n n     Read only n bytes of file. Default up to EOF.\n"
@@ -106,6 +110,8 @@ int main(int argc, char **argv)
 				pal = heretic_rgb;
 			else if (! strcmp(my_optarg, "hexen"))
 				pal = hexen_rgb;
+			else if (! strcmp(my_optarg, "rott"))
+				pal = rott_rgb;
 			else if (! strcmp(my_optarg, "strife"))
 				pal = strife_rgb;
 			else

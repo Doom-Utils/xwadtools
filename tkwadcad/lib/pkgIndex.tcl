@@ -8,4 +8,4 @@
 # script is sourced, the variable $dir must contain the
 # full path name of this file's directory.
 
-package ifneeded WCHelp 1.2 [list tclPkgSetup $dir WCHelp 1.2 {{help.tcl source {::WCHelp::About ::WCHelp::HelpKeys ::WCHelp::HelpMouse}}}]
+package ifneeded WCHelp 1.3 [list tclPkgSetup $dir WCHelp 1.3 {{help.tcl source {::WCHelp::About ::WCHelp::HelpKeys ::WCHelp::HelpMouse}}}]

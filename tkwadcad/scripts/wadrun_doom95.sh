@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# Copyright (C) 1998-2000 by Udo Munk (um@compuserve.com)
+# Copyright (C) 1998-2000 by Udo Munk (munkudo@aol.com)
 #
 # Permission to use, copy, modify, and distribute this software
 # and its documentation for any purpose and without fee is

@@ -18,7 +18,7 @@
    version 1.0.1 by Antony Suter <antony@werple.apana.org.au>
       these fixes and modifications (c) 1994 by Antony Suter.
 
-   version 2.0.0 by Udo Munk <um@compuserve.com>, see README for details.
+   version 2.0.0 by Udo Munk <munkudo@aol.com>, see README for details.
    version 2.0.1 fixes some big endian bugs
  */
 
@@ -84,7 +84,7 @@ int main(int argc, char **argv)
 	    printf("** IDBSP - id's node builder for DOOM, version 2.0.1 **\n"
 		"DOS port by Ron Rossbach (ej070@cleveland.freenet.edu)\n"
 		"Version 1.0.1 by Antony Suter <antony@werple.apana.org.au>\n"
-		"Version 2.0.x by Udo Munk <um@compuserve.com>\n\n"
+		"Version 2.0.x by Udo Munk <munkudo@aol.com>\n\n"
 		"DOOM is a registered trademark of id Software, Inc.\n"
 		"ID will not provide technical support for this program.\n"
 		"See the accompanying README for terms of use, distribution, etc.\n");

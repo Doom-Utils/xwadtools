@@ -1,7 +1,7 @@
 /* WADEXT.C extract a lump in raw format from a WAD file */
 /* Stefan Gustavson 1994 */
-/* Modified for the Cywin tools by Udo Munk <um@compuserve.com> 14/12/98 */
-/* Made output pipeable, Udo Munk <um@compuserve.com> 1999-06-11 */
+/* Modified for the Cywin tools by Udo Munk <munkudo@aol.com> 14/12/98 */
+/* Made output pipeable, Udo Munk <munkudo@aol.com> 1999-06-11 */
 
 #include <stdio.h>
 #include <string.h>

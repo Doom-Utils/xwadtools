@@ -4,7 +4,7 @@ Filename               : compland.wad
 
 Author                 : Udo Munk
 
-Email Address          : um@compuserve.com
+Email Address          : munkudo@aol.com
 
 Description            : A test level which shows what I can do with xwadtools.
 			 Scenery is a hightech environment and there are some

@@ -1,5 +1,5 @@
 /************************************************************************/
-/*      Copyright (C) 1998, 1999 by Udo Munk (um@compuserve.com)        */
+/*      Copyright (C) 1998, 1999 by Udo Munk (munkudo@aol.com)          */
 /*	Copyright (C) 1999 by Justin Fletcher                           */
 /*			   (doom@thevillage.ndirect.co.uk)              */
 /*                                                                      */

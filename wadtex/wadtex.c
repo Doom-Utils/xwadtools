@@ -1,6 +1,6 @@
 /************************************************************************/
-/*      Copyright (C) 1998, 1999 by Udo Munk (um@compuserve.com)        */
-/*      Copyright (C) 1998, 1999 by Andre Majorel (amajorel@teaser.fr)  */
+/*      Copyright (C) 1998, 1999 by Udo Munk (munkudo@aol.com)          */
+/*      Copyright (C) 1998, 2000 by Andre Majorel (amajorel@teaser.fr)  */
 /*                                                                      */
 /*      Permission to use, copy, modify, and distribute this software   */
 /*      and its documentation for any purpose and without fee is        */
@@ -48,14 +48,38 @@
  * 1.7 (UM 1999-08-23)
  * - Added option -i iwad, so that patches missing in a PWAD can be
  *   used from the IWAD, to complete a texture.
+ *
+ * 1.8 (AYM 2000-10-26)
+ * - Added option "-n" to just list the composition of textures without
+ *   saving them to file.
+ * - Now accepts any number (including zero) of pwads.
+ * - Changed the mode of textures/ from 0755 to 0777 on the theory that
+ *   limiting permissions is the job of umask, not of the application.
+ * - Fixed most of the counterintuitive quirks w.r.t. to the handling of
+ *   wads, notably the fact that the pwad had to have a PNAMES and
+ *   TEXTURE1. It's now possible to extract textures from a pwad that
+ *   replaces just patches like dmspac.zip.
+ * - Program name is now hard-coded because I felt it didn't make much
+ *   sense to have wadtex print "stupid version 1.8" on startup just
+ *   because someone renamed the binary to "stupid".
+ * - Removed the arbitrary limit of 1024x256 on image size by making the
+ *   texture buffer dynamically allocated. It's now possible to extract
+ *   all textures from the shareware Hacx wad, including "AD" that is
+ *   2048 wide. I just knew I had the C programmer's disease.
+ * - Error messages now printed through new err() function so that they
+ *   don't cut stdout messages in the middle when redirected.
+ * - Added option "-w" to extract only some of the textures.
  */
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdarg.h>
 #include <unistd.h>
 #include <string.h>
+#include <errno.h>
 #include <ctype.h>
 #include <sys/stat.h>
+#include <fnmatch.h>
 
 #include "sysdep.h"
 #include "strfunc.h"
@@ -63,10 +87,16 @@
 #include "lump_dir.h"
 #include "wadfile.h"
 
-#define VERSION "1.7"
+#define VERSION "1.8"
 
-#define TEX_BUF_WIDTH  1024
-#define TEX_BUF_HEIGHT 256
+/* item in a linked list of wads */
+typedef struct listitem_s {
+	struct listitem_s *next;
+	char *name;
+	wadfile_t *wf;
+} listitem_t;
+
+const char program[] = "wadtex";
 
 extern unsigned char doom_rgb[];
 extern unsigned char heretic_rgb[];
@@ -74,10 +104,13 @@ extern unsigned char hexen_rgb[];
 extern unsigned char strife_rgb[];
 static unsigned char *palette = doom_rgb;
 
-static unsigned char img_buf[TEX_BUF_WIDTH * TEX_BUF_HEIGHT];
+static unsigned char *img_buf;
+static size_t        img_buf_sz;
 
 static int preserve_case = 0;
 static int tflag;
+static int extract = 1;
+static char *wildcard;
 
 static enum {
 	OIT_IF_ALL,	/* Output the texture iff no patch is missing */
@@ -85,22 +118,34 @@ static enum {
 	OIT_ALWAYS	/* Always output the texture */
 } mpatch_policy = OIT_IF_ONE;
 
-static wadfile_t *iwad;
-static void *ipnames;
+void err(const char *fmt, ...)
+{
+	va_list list;
 
-void usage(char *name, char *option)
+	fflush(stdout);
+	fprintf(stderr, "%s: ", program);
+	va_start(list, fmt);
+	vfprintf(stderr, fmt, list);
+	va_end(list);
+	fputc('\n', stderr);
+}
+
+void usage(const char *option)
 {
 	if (option)
-		fprintf(stderr, "%s: Unkown option: %s\n", name, option);
+		err("Unkown option: %s", option);
 
-	fprintf(stderr, "Usage: %s [-tp] [-m|-M] [-c pal] [-i iwad] wadfile\n", name);
-	fprintf(stderr, "\t-t: also write text description of textures for wadgc\n");
-	fprintf(stderr, "\t-p: preserve case of generated files\n");
-	fprintf(stderr, "\t-m: don't output texture if patches are missing\n");
-	fprintf(stderr, "\t-M: output texture even if all patches are missing\n");
-	fprintf(stderr, "\t-c pal: use color palette pal, where pal can be\n");
-	fprintf(stderr, "\t        doom, heretic, hexen or strife\n");
-	fprintf(stderr, "\t-i iwad: use iwad to find patches not found in wadfile\n");
+	printf("Usage: %s [-c pal] [-i iwad] [-m|-M] [-npt] [-w expr] [wadfile ...]\n",
+	    program);
+	printf("\t-c pal: use color palette pal, where pal can be\n");
+	printf("\t        doom, heretic, hexen or strife\n");
+	printf("\t-i iwad: use iwad to find patches not found in wadfile\n");
+	printf("\t-m: don't output texture if patches are missing\n");
+	printf("\t-M: output texture even if all patches are missing\n");
+	printf("\t-n: list the composition without creating any PPM files\n");
+	printf("\t-p: preserve case of generated files\n");
+	printf("\t-t: also write text description of textures for wadgc\n");
+	printf("\t-w expr: only extract textures matching wildcard expr\n");
 	exit(1);
 }
 
@@ -127,7 +172,7 @@ int get_patch(wadfile_t *wf, FILE *fp, void *pnames, short width, short height,
 	p_num = *p1++;
 	swaplong(&p_num);
 	if (pnum > p_num) {
-	  fprintf(stderr, "texture uses patch %d, but PNAMES has %d patches only\n", pnum, p_num);
+	  err("texture uses patch %d, but PNAMES has %d patches only", pnum, p_num);
 	  exit(1);
 	}
 
@@ -192,13 +237,13 @@ void write_ppm(const char *name, short width, short height)
 	  strlcat(&fn[0], name);
 	strcat(&fn[0], ".ppm");
 	if ((fp = fopen(&fn[0], "wb")) == NULL) {
-		fprintf(stderr, "can't open %s for writing\n", &fn[0]);
+		err("can't open %s for writing", &fn[0]);
 		exit(1);
 	}
 
 	fprintf(fp, "P6\n");
-	fprintf(fp, "# CREATOR: wadtex Release %s\n", VERSION);
-	fprintf(fp, "%d %d\n", width, height);
+	fprintf(fp, "# CREATOR: %s Release %s\n", program, VERSION);
+	fprintf(fp, "%hd %hd\n", width, height);
 	fprintf(fp, "255\n");
 
 	for (j = 0; j < height; j++) {
@@ -210,11 +255,18 @@ void write_ppm(const char *name, short width, short height)
 		}
 	}
 
-	fclose(fp);
+	if (fclose(fp)) {
+		err("%s: %s", fn, strerror(errno));
+		exit(1);
+	};
 }
 
-void decompile(wadfile_t *wf, char *section, void *texture, void *pnames)
+/*
+ * returns 0 on success, non-zero if not all textures were properly extracted.
+ */
+int decompile(listitem_t *wadlist, char *section, void *texture, void *pnames)
 {
+	int	rc = 0;
 	int	i, j;
 	int	patches_found;
 	int	*p1;
@@ -228,11 +280,9 @@ void decompile(wadfile_t *wf, char *section, void *texture, void *pnames)
 	char	tname[9];
 	FILE	*fp = NULL;
 	char	fn[50];
-	int	actual_width;	/* dimensions after clipping to fit buffer */
-	int	actual_height;
 
 	/* initialize */
-	memset(&tname[0], 0, 9);
+	memset(&tname[0], 0, sizeof tname);
 
 	/* get number of textures in texture lump */
 	p1 = (int *) texture;
@@ -242,7 +292,7 @@ void decompile(wadfile_t *wf, char *section, void *texture, void *pnames)
 
 	/* loop over all textures */
 	for (i = 0; i < num_tex; i++) {
-
+ 
 		/* offset for texture in lump */
 		p1 = (int *) texture + i + 1;
 		off_tex = *p1;
@@ -251,6 +301,13 @@ void decompile(wadfile_t *wf, char *section, void *texture, void *pnames)
 
 		/* get name of texture */
 		strncpy(&tname[0], p2, 8);
+		{
+		  int n;
+		  for (n = 0; n < sizeof tname; n++)
+			  tname[n] = toupper(((unsigned char *) tname)[n]);
+		}
+		if (wildcard != NULL && fnmatch(wildcard, tname, 0) != 0)
+			continue;
 
 		/* get texture composition */
 		p3 = (short *) (p2 + 8);
@@ -268,16 +325,27 @@ void decompile(wadfile_t *wf, char *section, void *texture, void *pnames)
 		printf("  decompiling texture %s, %d patches, %dx%d\n",
 		  &tname[0], num_pat, width, height);
 
-		/* clip to fit in texture buffer */
-		actual_width  = width;
-		actual_height = height;
-		if (actual_width > TEX_BUF_WIDTH)
-		  actual_width = TEX_BUF_WIDTH;
-		if (actual_height > TEX_BUF_HEIGHT)
-		  actual_height = TEX_BUF_HEIGHT;
-		if (actual_width != width || actual_height != height)
-	  	  printf("    Warning: texture too large, clipped to %dx%d\n",
-		    actual_width, actual_height);
+		/* grow the texture buffer if necessary */
+		{
+		  unsigned long newsize = width * height;
+		  if ((size_t) newsize != newsize) {
+		    err("Texture too big, size_t overflow (%hd x %hd). Skipping.",
+			width, height);
+		    rc = 1;
+		    continue;
+		  }
+		  if (newsize > img_buf_sz) {
+		    unsigned char *newbuf = realloc(img_buf, newsize);
+		    if (newbuf == NULL) {
+		      err("Texture too big, not enough memory (%d x %d). Skipping.",
+			  width, height);
+		      rc = 1;
+		      continue;
+		    }
+		    img_buf_sz = newsize;
+		    img_buf    = newbuf;
+		  }
+		}
 
 		/* want text file too? */
 		if (tflag) {
@@ -288,21 +356,23 @@ void decompile(wadfile_t *wf, char *section, void *texture, void *pnames)
 		    strlcat(&fn[0], &tname[0]);
 		  strcat(&fn[0], ".wgc");
 		  if ((fp = fopen(&fn[0], "w")) == NULL) {
-		    fprintf(stderr, "can't open %s for writing\n", &fn[0]);
-			exit(1);
+		    err("can't open %s for writing", &fn[0]);
+		    exit(1);
 		  }
 		  fprintf(fp, "%s_START\n", section);
-		  fprintf(fp, "  %s %d %d %d\n", &tname[0], actual_width,
-		  	actual_height, num_pat);
+		  fprintf(fp, "  %s %d %d %d\n", &tname[0], width, height,
+		      num_pat);
 		}
 
 		/* clear pixel buffer */
-		memset(img_buf, 255, sizeof(img_buf));
+		memset(img_buf, 255, img_buf_sz);
 
 		/* loop over all patches for the texture */
 		patches_found = 0;
 		for (j = 0; j < num_pat; j++) {
 		  const char *patchname = NULL;
+		  listitem_t *wad;
+
 		  xoff = *p3++;
 		  swapint(&xoff);
 		  yoff = *p3++;
@@ -313,47 +383,51 @@ void decompile(wadfile_t *wf, char *section, void *texture, void *pnames)
 		  swapint(&pnum);
 		  dummy = *p3++;	/* always 1, stepdir? what is that?? */
 		  dummy = *p3++;	/* always 0 for colormap 0 */
-		  if (!get_patch(wf, fp, pnames, actual_width, actual_height,
-		  		xoff, yoff, pnum, &patchname))
-		    goto foundit;
-		  if (iwad) {
-			if (get_patch(iwad, fp, ipnames, actual_width,
-				actual_height, xoff, yoff, pnum, &patchname))
-		  	  printf("    Warning: patch \"%.8s\" is missing\n",
-					patchname);
-		  else
-foundit:
-		    patches_found++;
+		  for (wad = wadlist; wad != NULL; wad = wad->next) {
+		    if (get_patch(wad->wf, fp, pnames, width, height,
+			  xoff, yoff, pnum, &patchname) == 0) {
+		      patches_found++;
+		      break;
+		    }
 		  }
+		  if (wad == NULL)
+		    printf("    Warning: patch \"%.8s\" is missing\n",
+			patchname);
 		}
 
-		if (patches_found == 0 && mpatch_policy != OIT_ALWAYS)
-		  printf("    Warning: skipping void texture \"%s\".\n",
-			&tname[0]);
-		else if (patches_found < num_pat && mpatch_policy == OIT_IF_ALL)
-		  printf("    Warning: skipping incomplete texture \"%s\".\n",
-			&tname[0]);
+		if (patches_found == 0 && mpatch_policy != OIT_ALWAYS) {
+		  printf("    Warning: skipping void texture \"%s\".\n", tname);
+		  rc = 1;
+		}
+		else if (patches_found < num_pat && mpatch_policy == OIT_IF_ALL) {
+		  printf("    Warning: skipping incomplete texture \"%s\".\n", tname);
+		  rc = 1;
+		}
 		else
-		  write_ppm(&tname[0], actual_width, actual_height);
+		  if (extract)
+		    write_ppm(&tname[0], width, height);
 
 		/* terminate and close the text file too */
 		if (tflag) {
 		  fprintf(fp, "%s_END\n", section);
-		  fclose(fp);
+		  if (fclose(fp)) {
+		    err("%s: %s", fn, strerror(errno));
+		    exit(1);
+		  }
 		}
 	}
+	return rc;
 }
 
 int main(int argc, char **argv)
 {
-	wadfile_t	*wf;
-	char		*program;
-	void		*pnames;
-	void		*texture;
-	char		*s;
-
-	/* save program name for usage() */
-	program = *argv;
+	int        rc = 0;		/* Exit code */
+	char       *s;
+	listitem_t *wadlist;		/* Linked list of open wads */
+	char       *iwad = NULL;	/* Filename of the iwad (or NULL) */
+	void       *pnames;		/* The contents of the PNAMES lump */
+	void       *texture1;		/* The contents of the TEXTURE1 lump */
+	void       *texture2;		/* The contents of the TEXTURE2 lump */
 
 	printf("%s version %s\n\n", program, VERSION);
 
@@ -361,22 +435,6 @@ int main(int argc, char **argv)
 	while ((--argc > 0) && (**++argv == '-')) {
 	  for (s = *argv+1; *s != '\0'; s++) {
 		switch (*s) {
-		case 't':
-			tflag++;
-			break;
-
-		case 'p':
-			preserve_case++;
-			break;
-
-		case 'M':
-			mpatch_policy = OIT_ALWAYS;
-			break;
-
-		case 'm':
-			mpatch_policy = OIT_IF_ALL;
-			break;
-
 		case 'c':
 			argc--;
 			argv++;
@@ -389,67 +447,147 @@ int main(int argc, char **argv)
 			else if (!strcmp(*argv, "strife"))
 				palette = strife_rgb;
 			else
-				usage(program, NULL);
+				usage(NULL);
 			break;
 
 		case 'i':
 			argc--;
 			argv++;
-			iwad = open_wad(*argv);
+			iwad = *argv;
+			break;
+
+		case 'm':
+			mpatch_policy = OIT_IF_ALL;
+			break;
+
+		case 'M':
+			mpatch_policy = OIT_ALWAYS;
+			break;
+
+		case 'n':
+			extract = 0;
+			break;
+
+		case 'p':
+			preserve_case++;
+			break;
+
+		case 't':
+			tflag++;
+			break;
+
+		case 'w':
+			argc--;
+			argv++;
+			wildcard = *argv;
+			{
+			  char *p;
+			  for (p = wildcard; *p != '\0'; p++)
+				  *p = toupper(*((unsigned char *) p));
+			}
 			break;
 
 		default:
-			usage(program, --s);
+			usage(--s);
 		}
 	  }
 	}
 
-	/* have one argument left? */
-	if (argc != 1)
-		usage(program, NULL);
-
-	/* open WAD file */
-	wf = open_wad(*argv);
-
-	/* we need lumps PNAMES and TEXTURE1 at least */
-	if ((pnames = get_lump_by_name(wf, "PNAMES")) == (void *)0) {
-		fprintf(stderr, "can't find lump PNAMES\n");
-		exit(1);
-	}
-	printf("Got PNAMES lump...\n");
-	if ((texture = get_lump_by_name(wf, "TEXTURE1")) == (void *)0) {
-		fprintf(stderr, "can't find lump TEXTURE1\n");
-		exit(1);
+	if (argc == 0 && iwad == NULL) {
+	  err("No wad given");
+	  exit(1);
 	}
 
-	/* if we got an IWAD, we want PNAMES from that one too */
-	if (iwad) {
-	  if ((ipnames = get_lump_by_name(iwad, "PNAMES")) == (void *)0) {
-		fprintf(stderr, "can't find lump PNAMES in IWAD\n");
-		exit(1);
+	/* build list of wads, last pwad first, iwad last */
+	wadlist = NULL;
+	if (iwad != NULL) {
+	  wadlist = malloc(sizeof *wadlist);
+	  if (wadlist == NULL) {
+	    err("Not enough memory");
+	    exit(1);
+	  }
+	  wadlist->name = iwad;
+	  wadlist->wf   = open_wad(iwad);
+	  wadlist->next = NULL;
+	}
+	for (; argc > 0; argv++, argc--) {
+	  listitem_t *newitem = malloc(sizeof *newitem);
+	  if (newitem == NULL) {
+	    err("Not enough memory");
+	    exit(1);
+	  }
+	  /* insert at the beginning of the list */
+	  newitem->name = *argv;
+	  newitem->wf   = open_wad(*argv);
+	  newitem->next = wadlist;
+	  wadlist = newitem;
+	}
+
+	/* locate PNAMES, TEXTURE1 and TEXTURE2 */
+	pnames   = NULL;
+	texture1 = NULL;
+	texture2 = NULL;
+	{
+	  listitem_t *wad;
+
+	  for (wad = wadlist; wad != NULL; wad = wad->next) {
+	    if (pnames == NULL)
+	      pnames = get_lump_by_name(wad->wf, "PNAMES");
+	    if (texture1 == NULL)
+	      texture1 = get_lump_by_name(wad->wf, "TEXTURE1");
+	    if (texture2 == NULL)
+	      texture2 = get_lump_by_name(wad->wf, "TEXTURE2");
 	  }
 	}
-
+	if (pnames == NULL) {
+		err("No PNAMES lump found");
+		exit(1);
+	}
+	if (texture1 == NULL) {
+		err("No TEXTURE1 lump found");
+		exit(1);
+	}
+	    
 	/*
 	 * make textures directory, ignore errors, we'll handle that later
 	 * when we try to write the graphics files into it
 	 */
-	mkdir("textures", 0755);
+	if (extract || tflag)
+		mkdir("textures", 0777);
 
 	/* decompile the textures */
 	printf("Got TEXTURE1 lump, decompiling...\n");
-	decompile(wf, "TEXTURE1", texture, pnames);
-
-	/* free TEXTURE1 and lets see if we can get TEXTURE2 too */
-	free(texture);
-	if ((texture = get_lump_by_name(wf, "TEXTURE2")) != (void *)0) {
-		printf("Got TEXTURE2 lump, decompiling...\n");
-		decompile(wf, "TEXTURE2", texture, pnames);
-		free(texture);
+	{
+	  int r = decompile(wadlist, "TEXTURE1", texture1, pnames);
+	  if (r > rc)
+		  rc = r;
+	  if (texture2 != NULL) {
+		  printf("Got TEXTURE2 lump, decompiling...\n");
+		  r = decompile(wadlist, "TEXTURE2", texture2, pnames);
+		  if (r > rc)
+			  rc = r;
+	  }
 	}
 
 	/* clean up and done */
-	free(pnames);
-	close_wad(wf);
-	return 0;
+	if (pnames != NULL)
+	  free(pnames);
+	if (texture1 != NULL)
+	  free(texture1);
+	if (texture2 != NULL)
+	  free(texture2);
+	{
+	  listitem_t *wad, *next;
+
+	  for (wad = wadlist; wad != NULL;) {
+	    next = wad->next;
+	    if (wad->wf != NULL)
+	      close_wad(wad->wf);
+	    free(wad);
+	    wad = next;
+	  }
+	}
+	if (img_buf != NULL)
+	  free(img_buf);
+	return rc;
 }

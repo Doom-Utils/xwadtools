@@ -7,4 +7,4 @@ is support for dumb.dev included only anyway and under Cygwin bash $TERM
 is set to cygwin. Instead of hacking new device files we just use the
 provided dumb one, good enough.
 
-Udo Munk	(um@compuserve.com)
+Udo Munk	(munkudo@aol.com)

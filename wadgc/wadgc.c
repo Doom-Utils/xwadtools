@@ -4,7 +4,7 @@
    textures and floortiles and put them in a PWAD file
    for inclusion in custom levels.
    Author: Stefan Gustavson (stefang@isy.liu.se) 1994
-   Modified by Udo Munk (um@compuserve.com) 1998 - 2000
+   Modified by Udo Munk (munkudo@aol.com) 1998 - 2000
 */
 
 #include <stdio.h>

@@ -5,8 +5,8 @@
      Modified for PC by Gerhard Karnik (g.karnik@att.com) 3/29/94
      Enhancements (V1.2) by Gerhard Karnik (g.karnik@att.com) 5/12/94
 
-     Ported back to UNIX by Udo Munk (um@compuserve.com) 5/2/98
-     And ported to Cygwin by Udo Munk <um@compuserve.com> 12/14/98
+     Ported back to UNIX by Udo Munk (munkudo@aol.com) 5/2/98
+     And ported to Cygwin by Udo Munk (munkudo@aol.com) 12/14/98
      Applied a bug fix reported by Oliver Kraus (olikraus@yahoo.com) 1/23/2000
 
 Description

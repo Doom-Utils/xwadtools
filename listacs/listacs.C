@@ -6,7 +6,7 @@
 // of warnings.
 //
 // 28 November 1999
-// Udo Munk <um@compuserve.com>
+// Udo Munk <munkudo@aol.com>
 //
 
 #include <iostream.h>

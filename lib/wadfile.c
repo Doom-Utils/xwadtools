@@ -1,5 +1,5 @@
 /************************************************************************/
-/*      Copyright (C) 1998, 1999, 2000 by Udo Munk (um@compuserve.com)  */
+/*      Copyright (C) 1998, 1999, 2000 by Udo Munk (munkudo@aol.com)    */
 /*	Copyright (C) 1999 by Andre Majorel (amajorel@teaser.fr)        */
 /*                                                                      */
 /*      Permission to use, copy, modify, and distribute this software   */

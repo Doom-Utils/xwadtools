@@ -1,5 +1,5 @@
 /************************************************************************/
-/*      Copyright (C) 1998, 1999 by Udo Munk (um@compuserve.com)        */
+/*      Copyright (C) 1998, 1999 by Udo Munk (munkudo@aol.com)          */
 /*	Copyright (C) 1998 by TeamTNT (www.teamtnt.com)                 */
 /*                                                                      */
 /*      Permission to use, copy, modify, and distribute this software   */

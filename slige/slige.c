@@ -2,13 +2,13 @@
 
    SLIGE - a random-level generator for DOOM
            by David M. Chess
-           dmchess@aol.com         http://www.davidchess.com/
+           chess@theogeny.com      http://www.davidchess.com/
                                    http://users.aol.com/dmchess/
-           chess@watson.ibm.com    http://www.research.ibm.com/people/c/chess/
+           chess@us.ibm.com        http://www.research.ibm.com/people/c/chess/
 
            http://www.doomworld.com/slige/
 
-   January, 2000
+   August, 2000
 
    This source code is made available to the world in general,
    with the following requests:
@@ -29,8 +29,9 @@
      any warnings (unless you use -O3 in DJGPP, in which case you'll
      get some warnings that don't matter).  It should also compile
      and work under Linux gcc, but I've never tried it myself; if you
-     do, write and tell me about it!  Anyone wanna do a Mac port?
-     I'd be glad to give advice...
+     do, write and tell me about it!  It should also compile for the
+     RISC OS with the usual C compiler, thanks to Justin Fletcher.
+     Anyone wanna do a Mac port?  I'd be glad to give advice...
 
    - If you make various changes and improvements to it and release
      a modified version yourself:
@@ -56,27 +57,24 @@
    DC
 
 */
-#define SOURCE_SERIAL (485)
+#define SOURCE_SERIAL (490)
 /*
 
-   New stuff (since 474): first try at random DM starts/weapons, fix rare
-     trap in falling core generation, add -nosemo switch, fix(?) bug from
-     rellwood that could get you trapped on a step-dias, -bimo/!/we switches,
-     no jambs without doors, remove locked gates in DM (per Jim Kneuper),
-     make extra-huge more likely in DM.
+   New stuff (since 485): -huge switch, fixed gate-to-gate-to-arena bug
+     (not as elegantly as I could have!), RISCOS source mods from JF,
+     -fstart -ffstart -fend -ffend switches, getenv() var for cfg filename,
+     pillar gates, attempt at SPARC compatibility (tx to O. Kraus).
+
 
    Stuff to do:
-     BUG: if there's a gate leading to the room containing the gate leading
-       to the arena, that first-mentioned gate ?sometimes doesn't work;
-       see slige (475) -e2m1 -config blue.cfg -arena -seed 1098402211.
-       (Looks like the in-between gate has no sector tag and no TP exit in it.)
      BUG: very rarely, a slige -dm level will still not have four DM starts.
        Try more rooms than just first and last, and/or use a smaller "width"
        to allow putting a DM start on a pickable object?
-     fold in the RISC OS mods from Justin Fletcher,
-       SPARC mods from Oliver Kraus
      fold in Rob Ellwood's ceiling-effect and split_linedef mods,
        when he has a version he likes enough
+     simple DM suggestion from some guy: more star-shaped than usual,
+       with a big weapon in the middle.
+     Wolfenstein-style secret levels (and switch)
      armor-damage model is wrong: green armor only absorbs 1/3 of
        damage taken; only blue armor absorbs 1/2.  Fix!
      BUG: when trigger_box() calls point_sector(), it should check
@@ -84,7 +82,7 @@
      more lamps/lights when night and/or dim?
      very-dark secret-level flavor?
      level flavor like "always big floordeltas"
-     implement the "favorite monster" style of secret level
+     implement the "favorite monster" style of secret level (and switch)
      simple multi-level "ramps" in patios, for variety?
      sometimes monsters can be so tightly packed into a small room
        that none can move until you kill one.  Detect/avoid somehow.
@@ -134,17 +132,17 @@
      BUG: Sometimes a room has two different gates, both in the midtile.
        Well, you know what I mean...  This causes trouble.  Fixed?
        Nope; still can happen with a gate to an arena.  Is that OK?
+       Nope; it can result in unfinishable levels.  Fixed now, I think!
      More exit-to-secret-level secret kinds.
      More special things about secret levels.  A black-and-starry
        theme using custom patches?
      For co-op, put all the weapons that we assume the player has
-       into the start room (with multiplayer-only bit set).
-     For DM, put a DM start (with a multiplayer-only weapon nearly)
-       in every Nth room?  This conflicts with the above; maybe -dms?
+       into the start room (with multiplayer-only bit set).  Conflicts
+       with deathmatch stuff, so only if not -dm?  Or have -coop switch?
      It would be nice to not give up on a bath whenever a monster might
        get stuck in the edge.  Try *moving* the monsters, or the edges
        of the bath, instead?
-     Make arenas even more interesting.  powerups/armor?  More scenarii!
+     Make arenas more interesting.  powerups/armor?  More scenarii!  Harder!!
      dead-gardens flavor
      More interesting sorts of GATE_GOAL-locked links (like just
        a grated door).  Also have the gate be one-way if the locked
@@ -162,6 +160,7 @@
        accumulation?  (Doesn't seem to be a problem?)
      open lifts sometimes activate at the top also
      sometimes blaze autodoors / lifts
+     switch-activated lifts of various kinds
      monsters/pickables in sidesectors of an open link
      maybe have a minimum-link-width thing (used only on non-door links,
        maybe?), usually zero, and sometimes (often when bigification is
@@ -176,9 +175,6 @@
      I suspect it's possible for a sequence of new-style pillars to
        block off the center of the room (thus perhaps making it impossible
        to get a key).  Implement fix if so.
-     probably don't want to put triggerboxes around candles, eh?  They
-       aren't *really* pickable, and the player is unlikely to go around
-       stepping on all of them for any reason.  Not a big deal.
      make the sunrooms and nukage-city effects less correlated (if nukage
        was forced, have sky lower-prob, and vice-versa)
      Other patio things:
@@ -205,7 +201,7 @@
        coalignable textures come together at a base-ceiling boundary?
        that's about the only place that y-offset problems remain
      some cool light-effect around pillars (new and old styles)
-     find all monster-width assumptions (tough!), generalize or whtever
+     find all monster-width assumptions (tough!), generalize or whatever
      merge secret-closet and plaque-closet code sections (diffs: plaques
        are recessed, and are sometimes not openable at all)
      way-cool recessed windows style
@@ -239,10 +235,8 @@
        take pickable.  also in the boss' room is the key/switch you need.
        have to make sure player has enough ammo/health first.  details?
      put a single window-grating in the center, not two half-invisible
-       ones on the sides
+       ones on the sides (done?)
      don't watermark the first room of non-first levels in a PWAD?
-     keep them TLITE ceilings on door-recess sectors (and stuff);
-       looks way cool!  (CEILING+LIGHT, now)
      autodoors and lifts are sort of boring currently (only 24-deep rec's).
        make them more interesting?
      plain-sky ceilings don't work, because if a nearby room has a
@@ -258,9 +252,6 @@
        the lip of the outer sides of the skycloset walls isn't necessary;
        would look best, I think, with a lip on the near side, and the
        other sides just ending blap like they used to.
-     deathmatch starts, somehow?  Maybe deathmatches
-       in each goal-end room, or something?  As well as the start.
-       Other DM-friendly stuff, -deathmatch switch.
      sometimes use a light-wall texture on walls (especially flanking
        doors/links?)  But there aren't that many of them.
      have a "minwall" in config, to usually forbid those skinny little
@@ -312,9 +303,7 @@
      on the other hand, it'd be logical if the door-types at
        either end of a link were the same.  That means having
        it in the link, not the room's style.  Sensible?  On
-       the third hand, they needn't always be the same, and
-       for that matter couldn't you have an alcove with a door
-       at one end, and none at the other?
+       the third hand, they needn't always be the same, eh?
      allow different-size openings at either end of a link?
        (tapered stair-walls, e.g.)
      have special deliverers for weapons if c->weapons_are_special
@@ -340,22 +329,60 @@
        embellishment?
      or another way, it's too easy now, just running through rooms
        killing things.  make it harder!
+     one big thing we're missing is to involve the outdoors more;
+       multiple rooms overlooking the same courtyard, "bay windows"
+       out over pools and gunkage and stuff, etc, etc, etc.
 
 */
+
+/* Define various compiler and filesystem features here */
+
+/* Define BIGEND for big-endian (i.e. not Intel 80x8x) systems */
+#ifdef __sparc
+#ifndef BIGEND
+#define BIGEND
+#endif /* BIGEND */
+#endif /* __sparc */
+
+/* If your compiler/architecture does not support unaligned data in structures
+   then you'll have to turn this on; at present ARM compilers are the only
+   ones known to have this problem.  (You should also check the places
+   where this symbol is tested, to make sure the workarounds used for
+   RISCOS are also correct for your platform.)           */
+#if defined(RISCOS)
+#define ALIGN_STRUCTS
+#endif
+
+/* Define this if your standard library does not include strcasecmp */
+#if defined(RISCOS)
+#define NO_STRCASECMP
+#endif
+
+/* Define this if your standard library does not include strdup */
+#if defined(RISCOS)
+#define NO_STRDUP
+#endif
+
+/* If you use different extension seperators, declare them here */
+#ifdef RISCOS
+#define EXT_SEP "/"
+#else
+#define EXT_SEP "."
+#endif
+
+/* Name of the getenv() variable to look in for a different default
+   configuration-file name. */
+#ifdef RISCOS
+#define SLIGE_CONFIG "Slige$ConfigFile" /* In keeping with rest of the OS */
+#else
+#define SLIGE_CONFIG "SLIGECONFIG"
+#endif
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
 #include <assert.h>
-
-#include "strfunc.h"
-
-#ifdef __sparc 
-#ifndef BIGEND
-#define BIGEND
-#endif /* BIGEND */
-#endif /* __sparc */
 
 #ifdef _MSC_VER
 #define RAND_SUCKS
@@ -374,12 +401,51 @@ typedef unsigned char boolean;
 
 typedef unsigned char byte;
 
-/*
 #ifndef USE_STRICMP
 #define stricmp(x,y) strcasecmp(x,y)
 #define strnicmp(x,y,n) strncasecmp(x,y,n)
 #endif
-*/
+
+#ifdef NO_STRCASECMP
+#include <ctype.h>
+/* These routines from Justin Fletcher, for the RISCOS port */
+int strcasecmp (const char *a, const char *b)
+{
+    const char *p = a, *q = b;
+    for (p = a, q = b; *p && *q; p++, q++)
+    {
+      int diff = tolower(*p) - tolower(*q);
+      if (diff) return diff;
+    }
+    if (*p) return 1;       /* p was longer than q */
+    if (*q) return -1;      /* p was shorter than q */
+    return 0;               /* Exact match */
+}
+
+int strncasecmp (const char *a, const char *b, int n)
+{
+    const char *p = a, *q = b;
+
+    for (p = a, q = b; /*NOTHING*/; p++, q++)
+    {
+      int diff;
+      if (p == a + n) return 0;     /*   Match up to n characters */
+      if (!(*p && *q)) return *p - *q;
+      diff = tolower(*p) - tolower(*q);
+      if (diff) return diff;
+    }
+    /*NOTREACHED*/
+}
+#endif
+
+#ifdef NO_STRDUP
+char *strdup(char *str)
+{
+  char *newstr=malloc(strlen(str)+1);
+  if (newstr==NULL) return NULL;
+  else return strcpy(newstr,str);
+}
+#endif
 
 #ifdef OK_TO_USE_REAL_MONSTER_WIDTH
 #define MONSTER_WIDTH(m) (m->width)
@@ -1046,6 +1112,11 @@ typedef struct s_config {
   char *configdata;    /* Contents of the configuration file */
   char *outfile;       /* Name of the output file */
   boolean cwadonly;    /* Do we want just the customization lumps? */
+  boolean fcontrol;
+  boolean fstart;
+  boolean ffstart;
+  boolean ffend;
+  boolean fend;
   unsigned int ranseed;
   unsigned char themecount;   /* How many (non-secret) themes there are */
   unsigned char sthemecount;  /* How many secret themes there are */
@@ -1107,6 +1178,7 @@ typedef struct s_config {
   boolean window_airshafts;
   int homogenize_monsters;  /* How likely to have all room monsters == */
   int minlight;     /* How dark is dark? */
+  int minhuge;
   /* These are *not* actually static */
   int episode, mission, map;  /* What map/mission we're on now. */
   boolean last_mission;       /* This the last one we're doing? */
@@ -1391,7 +1463,6 @@ void swapint(unsigned int *l)
 
 #endif
 
-
 int main(int argc, char *argv[]) {
 
   /* A stubby but functional main() */
@@ -1402,8 +1473,12 @@ int main(int argc, char *argv[]) {
   int i;
   dumphandle dh;
 
-  printf("SLIGE (build %d)   -- by Dave Chess, dmchess@aol.com\n\n",
-           SOURCE_SERIAL);
+  printf("SLIGE (build %d)   -- by Dave Chess, chess@theogeny.com\n"
+#ifdef RISCOS
+/* Porting credit / blame */
+         "Ported to RISC OS by Justin Fletcher, doom@movspclr.co.uk\n"
+#endif
+         "\n", SOURCE_SERIAL);
 
   ThisConfig = get_config(argc,argv);
   if (ThisConfig==NULL) {
@@ -1630,10 +1705,14 @@ void record_music(dumphandle dh,musheader *mh,byte *buf,char *s,config *c)
 /* Make the special SLINFO lmp, containing whatever we like */
 void make_slinfo(dumphandle dh, config *c)
 {
+#ifdef RISCOS
+  static char slinfo[100]; /* sprintf takes a char *, byte is unsigned */
+#else
   static byte slinfo[100];
+#endif
 
   sprintf(slinfo,"SLIGE (%d) %d",SOURCE_SERIAL,c->ranseed);
-  RegisterLmp(dh,"SLINFO",strlen(slinfo)+1);
+  RegisterLmp(dh,"SLINFO",(unsigned int)strlen(slinfo)+1);
   fwrite(slinfo,strlen(slinfo)+1,1,dh->f);
 
 }  /* end make_slinfo() */
@@ -1763,7 +1842,11 @@ void DumpLevel(dumphandle dh,config *c,level *l,int episode,int mission,int map)
     swapshort((unsigned short *)&(rawthing.angle));
     swapshort((unsigned short *)&(rawthing.type));
     swapshort((unsigned short *)&(rawthing.options));
+#ifdef ALIGN_STRUCTS
+    fwrite(&rawthing,sizeof(rawthing)-2,1,dh->f);
+#else
     fwrite(&rawthing,sizeof(rawthing),1,dh->f);
+#endif
   }
 
   /* and all the linedefs */
@@ -1790,7 +1873,11 @@ void DumpLevel(dumphandle dh,config *c,level *l,int episode,int mission,int map)
     swapshort((unsigned short *)&(rawlinedef.tag));
     swapshort((unsigned short *)&(rawlinedef.right));
     swapshort((unsigned short *)&(rawlinedef.left));
+#ifdef ALIGN_STRUCTS
+    fwrite(&rawlinedef,sizeof(rawlinedef)-2,1,dh->f);
+#else
     fwrite(&rawlinedef,sizeof(rawlinedef),1,dh->f);
+#endif
   }
 
   /* and all the sidedefs */
@@ -1810,7 +1897,11 @@ void DumpLevel(dumphandle dh,config *c,level *l,int episode,int mission,int map)
     swapshort((unsigned short *)&(rawsidedef.x_offset));
     swapshort((unsigned short *)&(rawsidedef.y_offset));
     swapshort((unsigned short *)&(rawsidedef.sector));
+#ifdef ALIGN_STRUCTS
+    fwrite(&rawsidedef,sizeof(rawsidedef)-2,1,dh->f);
+#else
     fwrite(&rawsidedef,sizeof(rawsidedef),1,dh->f);
+#endif
   }
 
   /* and all the vertexes */
@@ -1841,7 +1932,11 @@ void DumpLevel(dumphandle dh,config *c,level *l,int episode,int mission,int map)
     swapshort((unsigned short *)&(rawsector.light_level));
     swapshort((unsigned short *)&(rawsector.special));
     swapshort((unsigned short *)&(rawsector.tag));
+#ifdef ALIGN_STRUCTS
+    fwrite(&rawsector,sizeof(rawsector)-2,1,dh->f);
+#else
     fwrite(&rawsector,sizeof(rawsector),1,dh->f);
+#endif
   }
 
 }  /* end DumpLevel */
@@ -2660,12 +2755,12 @@ linedef *flip_linedef(linedef *ld)
 
 void Usage0(void)
 {
-  printf("Usage: slige [switches] [filename.ext] [switches]\n\n");
+  printf("Usage: slige [switches] [filename" EXT_SEP "ext] [switches]\n\n");
   printf("Produces a (nodeless) PWAD file that can be completed by a\n");
   printf("nodebuilder such as BSP, and then played using the -file\n");
   printf("function of DOOM (or DOOM2).  The default output file is\n");
-  printf("SLIGE.OUT.  Gets all sorts of data and options and stuff from\n");
-  printf("SLIGE.CFG (or other file given with the -config switch.)\n\n");
+  printf("SLIGE" EXT_SEP "OUT.  Gets all sorts of data and options and stuff from\n");
+  printf("SLIGE" EXT_SEP "CFG (or other file given with the -config switch.)\n\n");
 }
 
 void Usage(void)
@@ -2770,7 +2865,10 @@ config *get_config(int argc, char *argv[])
   answer = (config *)malloc(sizeof(*answer));
 
   /* Set various defaults and stuff */
-  answer->configfile = strdup("SLIGE.CFG");  /* So's we kin free() it */
+  if ( (answer->configfile = getenv(SLIGE_CONFIG)) == NULL)
+    answer->configfile = strdup("slige" EXT_SEP "cfg"); /* So's we kin free() it */
+  else
+    answer->configfile = strdup(answer->configfile);
   answer->outfile = NULL;
   answer->cwadonly = FALSE;
   srand((unsigned int)time(NULL));
@@ -2814,8 +2912,14 @@ config *get_config(int argc, char *argv[])
   answer->produce_null_lmps = FALSE;
   answer->do_seclevels = TRUE;
   answer->force_secret = FALSE;
+  answer->fcontrol = FALSE;
+  answer->fstart = FALSE;
+  answer->ffstart = FALSE;
+  answer->ffend = FALSE;
+  answer->fend = FALSE;
   answer->map = 0;
   answer->minlight = 115;
+  answer->minhuge = 1;
   /* Is this the right place for all these? */
   answer->immediate_monsters = rollpercent(10);
   answer->p_hole_ends_level = 0;
@@ -2898,7 +3002,7 @@ config *get_config(int argc, char *argv[])
 
   /* Then we set some final defaulty stuff */
   if (answer->outfile==NULL)
-    answer->outfile = strdup("SLIGE.OUT");   /* So we can free it */
+    answer->outfile = strdup("slige" EXT_SEP "out");   /* So we can free it */
   if (answer->error_texture==NULL)   /* Use REDWALL if none specified */
     answer->error_texture = find_texture(answer,"REDWALL");  /* OK default? */
   if (answer->sky_flat==NULL)
@@ -2907,6 +3011,12 @@ config *get_config(int argc, char *argv[])
     answer->water_flat = find_flat(answer,"FWATER1");  /* Default */
   if (answer->null_texture==NULL)
     answer->null_texture = find_texture(answer,"-");  /* Always, really... */
+  if (answer->fcontrol==FALSE) {  /* The normal DOOM engine requires... */
+    answer->fstart = FALSE;
+    answer->ffstart = TRUE;
+    answer->ffend = TRUE;
+    answer->fend = TRUE;
+  }
 
   /* And figure some resultants */
   for (m=answer->genus_anchor;m;m=m->next) {   /* Apply macho factors */
@@ -3005,12 +3115,13 @@ boolean intersects(int XA, int YA, int XB, int YB,
 
   bottom = (XB-XA)*(YD-YC)-(YB-YA)*(XD-XC);
   r_top = (YA-YC)*(XD-XC)-(XA-XC)*(YD-YC);
-  if (bottom==0)   /* parallel */
+  if (bottom==0) {   /* parallel */
     if (r_top!=0) {
       return 0;   /* proper parallel */
     } else {                  /* colinear; hard case */
       return 0;   /* This is wrong, of course!  But rarely... */
     }
+  }
   s_top = (YA-YC)*(XB-XA)-(XA-XC)*(YB-YA);
   r = (double)r_top / (double)bottom;
   s = (double)s_top / (double)bottom;
@@ -3488,6 +3599,7 @@ boolean enough_quest(level *l,sector *s,quest *ThisQuest,config *c)
   /* Perhaps an arena? */
   if ( (ThisQuest->goal==LEVEL_END_GOAL) &&
        (s!=l->first_room) &&
+       (!s->gate) &&        /* 'cause we're lazy */
        (!c->do_dm) &&
        ( (l->sl_tag!=0) || !need_secret_level(c) ) &&
        ( (l->sl_tag==0) || l->sl_done ) &&
@@ -3575,8 +3687,22 @@ boolean do_switches(int argc,char *argv[],config *c,char *s,int conly)
         c->big_monsters = TRUE;
       } else if (!stricmp(argv[i],"-biwe")) {
         c->big_weapons = TRUE;
+      } else if (!stricmp(argv[i],"-huge")) {
+        c->minhuge = 2;
       } else if (!stricmp(argv[i],"-xsecret")) {
         c->force_secret = TRUE;
+      } else if (!stricmp(argv[i],"-fstart")) {
+        c->fcontrol = TRUE;
+        c->fstart = TRUE;
+      } else if (!stricmp(argv[i],"-ffstart")) {
+        c->fcontrol = TRUE;
+        c->ffstart = TRUE;
+      } else if (!stricmp(argv[i],"-fend")) {
+        c->fcontrol = TRUE;
+        c->fend = TRUE;
+      } else if (!stricmp(argv[i],"-ffend")) {
+        c->fcontrol = TRUE;
+        c->ffend = TRUE;
       } else if (!stricmp(argv[i],"-gross")) {
         c->gamemask &= ~DOOMC_BIT;
       } else if (!stricmp(argv[i],"-music")) {
@@ -3954,13 +4080,14 @@ void paint_room(level *l,sector *s,style *ThisStyle,config *c)
   for (ld=l->linedef_anchor;ld;ld=ld->next) {
     if (ld->right)
       if (ld->right->sector==s)
-        if (ld->right->isBoundary)
+        if (ld->right->isBoundary) {
           if (ld->left==NULL) {
             ld->right->middle_texture = ThisStyle->wall0;
           } else {
             patch_upper(ld,ThisStyle->wall0,c);
             patch_lower(ld,ThisStyle->kickplate,c);  /* Or stepfront? */
           }
+        }
   }
   s->light_level = ThisStyle->roomlight0;
 
@@ -4149,10 +4276,11 @@ void Usage2(void)
 {
   Usage0();
   printf("Switches that do something at the moment:\n");
-  printf("  -rooms [n]   -seed [nnnnnn]  -outfile [filename.ext]\n");
+  printf("  -rooms [n]   -seed [nnnnnn]  -outfile [filename" EXT_SEP "ext]\n");
   printf("  -restrict [012C] -ExMx -MAPxx -doom1 -doom2 -levels <x> \n");
   printf("  -minlight <x>  -music  -macho <nn> -noslinfo -nocustom -cwad \n");
-  printf("  -arena  -nulls -nosemo -biwe -bimo -bimo! \n");
+  printf("  -arena  -nulls -nosemo -biwe -bimo -bimo! -huge\n");
+  printf("  -fstart -ffstart -fend -ffend\n");
 #ifdef SWITCHES_IN_CONFIG_FILES
   printf("(-outfile being most useful in the config file; on the\n");
   printf("command line you don't need the switch.)\n");
@@ -4546,14 +4674,14 @@ void dump_texture_lmp(dumphandle dh,texture_lmp *tl)
   tbuf = buf;
 
   /* Write in the count */
-  *(int *)tbuf = texturecount;  
+  *(int *)tbuf = texturecount;
   swapint((unsigned int *)tbuf);
   tbuf += sizeof(int);
 
   /* Now traverse the textures again, and make the index */
   isize = 4 + 4 * texturecount;
   for (ct=tl->custom_texture_anchor;ct;ct=ct->next) {
-    *(int *)tbuf = isize;  
+    *(int *)tbuf = isize;
     swapint((unsigned int *)tbuf);
     tbuf += sizeof(int);
     isize += 22;    /* Four bytes index, 22 bytes structure */
@@ -4786,7 +4914,10 @@ void record_custom_flats(dumphandle dh, config *c, boolean even_unused)
 
   if (even_unused || find_flat(c,"SLGRASS1")->used) {
 
-    if (!started) RegisterLmp(dh,"FF_START",0);
+    if (!started) {
+      if (c->fstart) RegisterLmp(dh,"F_START",0);
+      if (c->ffstart) RegisterLmp(dh,"FF_START",0);
+    }
     started = TRUE;
     announce(VERBOSE,"SLGRASS1");
 
@@ -4824,7 +4955,10 @@ void record_custom_flats(dumphandle dh, config *c, boolean even_unused)
 
   if (even_unused || find_flat(c,"SLSPARKS")->used) {
 
-    if (!started) RegisterLmp(dh,"FF_START",0);
+    if (!started) {
+      if (c->fstart) RegisterLmp(dh,"F_START",0);
+      if (c->ffstart) RegisterLmp(dh,"FF_START",0);
+    }
     started = TRUE;
     announce(VERBOSE,"SLSPARKS");
     memset(fbuf,0,4096);
@@ -4836,7 +4970,10 @@ void record_custom_flats(dumphandle dh, config *c, boolean even_unused)
 
   if (even_unused || find_flat(c,"SLGATE1")->used) {
 
-    if (!started) RegisterLmp(dh,"FF_START",0);
+    if (!started) {
+      if (c->fstart) RegisterLmp(dh,"F_START",0);
+      if (c->ffstart) RegisterLmp(dh,"FF_START",0);
+    }
     started = TRUE;
     announce(VERBOSE,"SLGATE1");
 
@@ -4861,7 +4998,10 @@ void record_custom_flats(dumphandle dh, config *c, boolean even_unused)
 
   if (even_unused || find_flat(c,"SLLITE1")->used) {
 
-    if (!started) RegisterLmp(dh,"FF_START",0);
+    if (!started) {
+      if (c->fstart) RegisterLmp(dh,"F_START",0);
+      if (c->ffstart) RegisterLmp(dh,"FF_START",0);
+    }
     started = TRUE;
     announce(VERBOSE,"SLLITE1");
 
@@ -4891,7 +5031,10 @@ void record_custom_flats(dumphandle dh, config *c, boolean even_unused)
 
   if (even_unused || find_flat(c,"SLFLAT01")->used) {
 
-    if (!started) RegisterLmp(dh,"FF_START",0);
+    if (!started) {
+      if (c->fstart) RegisterLmp(dh,"F_START",0);
+      if (c->ffstart) RegisterLmp(dh,"FF_START",0);
+    }
     started = TRUE;
     announce(VERBOSE,"SLFLAT01");
 
@@ -4910,8 +5053,8 @@ void record_custom_flats(dumphandle dh, config *c, boolean even_unused)
   }
 
   if (started) {
-    RegisterLmp(dh,"FF_END",0);
-    RegisterLmp(dh,"F_END",0);      /* Just in case */
+    if (c->ffend) RegisterLmp(dh,"FF_END",0);
+    if (c->fend) RegisterLmp(dh,"F_END",0);
   }
 }
 
@@ -4946,7 +5089,7 @@ void record_custom_patches(dumphandle dh, config *c, boolean even_unused)
     *(short *)p = rows-5;          swapshort((unsigned short *)p); p += sizeof(short);   /* Magic */
     /* The pointers to the columns */
     for (i=0;i<columns;i++) {
-      *(int *)p = 8 + 4 * (columns) + i * (rows+5);  swapint((unsigned int *)p);p += sizeof(int);
+      *(int *)p = 8 + 4 * (columns) + i * (rows+5); swapint((unsigned int *)p); p += sizeof(int);
     }
     /* The columns themselves */
     for (i=0;i<columns;i++) {
@@ -4989,7 +5132,7 @@ void record_custom_patches(dumphandle dh, config *c, boolean even_unused)
     *(short *)p = rows-5;          swapshort((unsigned short *)p); p += sizeof(short);   /* Magic */
     /* The pointers to the columns */
     for (i=0;i<columns;i++) {
-      *(int *)p = 8 + 4 * (columns) + i * (rows+5);  swapint((unsigned int *)p);p += sizeof(int);
+      *(int *)p = 8 + 4 * (columns) + i * (rows+5);  swapint((unsigned int *)p); p += sizeof(int);
     }
     /* The columns themselves */
     for (i=0;i<columns;i++) {
@@ -5250,10 +5393,11 @@ void barify(level *l,linedef *ldf1,linedef *ldf2,quest *ThisQuest,
       t1 = texture_for_key(ThisQuest->type,ThisStyle,c);
   /* and the opening linedef type */
   type1 = ThisStyle->doortype;
-  if (ThisQuest)
+  if (ThisQuest) {
     if (ThisQuest->goal==KEY_GOAL) type1 = type_for_key(ThisQuest->type);
       else if (ThisQuest->goal==SWITCH_GOAL)
         type1 = (c->do_dm) ? LINEDEF_NORMAL_S1_DOOR : LINEDEF_NORMAL;
+  }
   /* Now fill in all the textures and stuff */
   ld1a->type = type1;
   ld2a->type = type1;
@@ -6749,12 +6893,13 @@ void e_bl_inner(level *l,linedef *ldf1,linedef *ldf2,link *ThisLink,
 
   /* The type of a SWITCH_GOAL isn't set until the link's established */
   if (ThisQuest)
-    if (ThisQuest->goal==SWITCH_GOAL)
+    if (ThisQuest->goal==SWITCH_GOAL) {
       if (ThisLink->bits&LINK_LOCK_CORE) {
         ThisQuest->type = LINEDEF_S1_RAISE_AND_CLEAN_FLOOR;
       } else {
         ThisQuest->type = LINEDEF_S1_OPEN_DOOR;
       }
+    }
 
   dump_link(ldf1,ldf2,ThisLink,"Establishing");
 
@@ -8185,6 +8330,8 @@ void arena_gate(level *l,sector *s,haa *haa,config *c)
   arena *ThisArena = new_arena(l,c);
   unsigned int newseed = bigrand();
 
+  if (s->gate) announce(WARNING,"Stacked gates?");
+
   /* Put in an exit-style outgoing gate */
   s->gate = new_gate(l,0,new_tag(l),0,FALSE,c);
   ThisArena->fromtag = s->gate->out_tag;
@@ -8811,10 +8958,11 @@ link *random_basic_link(level *l,linedef *ld,style *ThisStyle,quest *ThisQuest,
   if (ThisQuest) {
     if (ThisQuest->goal==KEY_GOAL) need_door = TRUE;
     /* So far the only tags we know of are door-opens and nukage traps */
-    if (ThisQuest->goal==SWITCH_GOAL)
+    if (ThisQuest->goal==SWITCH_GOAL) {
       if (rollpercent(30)||rollpercent(l->p_force_nukage))  /* Huh? */
         need_door = TRUE;
           else nukage_core_trap = TRUE;
+    }
   }
 
   /* Depth of the door sector, if any */
@@ -13441,8 +13589,13 @@ void install_gate(level *l,sector *s,style *ThisStyle,haa *ThisHaa,
   if (s->gate->gate_lock) {
     switch (s->gate->gate_lock) {
       case LINEDEF_S1_OPEN_DOOR:
-        innersec->ceiling_height = innersec->floor_height + 32;
-        announce(LOG,"Uplocked gate");
+        if (rollpercent(30)) {  /* Put in style or config or...? */
+          innersec->ceiling_height = innersec->floor_height + 32;
+          announce(LOG,"Uplocked gate");
+        } else {
+          innersec->ceiling_height = innersec->floor_height;
+          announce(LOG,"Pillar gate");
+        }
         break;
       case LINEDEF_S1_LOWER_FLOOR:
         innersec->floor_height += 32;
@@ -14422,10 +14575,9 @@ void empty_level(level *l, config *c)
    if (l->no_doors)
      announce(VERBOSE,"No doors");
    l->hugeness = 1;
-   if (rollpercent(c->do_dm ? 30 : 8)) {
-     l->hugeness = 2;
-     announce(LOG,"Extra hugeness");
-   }
+   if (rollpercent(c->do_dm ? 30 : 8)) l->hugeness = 2;
+   if (l->hugeness < c->minhuge) l->hugeness = c->minhuge;
+   if (l->hugeness>1) announce(LOG,"Extra hugeness");
    l->outside_light_level = 240;
    if (rollpercent(20)) {
      l->outside_light_level = c->minlight + 5;
@@ -14642,4 +14794,3 @@ void NewLevel(level *l, haa *ThisHaa, config *c)
     Now admit it; what was more fun than farting around with
     level-editors, wasn't it?
 */
-

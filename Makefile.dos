@@ -54,7 +54,7 @@ all:
 	cd wadsprit; $(MAKE) CC=$(CC) CFLAGS=$(CFLAGS); cd ..
 	cd wadpat; $(MAKE) CC=$(CC) CFLAGS=$(CFLAGS); cd ..
 	cd wadcat; $(MAKE) CC=$(CC) CFLAGS=$(CFLAGS); cd ..
-	cd multigen; $(MAKE) CC=$(CC) CFLAGS=$(CFLAGS); cd ..
+	cd idmultigen; $(MAKE) CC=$(CC) CFLAGS=$(CFLAGS); cd ..
 	cd raw2ppm; $(MAKE) CC=$(CC) CFLAGS=$(CFLAGS); cd ..
 	cd raw2sfx; $(MAKE) CC=$(CC) CFLAGS=$(CFLAGS); cd ..
 	cd reject; $(MAKE) CPP=$(CPP) CPPFLAGS=$(CPPFLAGS) CPPLIB=$(CPPLIB); cd ..
@@ -87,7 +87,7 @@ install:
 	cp wadpat/wadpat.exe $(BINDIR)
 	cp wadsprit/wadsprit.exe $(BINDIR)
 	cp wadcat/wadcat.exe $(BINDIR)
-	cp multigen/multigen.exe $(BINDIR)
+	cp idmultigen/idmultigen.exe $(BINDIR)
 	cp raw2ppm/raw2ppm.exe $(BINDIR)
 	cp raw2sfx/raw2sfx.exe $(BINDIR)
 	cp reject/wreject.exe $(BINDIR)
@@ -124,7 +124,7 @@ clean:
 	cd wadsprit; $(MAKE) clean; cd ..
 	cd wadpat; $(MAKE) clean; cd ..
 	cd wadcat; $(MAKE) clean; cd ..
-	cd multigen; $(MAKE) clean; cd ..
+	cd idmultigen; $(MAKE) clean; cd ..
 	cd raw2ppm; $(MAKE) clean; cd ..
 	cd raw2sfx; $(MAKE) clean; cd ..
 	cd reject; $(MAKE) clean; cd ..

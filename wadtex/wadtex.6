@@ -1,44 +1,74 @@
-.TH wadtex 6 "12 January 2000"
+.TH WADTEX 6 "2000-10-26"
 
 .SH NAME
 wadtex \- extract textures from WAD files into ppm graphic files
 
 .SH SYNOPSIS
-.BR wadtex " [" \-tp ]
-.RB [ \-m " | " \-M ]
-.RB [ "\-c \fIpalette\fR" "] [" "\-i \fIiwadfile\fR" ]
-.I wadfile
+.BR wadtex
+.RB [ "\-c \fIpalette\fR" ]
+.RB [ "\-i \fIiwadfile\fR" ]
+.RB [ \-npt ]
+.RB [ \-m | \-M ]
+.RB [ \-w\ \fIexpr\fP ]
+.RI [ wadfile \ ...]
 
 .SH DISCLAIMER
 This program is furnished on an AS IS basis for the fun of it.
 id Software, Raven Software and Activision do not support this program.
 
 .SH DESCRIPTION
-The program takes a WAD file (either IWAD or PWAD) as input, and decompiles
-all texture compositions found in the TEXTURE1/2 lumps into ppm graphic
-files.
-.P
-Textures in PWAD files partially build with patches in the PWAD
-can be completed with patches from an IWAD.
-.P
-A texture named \fBFRED\fP would be saved as \fB./textures/fred.ppm\fP.
-If the \fB./textures\fP directory does not already exist, it is created.
+This program loads one or more wad files (either IWAD or PWAD) and extracts
+some or all of the textures they contain to individual files, in packed PPM
+(\fBP6\fP) format.  The files are put in the \fB./textures/\fP directory. Thus,
+a texture named \fBFRED\fP would be saved as \fB./textures/fred.ppm\fP. If
+the \fB./textures\fP directory does not already exist, it is created.
+
+wadtex tries to emulate as closely as possible the behaviour of Doom with
+respect to the handling of wads. The list of textures is obtained from
+the \fBTEXTURE1\fP lump (and \fBTEXTURE2\fP if it exists). The patch numbers
+in \fBTEXTURE1\fP and \fBTEXTURE2\fP are translated to patch names according to
+the contents of the \fBPNAMES\fP lump. The patches are located by scanning the
+wad directories in a brute force manner. In particular, no attention is paid to
+labels like \fB?_START\fP, \fB?_END\fP, \fBMAP??\fP, etc.
+
+The lumps found in the pwads override the lumps in the iwad. If the same lump
+is present in more than one pwad, the pwad that comes last on the command line
+takes precedence.
+
+If a texture cannot be extracted because it is too large or there is not enough
+memory or too many of its patches are missing, it's just skipped with a warning
+and the exit code will be non-zero. Most other errors, including write errors,
+cause wadtex to abort immediately.
+
+A zero return code guarantees that all textures were extracted but not that
+they were all complete ; there could have been missing patches. If you want to
+use the exit code as proof of completeness, specify \fB\-m\fP.
 
 .SH OPTIONS
 .TP
+.BI \-c \ palette
+By default the program uses the Doom palette for the color table lookup.
+With this option another palette can be used, \fIpalette\fR can
+be \fBdoom\fR, \fBheretic\fR, \fBhexen\fR or \fBstrife\fR.
+.TP
+.BI \-i \ iwadfile
+Use \fIiwadfile\fP as the iwad. By default, wadtex does not load any iwad.
+.TP
 .B \-m
-Don't output a texture if some of its patches are missing.
+Don't extract a texture if some of its patches are missing.
 By default, a texture is output if and only if at least one of its patches
 is found. \fB\-m\fP and \fB\-M\fP are mutually exclusive.
 .TP
 .B \-M
-Output a texture even if all of its patches are missing.
+Extract a texture even if all of its patches are missing.
 By default, a texture is output if and only if at least one of its patches
 is found. \fB\-m\fP and \fB\-M\fP are mutually exclusive.
 .TP
-.B \-t
-Also write the texture composition into a text .wgc file for usage with
-\fBwadgc\fR(6).
+.B \-n
+List the composition of the textures to standard output but do not create any
+PPM files. Note that this option has no effect on the creation of the .wgc
+files. Thus, it's possible to get just the .wgc files and not the PPM files by
+specifying both \fB\-n\fP and \fB\-t\fP.
 .TP
 .B \-p
 Preserve case. Prevent the name of the graphic and text files to be forced to
@@ -47,19 +77,74 @@ lower case. For example, a texture named \fBFRED\fP would be saved as
 and
 .B ./textures/FRED.wgc
 .TP
-\fB\-c\fR \fIpalette\fR
-By default the program uses the Doom palette for the color table lookup.
-With this option another palette can be used, \fIpalette\fR can be \fIdoom\fR,
-\fIheretic\fR, \fIhexen\fR or \fIstrife\fR.
+.B \-t
+Also write the texture composition into a text .wgc file for use
+with \fBwadgc\fR(6).
 .TP
-\fB\-i\fR \fIiwadfile\fR
-A PWAD file can include partially patches for a texture only and use
-patches from an IWAD to complete this textures. If this option is used
-and a patch is not found in the PWAD, \fIiwadfile\fR will be searched
-for the missing patch, to complete the texture.
+.BI \-w \ expr
+Extract only the textures whose names match the wildcard expression \fIexpr\fP.
+By default, all textures are extracted. The matching is done by
+calling \fBfnmatch\fP(3) with the \fIflags\fP argument set to 0. The strings
+are uppercased before they're passed to fnmatch() so that the matching is
+case-insensitive. All usual shell wildcards apply:
+
+.ta 2 12
+.nf
+	\fB*\fP	matches zero or more characters
+	\fB?\fP	matches one character
+	\fB[\fIrange\fB]\fR	matches one character in \fIrange\fP
+	\fB[!\fIrange\fB]\fR	matches one character not in \fIrange\fP
+	\fB\\*\fP	matches \fB*\fP
+	\fB\\?\fP	matches \fB?\fP
+	\fB\\[\fP	matches \fB[\fP
+	\fB\\\\\fP	matches \fB\\\fP
+	\fIother\fP	matches itself
+.fi
+
+See \fBfnmatch\fP(3) for more details.
 
 .SH SUPPORTED GAMES
 Doom, Ultimate Doom, Doom][, Final Doom, Heretic, Hexen, Strife.
+
+.SH LIMITS
+The number of wads on the command line is limited by the maximum number of open
+files per process. Big deal.
+
+The size of textures is limited by the available memory and the magnitude of
+the size_t type. On 16-bit systems, textures larger than 64 kB will be skipped.
+
+.SH EXAMPLES
+To extract all the textures from gothic2.wad:
+
+.nf
+	wadtex \-i doom2.wad gothic2.wad
+.fi
+
+To extract \fBBROWN1\fP and friends from doom.wad:
+
+.nf
+	wadtex \-i doom.wad -w 'brown*'
+.fi
+
+.SH BUGS/ERRORS
+If a lump is defined more than once in the same wad (which shouldn't happen
+anyway), wadtex uses the first occurrence. I think Doom would use the last
+occurrence.
+
+Directory searches are slower than they should be.
+
+.SH AUTHOR
+.B wadtex
+was written by Udo Munk (munkudo@aol.com).
+.LP
+Various bug fixes and options \fB\-mMnpw\fP added by Andre Majorel
+<amajorel@teaser.fr>.
+
+.SH EXIT VALUE
+.ta 5
+\fB0\fP	OK.
+.br
+\fB>0\fP	Could not extract all textures.
 
 .SH SEE ALSO
 The Unofficial Doom Specs by Matthew S Fell.
@@ -68,13 +153,3 @@ The Unofficial Doom Specs by Matthew S Fell.
 .BR wadgc "(6), "
 .BR ppm "(5), "
 .BR xwadtools (6)
-
-.SH BUGS/ERRORS
-Textures are clipped to 1024x256 with a warning.
-
-.SH AUTHOR
-.B wadtex
-was written by Udo Munk (um@compuserve.com).
-.LP
-Various bug fixes and option \-p, \-m and \-M added by
-Andre Majorel <amajorel@teaser.fr>.
